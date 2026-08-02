@@ -62,12 +62,12 @@ order: 11
     <p>Die C#- und Unity-Entwicklung von Rising Waters teilten sich Vlad Ryzhov und ich. Meine Verantwortlichkeiten umfassten die Walkthrough-Bewegung und -Steuerung. Da dies eines meiner ersten Unity-Projekte war, bot es eine gründliche Einführung in Vektoren und Quaternionen in der Unity-API. Ein sehr hilfreiches Paket war der <a href="https://wiki.unity3d.com/index.php/Hermite_Spline_Controller#Description" target="_blank">Hermite Spline Controller</a>, mit dem sich Position und Orientierung eines GameObjects entlang eines einfach definierten Pfads sanft interpolieren ließen. Im Beispiel unten nutze ich die Methoden <code>GetHermiteInternal()</code> und <code>GetSquad()</code> des Pakets, um den Spieler entlang des vordefinierten Walkthrough-Pfads zu positionieren und auszurichten sowie an Waypoint-Knoten des Pfads anzuhalten.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/f5dc0de4f8c45b8b3bbd7080885e684e.js"></script>
+    <script src="https://gist.github.com/potato-robert/f5dc0de4f8c45b8b3bbd7080885e684e.js"></script>
   </section>
   <section class="sectionText">
     <h3 id="Fit4uDev">FIT4U</h3>
     <p>Als einziger C#- und Unity-Entwickler bei FIT4U hatte ich viele Verantwortlichkeiten. Eines meiner ersten abgeschlossenen Features war ein Proof of Concept mit mehreren Kameras: Spielerkameras rendern auf das HMD, eine separate UI-Kamera auf einen für den Spieler unsichtbaren Computerbildschirm. So konnten wir Nutzerdaten eingeben, während das Erlebnis lief. Anschließend implementierte ich die (temporäre) Nutzerdatenbank und mehrere UI-Systeme, die Nutzerdaten basierend auf Eingaben speicherten. Der letzte Schritt war Code, der die einzelnen Bildschirme verknüpfte und den Datenleck-Ablauf sequenzierte – implementiert als Coroutine. Das Beispiel unten ist ein Auszug aus <code>Ads.cs</code>, einem Skript, das die Wände um den Nutzer mit generischen und zielgerichteten Werbeanzeigen füllt, wenn sie am Ende ihre Daten nicht löschen. Der Auszug prüft, welche Daten zu verfügbaren Anzeigen passen, definiert entsprechend ein Array von Anzeigenbildern, mischt es und startet eine Coroutine, die den gesamten Raum schrittweise mit Anzeigen füllt.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/ecd16b13e1952fa3818c55f6d93eb5c5.js"></script>
+    <script src="https://gist.github.com/potato-robert/ecd16b13e1952fa3818c55f6d93eb5c5.js"></script>
   </section>

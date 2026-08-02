@@ -75,5 +75,5 @@ order: 4
       <h2>Code Beispiel</h2>
       <p>Ein Beispiel für die Datenbindung zwischen dem Formular und dem Datenmodell für die <span data-lightbox-id="img_createPoi" class="inTextLink">POI Erstellen</span> Seite.</p>
     </div>
-    <script src="https://gist.github.com/Robert01101101/062fa22fe781689ed11a85d85e4b2b3e.js"></script>
+    <script src="https://gist.github.com/potato-robert/062fa22fe781689ed11a85d85e4b2b3e.js"></script>
   </section>

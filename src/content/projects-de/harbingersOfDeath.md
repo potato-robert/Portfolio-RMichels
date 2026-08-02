@@ -57,15 +57,15 @@ order: 7
     <p>Ein entscheidendes Element für den Erfolg dieses Projekts war die Trennung von Views und Logik. So konnten wir sehr sauberen Code schreiben. Als ich die einzelnen Omen-Inhaltsseiten implementierte, trennte ich Code für die Darstellung von Code für das Abrufen und Organisieren der Daten. Zur Laufzeit wird beim Verarbeiten der Omen-Route in <code>index.php</code> eine <code>Omen</code>-Instanz über <code>OmenCollection.php</code> erzeugt und an die Seitenansicht <code>omen.php</code> übergeben.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/6af2a14f9fd4d08094ef29c3dc8bcd6b.js"></script>
-    <script src="https://gist.github.com/robert-michels/c64698d770388ce87b755a84a700070e.js"></script>
-    <script src="https://gist.github.com/robert-michels/3a1012cb7637403a0287918880e163ed.js"></script>
+    <script src="https://gist.github.com/potato-robert/6af2a14f9fd4d08094ef29c3dc8bcd6b.js"></script>
+    <script src="https://gist.github.com/potato-robert/c64698d770388ce87b755a84a700070e.js"></script>
+    <script src="https://gist.github.com/potato-robert/3a1012cb7637403a0287918880e163ed.js"></script>
   </section>
   <section class="sectionText">
     <p>Eine interessante Herausforderung war die Implementierung schwebender Labels für Texteingaben. Die Labels erscheinen wie Platzhaltertext, bis der Nutzer Text eingibt; dann werden sie verkleinert und oberhalb des Eingabefelds positioniert – wie ein klassisches Label. Die Herausforderung bestand darin, Funktion und Form nicht zu beeinträchtigen. Labels und Eingabefelder sind daher separate DOM-Objekte, und das Formular ist ARIA-freundlich.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/27652e3e6cb30ac861fd8be6895d80df.js"></script>
+    <script src="https://gist.github.com/potato-robert/27652e3e6cb30ac861fd8be6895d80df.js"></script>
   </section>
   <section class="sectionText">
     <p>Für dieses Projekt war ich außerdem für die Einrichtung der Datenbank und aller Abfragen verantwortlich. Ich entwarf die Datenbank mit folgenden Tabellen: <code>user</code> (Nutzerinformationen), <code>user_omen</code> (Zuordnungstabelle für erlebte Omen), <code>omen</code> (Informationen zu jedem Omen) sowie drei Taxonomie-Tabellen: <code>aspect</code>, <code>death</code> und <code>fault</code> (zum Taggen von Omen). Über die Website änderbar sind nur <code>user</code> und <code>user_omen</code>; die Omen- und Taxonomie-Tabellen sind statisch.</p>

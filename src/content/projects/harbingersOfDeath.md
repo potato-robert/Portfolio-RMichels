@@ -57,15 +57,15 @@ order: 7
     <p>A crucial element for the success of this project was the separation of views and logic. This allowed us to write very clean code. For instance, when I implemented the individual omen's content pages, I seperated code responsible for displaying the page from the code that deals with retrieving and organizing data. At runtime, when the omen route is processed in <code>index.php</code>, the code constructs an <code>Omen</code> instance using <code>OmenCollection.php</code>, and passes this instance to the page view <code>omen.php</code>.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/6af2a14f9fd4d08094ef29c3dc8bcd6b.js"></script>
-    <script src="https://gist.github.com/robert-michels/c64698d770388ce87b755a84a700070e.js"></script>
-    <script src="https://gist.github.com/robert-michels/3a1012cb7637403a0287918880e163ed.js"></script>
+    <script src="https://gist.github.com/potato-robert/6af2a14f9fd4d08094ef29c3dc8bcd6b.js"></script>
+    <script src="https://gist.github.com/potato-robert/c64698d770388ce87b755a84a700070e.js"></script>
+    <script src="https://gist.github.com/potato-robert/3a1012cb7637403a0287918880e163ed.js"></script>
   </section>
   <section class="sectionText">
     <p>An interesting challenge was the implementation of floating labels for text inputs. These labels appear like placeholder text until the user enters text into the text input, at which point the labels are shrunk and positioned above the input, like a traditional label. The challenge was making sure that there is no compromise of function for form. As a result, labels and inputs are separate DOM objects, and the form is ARIA-friendly.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/27652e3e6cb30ac861fd8be6895d80df.js"></script>
+    <script src="https://gist.github.com/potato-robert/27652e3e6cb30ac861fd8be6895d80df.js"></script>
   </section>
   <section class="sectionText">
     <p>For this project I was also responsible for setting up our database, as well as all database queries. I designed the database with the following tables: user (to store user information), user_omen (an associative table to store which omens a user encountered), omen (to store information about each omen) and three taxonomy tables: aspect, death and fault (for tagging omens). The only two tables that can be modified through our website are the user and user_omen tables. The omen and taxology tables on the other hand are static.</p>

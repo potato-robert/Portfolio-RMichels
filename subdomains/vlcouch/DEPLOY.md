@@ -28,7 +28,7 @@ Manual FTPS deploy only (not part of Astro CI). See [AGENTS.md](../../AGENTS.md)
 
 The primary CTA and JSON-LD `downloadUrl` point to the latest release installer:
 
-https://github.com/Robert01101101/VLCouch/releases/latest/download/VLCouchSetup.exe
+https://github.com/potato-robert/VLCouch/releases/latest/download/VLCouchSetup.exe
 
 This URL stays stable across releases — CI uploads `VLCouchSetup.exe` on each release.
 

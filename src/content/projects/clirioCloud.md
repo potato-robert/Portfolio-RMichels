@@ -75,5 +75,5 @@ order: 4
       <h2>Code Sample</h2>
       <p>An example of data binding between the form and data model for the <span data-lightbox-id="img_createPoi" class="inTextLink">Create POI</span> page.</p>
     </div>
-    <script src="https://gist.github.com/Robert01101101/062fa22fe781689ed11a85d85e4b2b3e.js"></script>
+    <script src="https://gist.github.com/potato-robert/062fa22fe781689ed11a85d85e4b2b3e.js"></script>
   </section>

@@ -76,5 +76,5 @@ order: 13
     <p>The project is developed with HTML, CSS and JS, where we employ the data-driven visualization library <a href="https://d3js.org/" target="_blank">D3.js</a>. Implementing all the visualizations was very challenging, as D3 was new to us. Particularly the use of the chain syntax was cumbersome in the beginning. The general workflow consists of loading data, selecting DOM elements and inserting SVG elements with certain attributes mapped to the data. In the excerpt below, the <a  href="#chart4">Canadian Weather Data Chart</a> is rendered in <code>drawMap()</code>, with the color of each province mapped to temperature or percipitation data depending on the user's inputs. The excerpt also includes mouse hover interactions for the individual provinces starting at line 58, where the province is visually highlighted and data in the legend is updated by calling <code>updateDataData()</code>, which isn't show in the example.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/fea50c19b3bcdff1b1ee446cad3a8028.js"></script>
+    <script src="https://gist.github.com/potato-robert/fea50c19b3bcdff1b1ee446cad3a8028.js"></script>
   </section>

@@ -62,12 +62,12 @@ order: 11
     <p>The C# and Unity development work of Rising Waters was split between Vlad Ryzhov and me. My responsibilities included the walkthrough movement and control. As this was one of my first Unity projects, this made for a thorough introduction to Vectors and Quaternions in the Unity API. A very helpful package that I used was the <a href="https://wiki.unity3d.com/index.php/Hermite_Spline_Controller#Description" target="_blank">Hermite Spline Controller</a>, which made it easy to interpolate a GameObject's position and orientation smoothly through an easily defined path. In the example below, I use the package's <code>GetHermiteInternal()</code> and <code>GetSquad()</code> methods to position and orientate the player along the predefined walkthrough path, as well as pause when arriving at any of the waypoint nodes that the path is comprised of.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/f5dc0de4f8c45b8b3bbd7080885e684e.js"></script>
+    <script src="https://gist.github.com/potato-robert/f5dc0de4f8c45b8b3bbd7080885e684e.js"></script>
   </section>
   <section class="sectionText">
     <h3 id="Fit4uDev">FIT4U</h3>
     <p>As the only C# and Unity developer working on FIT4U, I had a lot of responsibilities. One of my first completed features was a proof of concept, where I created a setup with multiple cameras, with player cameras rendering to the HMD, and a separate UI camera rendering to a computer screen not visible to the player. This allowed us to enter user data while the experience is running. After that, I implemented the user database (which is temporary), and a number of different UI systems that would store user data based on the user inputs. The final step involved writing code to link up the individual screens and sequence the data breach, which is implemented with a Coroutine. The example below is an excerpt from <code>Ads.cs</code>, a script that starts crowding the walls around the user with generic and targeted ads if they choose not to delete their data in the end. The excerpt starts with a check of what data matches available ads, defining an array of ad images accordingly, shuffling it, and then starting a coroutine which gradually begins filling the entire room with ads.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/ecd16b13e1952fa3818c55f6d93eb5c5.js"></script>
+    <script src="https://gist.github.com/potato-robert/ecd16b13e1952fa3818c55f6d93eb5c5.js"></script>
   </section>
