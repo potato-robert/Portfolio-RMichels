@@ -12,7 +12,7 @@ describe('normalizeShikiHtml', () => {
 describe('parseGistId', () => {
   it('extracts gist id from embed script url', () => {
     expect(
-      parseGistId('https://gist.github.com/robert-michels/13bb15385194385ba5d5700ee224d858.js'),
+      parseGistId('https://gist.github.com/potato-robert/13bb15385194385ba5d5700ee224d858.js'),
     ).toBe('13bb15385194385ba5d5700ee224d858');
   });
 

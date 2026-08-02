@@ -1,0 +1,19 @@
+{
+  "name": "VLCouch",
+  "short_name": "VLCouch",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#141414",
+  "background_color": "#141414",
+  "display": "standalone"
+}

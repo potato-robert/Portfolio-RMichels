@@ -20,7 +20,7 @@ links:
   - label: "Interactive Figma Mockup"
     url: "https://www.figma.com/proto/DKwKzxmnYg9oQeuUSmrlN7/Tourguide_App"
   - label: "Github Repository"
-    url: "https://github.com/Robert01101101/tourguide_app"
+    url: "https://github.com/potato-robert/tourguide_app"
 threeMockup: "phone"
 order: 3
 ---

@@ -14,7 +14,7 @@ description:
   de: "Eine statische Portfolio-Website mit Astro, TypeScript-Islands, Three.js und Sass."
 links:
   - label: "GitHub"
-    url: "https://github.com/Robert01101101/Portfolio-RMichels"
+    url: "https://github.com/potato-robert/Portfolio-RMichels"
 heroAltLayout: false
 order: 8
 ---

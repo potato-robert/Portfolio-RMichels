@@ -85,5 +85,5 @@ order: 2
       <h2>Code-Beispiel</h2>
       <p></p>
     </div>
-    <script src="https://gist.github.com/Robert01101101/ec153ae228a8ae3f6fe28b143073b669.js"></script>
+    <script src="https://gist.github.com/potato-robert/ec153ae228a8ae3f6fe28b143073b669.js"></script>
   </section>

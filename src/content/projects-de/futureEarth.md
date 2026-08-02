@@ -132,11 +132,11 @@ order: 5
     <p>Meine Programmierarbeit für dieses Projekt konzentrierte sich auf die ungewöhnlicheren Funktionen unseres Spiels, wie z. B. das Sammeln von Ersatzteilen, das Bauen von Gegenständen, die Interaktion mit der Benutzeroberfläche, die Abfolge der Geschichte und mehr. Eine weitere interessante Funktion, die ich implementiert habe, waren die Bäume, die Animationen für das Wachstum und die Überwachung ihres Gesundheitszustands auf der Grundlage der verfügbaren Wasservorräte benötigten. Um eine feine Kontrolle über das Wachstumsverhalten zu erreichen, habe ich eine Coroutine verwendet, die auch zur Kontrolle sterbender Bäume eingesetzt wird. Anstatt eine Unity-Animation zu verwenden, implementierte ich ein sanftes Wachstum, indem ich Skalierung und Rotation definierte mit Hilfe von <code>Mathf.SmoothStep()</code> und <code>Mathf.Sin()</code></p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/13bb15385194385ba5d5700ee224d858.js"></script>
+    <script src="https://gist.github.com/potato-robert/13bb15385194385ba5d5700ee224d858.js"></script>
   </section>
   <section class="sectionText">
     <p>Eine der interessanten Änderungen, die sich aus unseren Benutzertests ergaben, war die drastischere Veränderung der Umgebung in Abhängigkeit vom Fortschritt des Spielers. Die Umgebung verändert sich, wenn der Spieler mehr Bäume pflanzt. Um die gewünschte emotionale Wirkung beim Spieler zu erzielen, haben wir viele variable Ebenen eingebaut: die Skybox, Nebel, Staubpartikel, Wasser, Beleuchtung und Nachbearbeitung. All diese Aspekte der Umgebung werden zwischen einem Start- und einem Endzustand interpoliert, und zwar mit der Methode <code>SetEnvironment()</code> die ich implementierte in <code>GameCtrl.cs</code>. Zum Beispiel hat der Nebel Definitionen für seine Farbe, die Startdistanz und die Enddistanz sowohl für den Anfang als auch für das Ende des Nebels.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/1272b6f0de41f4409cf4e61fdfbbd622.js"></script>
+    <script src="https://gist.github.com/potato-robert/1272b6f0de41f4409cf4e61fdfbbd622.js"></script>
   </section>

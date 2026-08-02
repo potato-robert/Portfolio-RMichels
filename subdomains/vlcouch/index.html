@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>VLCouch — Browse Your Local Movies &amp; TV, Play in VLC</title>
+  <meta name="description" content="VLCouch is a free Windows app to browse your local movie and TV library like a streaming service and play titles in VLC. Download the installer, add folders, and go.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vlcouch.rmichels.com/">
+
+  <meta property="og:title" content="VLCouch — Browse Your Local Movies &amp; TV, Play in VLC">
+  <meta property="og:description" content="Free Windows app to browse your local movie and TV library and play in VLC. Download the installer, add folders, and start watching.">
+  <meta property="og:image" content="https://vlcouch.rmichels.com/img/og-image.jpg">
+  <meta property="og:url" content="https://vlcouch.rmichels.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VLCouch">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VLCouch — Browse Your Local Movies &amp; TV, Play in VLC">
+  <meta name="twitter:description" content="Free Windows app to browse your local movie and TV library and play in VLC. Download the installer to get started.">
+  <meta name="twitter:image" content="https://vlcouch.rmichels.com/img/og-image.jpg">
+
+  <link rel="stylesheet" href="css/main.css?v=1.0.6">
+
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="VLCouch">
+  <link rel="manifest" href="favicon/site.webmanifest">
+  <meta name="theme-color" content="#141414">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "name": "VLCouch",
+        "url": "https://vlcouch.rmichels.com/",
+        "description": "Browse your local movies and TV shows like a streaming app, play them in VLC."
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "VLCouch",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Windows",
+        "description": "Windows app that scans your movie and TV folders, builds poster rows, and launches playback in VLC. Download the installer to get started.",
+        "url": "https://vlcouch.rmichels.com/",
+        "downloadUrl": "https://github.com/potato-robert/VLCouch/releases/latest/download/VLCouchSetup.exe",
+        "codeRepository": "https://github.com/potato-robert/VLCouch",
+        "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is VLCouch?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "VLCouch is an offline-first local media browser for Windows. It scans folders on your PC, catalogs movies and TV shows with poster thumbnails, and launches playback in VLC when you hit Play."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need an account or internet connection?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. VLCouch works entirely offline by default. Your files stay on your drives, thumbnails are generated locally with FFmpeg, and no cloud library or account is required."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What do I need installed to run VLCouch?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Download VLCouchSetup from GitHub Releases and run the installer — it bundles Python and the app. You also need VLC (playback) and FFmpeg (thumbnails); if they are missing, open Settings in the app to install them with one click via winget or follow the download link provided."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is VLCouch affiliated with VideoLAN or VLC?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. VLCouch is independent open source software and is not affiliated with VideoLAN or the VLC project."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is VLCouch a media server?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. VLCouch is a local media library browser and VLC launcher. It does not transcode, stream over the network, or require a subscription. You browse files on your own drives and play them in VLC."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is VLCouch free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. VLCouch is free and open source under the GPL-3.0 license."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="logo" href="/">VLCouch</a>
+    <nav class="header-nav" aria-label="Site">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">Install</a>
+    </nav>
+  </header>
+
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h1 id="hero-heading">VLCouch</h1>
+        <p class="hero-tagline">Browse your local movies and TV shows like a streaming app, play them in VLC.</p>
+        <p class="hero-support">Continue where you left off, browse by season and episode, search across the library, and enjoy a smooth and offline-first experience driven by VLC and ffmpeg.</p>
+        <div class="hero-ctas">
+          <a id="download" class="cta-primary" href="https://github.com/potato-robert/VLCouch/releases/latest/download/VLCouchSetup.exe" target="_blank" rel="noopener noreferrer">Download for Windows</a>
+          <a class="cta-secondary" href="https://github.com/potato-robert/VLCouch" rel="noopener noreferrer">View on GitHub</a>
+        </div>
+      </div>
+      <figure class="hero-icon">
+        <img src="img/icon.svg" alt="VLCouch app icon — VLC cone on a couch" width="256" height="256">
+      </figure>
+    </div>
+  </section>
+
+  <main id="main">
+    <section id="features" aria-labelledby="features-heading">
+      <h2 id="features-heading">Local Media Library Browser</h2>
+      <p class="section-lead">Everything you need to browse your personal movie and TV collection from the couch.</p>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <h3>Streaming-style experience</h3>
+          <p>Familiar UI with Continue Watching, Recently Watched, TV and Movies categorized by decade and genre.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Launch playback in VLC</h3>
+          <p>Launch titles in your favorite media player with support for many codecs and subtitle formats - <a href="https://www.videolan.org/" rel="noopener noreferrer">VLC</a> ❤️</p>
+        </article>
+        <article class="feature-card">
+          <h3>Search your own files</h3>
+          <p>Find movies and TV shows instantly with search across your entire local library.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Offline-first</h3>
+          <p>No accounts or internet connection required. Your media stays on your drives and is cataloged locally.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Smart categorization</h3>
+          <p><a href="https://guessit-io.github.io/guessit/" rel="noopener noreferrer">GuessIt</a> extracts metadata from your filenames to help categorize your media.</p>
+        </article>
+        <article class="feature-card">
+          <h3>FFmpeg thumbnails</h3>
+          <p>Thumbnails are generated locally for all your media with <a href="https://ffmpeg.org/" rel="noopener noreferrer">FFmpeg</a>.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="how-it-works" aria-labelledby="how-heading">
+      <h2 id="how-heading">Installation</h2>
+      <p class="section-lead">Download, install, and start browsing in minutes.</p>
+      <ol class="steps">
+        <li>
+          <div class="step-content">
+            <strong>Download the installer</strong>
+            <p>Get VLCouchSetup from <a href="https://github.com/potato-robert/VLCouch/releases" rel="noopener noreferrer">GitHub Releases</a>.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Run the installer</strong>
+            <p>The setup wizard installs VLCouch and adds a Start menu shortcut. Install VLC and FFmpeg manually or with one click in Settings.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Add your library</strong>
+            <p>Launch VLCouch, set your movie and TV folders, then scan your library.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Browse and play</strong>
+            <p>Browse your library, search for titles, and launch them in VLC with support for continue watching, show playlists, and more.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="why" aria-labelledby="why-heading">
+      <h2 id="why-heading">Why VLCouch?</h2>
+      <p class="section-lead">A VLC media player launcher with a streaming-app interface for your own files.</p>
+      <div class="why-grid">
+        <article class="why-item">
+          <div class="why-icon" aria-hidden="true">HD</div>
+          <div>
+            <h3>Your files, your drives</h3>
+            <p>Your movies and TV shows stay exactly where they are. VLCouch catalogs and displays them using offline tools.</p>
+          </div>
+        </article>
+        <article class="why-item">
+          <div class="why-icon" aria-hidden="true">&#9654;</div>
+          <div>
+            <h3>Full VLC playback</h3>
+            <p>Leverage VLC: excellent codec and subtitle support, advanced settings, and more. VLCouch is the browser; VLC is the player you already trust.</p>
+          </div>
+        </article>
+        <article class="why-item">
+          <div class="why-icon" aria-hidden="true">UI</div>
+          <div>
+            <h3>Convenience of a streaming app</h3>
+            <p>Keep track of what you've watched, queue binge playlists, and browse by season and episode.</p>
+          </div>
+        </article>
+        <article class="why-item">
+          <div class="why-icon" aria-hidden="true">Win</div>
+          <div>
+            <h3>Built for Windows</h3>
+            <p>Simple installation, app launches in your browser. Library data is stored on your device and preserved across upgrades.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Frequently Asked Questions</h2>
+      <p class="section-lead">Common questions about the offline movie library browser.</p>
+      <div class="faq-list">
+        <article class="faq-item">
+          <h3>What is VLCouch?</h3>
+          <p>VLCouch is an offline-first local media browser for Windows. It scans folders on your PC, catalogs movies and TV shows with poster thumbnails, and launches playback in VLC when you hit Play.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Do I need an account or internet connection?</h3>
+          <p>No. VLCouch works entirely offline by default. Your files stay on your drives, thumbnails are generated locally with FFmpeg, and no cloud library or account is required. There is an optional feature for fetching plot summaries from Wikipedia, but this is disabled by default.</p>
+        </article>
+        <article class="faq-item">
+          <h3>What do I need installed to run VLCouch?</h3>
+          <p>Download and run <strong>VLCouchSetup</strong> from GitHub Releases — the installer bundles Python and the app. You also need <a href="https://www.videolan.org/" rel="noopener noreferrer">VLC</a> for playback and <a href="https://ffmpeg.org/" rel="noopener noreferrer">FFmpeg</a> for thumbnails. If either is missing, open <strong>Settings</strong> in VLCouch to install them with one click via winget or use the download link shown there.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Is VLCouch affiliated with VideoLAN or VLC?</h3>
+          <p>No. VLCouch is independent open source software and is not affiliated with VideoLAN or the VLC project.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Is VLCouch a media server?</h3>
+          <p>No. VLCouch is a local media library browser and VLC launcher. It does not play media, transcode, or stream over the network. You browse files in VLCouch and play them in VLC.</p>
+        </article>
+        <article class="faq-item">
+          <h3>Is VLCouch free?</h3>
+          <p>Yes. VLCouch is free and open source under the GPL-3.0 license.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="footer-links" aria-label="Footer">
+      <a href="https://github.com/potato-robert/VLCouch" rel="noopener noreferrer">GitHub</a>
+      <a href="https://github.com/potato-robert/VLCouch/blob/main/LICENSE" rel="noopener noreferrer">GPL-3.0 License</a>
+      <a href="https://rmichels.com" rel="noopener noreferrer">rmichels.com</a>
+    </nav>
+    <p>VLCouch is independent open source and is not affiliated with VideoLAN or the VLC project.</p>
+    <p class="disclaimer">&copy; 2026 VLCouch. Free software under GPL-3.0.</p>
+  </footer>
+</body>
+</html>

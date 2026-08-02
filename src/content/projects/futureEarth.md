@@ -132,11 +132,11 @@ order: 5
     <p>My programming efforts for this project focussed on the more unusual features of our game, such as spare part collection, item building, UI interactions, story sequencing and more. Another interesting feature I implemented was the trees, which required animations for growth and monitoring of their health based on the available water supply. In order to achieve fine control over the growth behavior, I used a Coroutine, which is also used to control dying trees. Instead of using an Unity animation I implemented smooth growth by affecting scale and rotation with the help of <code>Mathf.SmoothStep()</code> and <code>Mathf.Sin()</code></p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/13bb15385194385ba5d5700ee224d858.js"></script>
+    <script src="https://gist.github.com/potato-robert/13bb15385194385ba5d5700ee224d858.js"></script>
   </section>
   <section class="sectionText">
     <p>One of the interesting changes that resulted from our user tests was the more drastic environment change coupled to player progress. The environment changes as the player plants more trees. In order to achieve the desired emotional effect with the player, we incorporated many variable layers: the skybox, fog, dust particles, water, lighting and post processing. All of these aspects of the environment are interpolated between a start and an end state, by the method <code>SetEnvironment()</code> which I implemented in <code>GameCtrl.cs</code>. For instance, the fog has definitions of its color, start distance and end distance for both the beginning and the end.</p>
   </section>
   <section class="sectionMedia">
-    <script src="https://gist.github.com/robert-michels/1272b6f0de41f4409cf4e61fdfbbd622.js"></script>
+    <script src="https://gist.github.com/potato-robert/1272b6f0de41f4409cf4e61fdfbbd622.js"></script>
   </section>
