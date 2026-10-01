@@ -1,4 +1,8 @@
-export {};
+import { cleanupLegacyCookies } from '../lib/legacy-cookie-cleanup';
+import { initAnalyticsEvents } from '../lib/analytics';
+
+cleanupLegacyCookies();
+initAnalyticsEvents();
 
 const pageType = document.body.dataset.pageType;
 
