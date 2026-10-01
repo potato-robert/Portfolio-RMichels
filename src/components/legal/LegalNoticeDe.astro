@@ -1,0 +1,32 @@
+---
+import { CONTACT_EMAIL, CONTROLLER_LOCATION, CONTROLLER_NAME } from '../../lib/legal';
+---
+
+<section class="sectionText legal" lang="de">
+  <h1>Impressum</h1>
+
+  <h2>Verantwortlich</h2>
+  <p>
+    {CONTROLLER_NAME}<br />
+    {CONTROLLER_LOCATION}<br />
+    E-Mail: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </p>
+
+  <h2>Art der Website</h2>
+  <p>
+    Persönliches Portfolio zur beruflichen Präsentation und für Bewerbungen. Über rmichels.com werden keine
+    Waren oder Dienstleistungen verkauft. Betrieb aus Kanada. Verlinkte Apps und Spiele in den Stores haben
+    eigene Anbieterkontakte.
+  </p>
+
+  <h2>Haftung für Links</h2>
+  <p>
+    Externe Links führen zu Inhalten Dritter. Für diese Inhalte übernehme ich keine Haftung; verantwortlich
+    ist der jeweilige Anbieter.
+  </p>
+
+  <h2>Datenschutz</h2>
+  <p>
+    Informationen zur Datenverarbeitung finden Sie in der <a href="/de/privacyPolicy">Datenschutzerklärung</a>.
+  </p>
+</section>

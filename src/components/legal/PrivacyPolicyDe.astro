@@ -1,0 +1,221 @@
+---
+import {
+  CONTACT_EMAIL,
+  CONTROLLER_LOCATION,
+  CONTROLLER_NAME,
+  EXTERNAL_MEDIA_PROVIDERS,
+  formatPrivacyLastUpdated,
+} from '../../lib/legal';
+
+const lastUpdated = formatPrivacyLastUpdated('de');
+const legalNoticeHref = '/de/legalNotice';
+---
+
+<section class="sectionText privacy" lang="de">
+  <h1>Datenschutzerklärung</h1>
+  <p class="privacy__updated"><strong>Stand:</strong> {lastUpdated}</p>
+
+  <p>
+    Diese Datenschutzerklärung beschreibt, wie {CONTROLLER_NAME} („ich“) Informationen verarbeitet, wenn
+    Sie <a href="https://rmichels.com">rmichels.com</a> (die „Website“) besuchen. Ich lebe in {CONTROLLER_LOCATION}.
+    Fragen: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+    Siehe auch das <a href={legalNoticeHref}>Impressum</a>.
+  </p>
+
+  <h2>Kurzfassung</h2>
+  <ul>
+    <li>Die Website verwendet <strong>keine</strong> Werbe- oder Cross-Site-Tracking-Cookies.</li>
+    <li>Ich nutze <strong>cookieless Analytics</strong> (Umami, EU-Region), sofern Sie nicht widersprechen und kein Do Not Track / Global Privacy Control gesendet wird.</li>
+    <li>Eingebettete Medien (YouTube, Sketchfab, Figma, Clirio View) werden <strong>nur nach Ihrem Klick</strong> geladen.</li>
+    <li>Codebeispiele werden beim Build statisch ausgeliefert; GitHub wird nicht automatisch aufgerufen.</li>
+    <li>Ich verkaufe keine personenbezogenen Daten.</li>
+  </ul>
+
+  <h2>Geltungsbereich</h2>
+  <p>
+    Diese Erklärung gilt nur für das Portfolio. <strong>Tourguide</strong> (
+    <a href="https://tourguide.rmichels.com/privacyPolicy.html" rel="noopener noreferrer"
+      >tourguide.rmichels.com</a
+    >) ist ein separates Produkt mit eigener Datenschutzerklärung.
+  </p>
+  <p>
+    Die Website ist eine statische Seite bei Hostinger. Es gibt keine Benutzerkonten oder Registrierung.
+  </p>
+
+  <h2>Welche Daten verarbeitet werden</h2>
+  <h3>Von Ihnen bereitgestellt</h3>
+  <p>
+    Es gibt keine Kontaktformulare. Wenn Sie mir an
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> schreiben, erhalte ich den Inhalt Ihrer
+    Nachricht über die jeweiligen E-Mail-Anbieter.
+  </p>
+
+  <h3>Hosting und Server-Logs</h3>
+  <p>
+    Hostinger (und ggf. ein CDN) kann Server-Logs mit IP-Adresse, Zeit, URL, Referrer und User-Agent
+    verarbeiten. Die Speicherdauer richtet sich nach meiner Hostinger-Konfiguration. Es gibt keine
+    eigene Besucher-Datenbank.
+  </p>
+
+  <h3>Analytics</h3>
+  <p>
+    Sofern Sie nicht widersprechen (siehe <a href="#choices">Ihre Wahlmöglichkeiten</a>) und Ihr Browser
+    kein Do Not Track oder Global Privacy Control sendet, nutze ich <strong>Umami Analytics</strong>
+    (Umami Software, EU-Cloud) für aggregierte Nutzungsstatistiken. Umami ist ohne Cookies und ohne
+    Speicherung vollständiger IP-Adressen konfiguriert. Analytics läuft nur auf
+    <code>rmichels.com</code>, nicht in lokalen Vorschau-Builds.
+  </p>
+  <p>
+    <strong>Rechtsgrundlagen:</strong> Kanada (PIPEDA) — angemessene Zwecke mit Transparenz; EWR/UK (DSGVO)
+    — berechtigtes Interesse am Betrieb der Website (Art. 6 Abs. 1 lit. f), abgewogen mit Ihren Rechten.
+    Widerspruch jederzeit über die Opt-out-Option unten.
+  </p>
+
+  <h3>Bewerbungslinks</h3>
+  <p>
+    Links für Arbeitgeber können <code>?portfolio_link=</code> mit einer kurzen Referenz enthalten. Wenn
+    Analytics aktiv ist, wird ein Ereignis erfasst, dass ein Bewerbungslink geöffnet wurde — ohne
+    Zusammenführung mit anderen personenbezogenen Daten.
+  </p>
+
+  <h3 id="external-media">Externe Medien (Einbettungen)</h3>
+  <p>
+    Fallstudien können Inhalte Dritter anbieten. Bis Sie <strong>Inhalt laden</strong> klicken, werden keine
+    Anfragen an diese Anbieter gesendet. Mit <strong>immer laden</strong> speichern Sie die Wahl im Browser
+    (siehe Tabelle), bis Sie sie auf dieser Seite entfernen.
+  </p>
+  <ul>
+    {
+      EXTERNAL_MEDIA_PROVIDERS.map((p) => (
+        <li>
+          <strong>{p.displayName}</strong> —{' '}
+          <a href={p.privacyUrl} rel="noopener noreferrer">Datenschutzhinweise</a>
+        </li>
+      ))
+    }
+  </ul>
+  <p>
+    <strong>Rechtsgrundlagen:</strong> Einwilligung beim Laden oder Merken (DSGVO Art. 6 Abs. 1 lit. a;
+    TDDDG §25 Abs. 1). US-Anbieter können auf Angemessenheitsbeschlüsse oder Standardvertragsklauseln
+    zurückgreifen.
+  </p>
+
+  <h3>Code-Snippets</h3>
+  <p>
+    GitHub-Gist-Inhalte werden beim Build eingebunden und von rmichels.com ausgeliefert. GitHub wird nur
+    aufgerufen, wenn Sie dem Link „View gist on GitHub“ folgen.
+  </p>
+
+  <h3>Schriften und Assets</h3>
+  <p>Schriften und Assets werden selbst gehostet; keine Google Fonts o. Ä.</p>
+
+  <h2>Speicher im Browser</h2>
+  <p>Die Website setzt keine HTTP-Cookies. Browser-Speicher nur wie folgt:</p>
+  <table class="privacy__table">
+    <thead>
+      <tr>
+        <th>Schlüssel</th>
+        <th>Zweck</th>
+        <th>Dauer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>rmExternalMedia</code></td>
+        <td>Merkt, welche Einbettungs-Anbieter immer geladen werden sollen</td>
+        <td>Bis Sie Einträge unter Ihre Wahlmöglichkeiten entfernen</td>
+      </tr>
+      <tr>
+        <td><code>rmVisitorFilter</code> (Session)</td>
+        <td>Projektfilter auf Start- und Projektseiten in diesem Tab</td>
+        <td>Bis Sie den Tab schließen</td>
+      </tr>
+      <tr>
+        <td><code>lenisSmoothScrolling</code></td>
+        <td>Einstellung für sanftes Scrollen</td>
+        <td>Bis Sie Website-Daten löschen</td>
+      </tr>
+      <tr>
+        <td><code>rmAnalyticsOptOut</code></td>
+        <td>Deaktivierung von Analytics</td>
+        <td>Bis Sie Daten löschen oder wieder aktivieren</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>E-Mail</h2>
+  <p>
+    Bei E-Mail-Kontakt verarbeite ich Ihre Nachricht zur Beantwortung und angemessenen Dokumentation.
+    <strong>Rechtsgrundlagen:</strong> Art. 6 Abs. 1 lit. b und f DSGVO; Kanada — PIPEDA-konforme Zwecke.
+  </p>
+
+  <h2>Auftragsverarbeiter</h2>
+  <ul>
+    <li>
+      <strong>Hostinger</strong> — Hosting (<a
+        href="https://www.hostinger.com/legal/privacy-policy"
+        rel="noopener noreferrer">Datenschutz</a
+      >)
+    </li>
+    <li>
+      <strong>Umami Software</strong> — Analytics, EU (<a href="https://umami.is/privacy" rel="noopener noreferrer"
+        >Datenschutz</a
+      >)
+    </li>
+    <li>
+      <strong>Einbettungs-Anbieter</strong> — nur nach Ihrem Laden (siehe oben)
+    </li>
+  </ul>
+
+  <h2>Drittlandübermittlung</h2>
+  <p>
+    Kanada hat einen Angemessenheitsbeschluss der EU. Hostinger, Umami (EU) und US-Einbettungen können
+    Daten außerhalb Ihres Landes verarbeiten — mit geeigneten Garantien, soweit erforderlich.
+  </p>
+
+  <h2>Speicherdauer</h2>
+  <ul>
+    <li>Server-Logs: gemäß Hostinger-Einstellung.</li>
+    <li>Umami: gemäß Projekt-Einstellung (aggregiert).</li>
+    <li>Browser-Speicher: siehe Tabelle.</li>
+    <li>E-Mail: solange für die Kommunikation und angemessene Aufbewahrung nötig.</li>
+  </ul>
+
+  <h2>Ihre Rechte</h2>
+  <h3>Kanada</h3>
+  <p>
+    Auskunft und Berichtigung bei mir; Beschwerde beim OPC (<a href="https://www.priv.gc.ca">priv.gc.ca</a>)
+    und der BC OIPC (<a href="https://www.oipc.bc.ca">oipc.bc.ca</a>).
+  </p>
+  <h3>EWR / UK / Schweiz</h3>
+  <p>
+    Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch (auch gegen Analytics, Art. 21),
+    Datenübertragbarkeit; Widerruf der Einwilligung für Einbettungen; Beschwerde bei einer Aufsichtsbehörde
+    (<a
+      href="https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm"
+      rel="noopener noreferrer">EU-Liste</a
+    >).
+  </p>
+  <p>Keine automatisierte Entscheidungsfindung oder Profiling.</p>
+
+  <h2>Kinder</h2>
+  <p>Die Website richtet sich nicht an Personen unter 18 Jahren.</p>
+
+  <h2>Sicherheit</h2>
+  <p>Angemessene Maßnahmen für eine statische persönliche Website.</p>
+
+  <h2>Änderungen</h2>
+  <p>Änderungen werden durch das Datum „Stand“ oben kenntlich gemacht.</p>
+
+  <h2 id="choices">Ihre Wahlmöglichkeiten</h2>
+  <div id="privacy-choices-mount" class="privacy-choices" data-privacy-choices></div>
+
+  <h2>Kontakt</h2>
+  <p>
+    E-Mail: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ({CONTROLLER_NAME}, {CONTROLLER_LOCATION}).
+  </p>
+</section>
+
+<script>
+  import '../../islands/PrivacyChoices.ts';
+</script>

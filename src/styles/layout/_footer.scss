@@ -53,7 +53,8 @@ footer {
 		align-items: center;
 		align-content: space-between;
 
-		div {
+		div,
+		.footerLegal {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: nowrap;
@@ -62,6 +63,10 @@ footer {
 			align-content: space-between;
 
 			gap: 1rem;
+		}
+
+		.footerLegal__sep {
+			color: rgba(_colour(white), 0.45);
 		}
 	}
 

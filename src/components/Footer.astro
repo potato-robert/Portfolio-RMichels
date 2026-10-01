@@ -11,6 +11,7 @@ const { locale, pageType = 'default' } = Astro.props;
 const showContact = pageType !== 'about';
 
 const privacyHref = locale === 'de' ? '/de/privacyPolicy' : '/privacyPolicy';
+const legalNoticeHref = locale === 'de' ? '/de/legalNotice' : '/legalNotice';
 const portfolioHref = locale === 'de' ? '/de/portfolio' : '/portfolio';
 const year = new Date().getFullYear();
 ---
@@ -33,21 +34,23 @@ const year = new Date().getFullYear();
     </div>
   )}
   {showContact && <noscript><small>hi@rmichels.com</small></noscript>}
-  <div class="footerEnd">
-    <small>
-      {t('portfolio_developed', locale)}
-      <a href={portfolioHref}>{t('developed', locale)}</a>
-      {t('with_astro', locale)}
-    </small>
-    <small>{t('copyright', locale)} &copy; {year} {t('rights_reserved', locale)}</small>
-    <label class="toggle-label">
-      <input type="checkbox" id="lenisScrollToggle" checked />
-      <small>{t('enable_smooth_scrolling', locale)}</small>
-    </label>
-    <div>
-      <a href={privacyHref}><small>{t('privacy_policy', locale)}</small></a>
+    <div class="footerEnd">
+      <small>
+        {t('portfolio_developed', locale)}
+        <a href={portfolioHref}>{t('developed', locale)}</a>
+        {t('with_astro', locale)}
+      </small>
+      <small>{t('copyright', locale)} &copy; {year} {t('rights_reserved', locale)}</small>
+      <label class="toggle-label">
+        <input type="checkbox" id="lenisScrollToggle" checked />
+        <small>{t('enable_smooth_scrolling', locale)}</small>
+      </label>
+      <div class="footerLegal">
+        <a href={privacyHref}><small>{t('privacy_policy', locale)}</small></a>
+        <span class="footerLegal__sep" aria-hidden="true">·</span>
+        <a href={legalNoticeHref}><small>{t('legal_notice', locale)}</small></a>
+      </div>
     </div>
-  </div>
 </footer>
 <div class="footerBuffer"></div>
 

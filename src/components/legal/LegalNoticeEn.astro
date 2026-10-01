@@ -1,0 +1,32 @@
+---
+import { CONTACT_EMAIL, CONTROLLER_LOCATION, CONTROLLER_NAME } from '../../lib/legal';
+---
+
+<section class="sectionText legal" lang="en">
+  <h1>Legal Notice</h1>
+
+  <h2>Publisher</h2>
+  <p>
+    {CONTROLLER_NAME}<br />
+    {CONTROLLER_LOCATION}<br />
+    Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </p>
+
+  <h2>Nature of this website</h2>
+  <p>
+    This is a personal portfolio website for professional networking and job applications. I do not sell
+    goods or services through rmichels.com. The site is operated from Canada. Mobile apps and games linked
+    from the footer are distributed through their respective stores with separate developer contact details.
+  </p>
+
+  <h2>Liability for links</h2>
+  <p>
+    This site contains links to external websites. I have no influence over their content and assume no
+    liability for external content. The respective provider is responsible for linked pages.
+  </p>
+
+  <h2>Privacy</h2>
+  <p>
+    Information about data processing is in the <a href="/privacyPolicy">Privacy Policy</a>.
+  </p>
+</section>
