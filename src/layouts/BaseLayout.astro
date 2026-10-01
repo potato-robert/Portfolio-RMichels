@@ -99,6 +99,7 @@ const showHomeIcon = pageType === 'project' || pageType === 'about';
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body data-page-type={pageType}>
+    <a class="skip-link" href="#Content">Skip to content</a>
     <script>
       import { getDevicePerformanceTier } from '../lib/device-capability';
       document.body.dataset.perfTier = getDevicePerformanceTier();
@@ -110,9 +111,16 @@ const showHomeIcon = pageType === 'project' || pageType === 'about';
           <script>
             import '../islands/Menu.ts';
           </script>
-          <script>
-            import '../islands/LenisSetup.ts';
-          </script>
+          {
+            (pageType === 'home' ||
+              pageType === 'about' ||
+              pageType === 'projects' ||
+              pageType === 'project') && (
+              <script>
+                import '../islands/LenisSetup.ts';
+              </script>
+            )
+          }
           <slot />
         </main>
         <Footer locale={locale} pageType={pageType} />
@@ -122,7 +130,7 @@ const showHomeIcon = pageType === 'project' || pageType === 'about';
       import '../islands/DownArrow.ts';
     </script>
     <script>
-      import '../islands/PageBoot.ts';
+      import '../islands/PageBootCore.ts';
     </script>
   </body>
 </html>

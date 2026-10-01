@@ -1,4 +1,19 @@
 //_____________________________________________ Core Styling
+.skip-link {
+	position: absolute;
+	left: -9999px;
+	z-index: 10000;
+	padding: 0.5rem 1rem;
+	background: _colour(bg);
+	color: _colour(white);
+	text-decoration: none;
+
+	&:focus {
+		left: 0.5rem;
+		top: 0.5rem;
+	}
+}
+
 html, body {
     max-width: 100%;
     overflow-x: hidden;
