@@ -28,7 +28,7 @@ npm run test:verify    # Post-build dist/ route checks (run after build)
 npm run test:e2e       # Playwright (after build)
 ```
 
-- Content export (dev helper): `npm run export:content` — **deprecated**; syncs DE bodies from EN markdown with optional PO translations (see `scripts/README.md`)
+- Content export (dev helper): `npm run deprecated:export-content` — **deprecated**; syncs DE bodies from EN markdown with optional PO translations (see `scripts/README.md`)
 - Commit `package-lock.json`; `node_modules/` is gitignored
 
 ## Directory Map
@@ -92,9 +92,22 @@ UI strings: `t('key', locale)` from `src/lib/i18n.ts`. Language toggle links to 
 
 ## URL Preservation
 
-- Case study slugs use camelCase via `slug:` frontmatter (e.g. `futureEarth`)
-- Homepage filter: `/?filter=vr` sets `visitorFilter` cookie
-- `tourguide` is published at `/tourguide` (beta on Google Play and web; `inDevelopment: false`)
+- Case study slugs use camelCase via `slug:` frontmatter (e.g. `futureEarth`); runtime slug comes from markdown filename via `getProjectSlug()` (see `docs/NEW_PROJECT_PAGE.md`).
+- `tourguide` is published at `/tourguide` (beta on Google Play and web; `inDevelopment: false`). Product landing and legal pages live on `https://tourguide.rmichels.com/` (manual subdomain deploy).
+
+## Homepage and projects filters
+
+Intended behavior (Phase 3 implements code changes where noted):
+
+| Topic | Behavior |
+|-------|----------|
+| Cookie | `visitorFilter` stores the last `?filter=` value (comma-separated role slugs). It should **persist** when visiting `/` or `/projects` **without** a query string — not cleared on bare paths. |
+| OR semantics | Comma-separated filters match projects whose `roles` include **any** listed slug (OR), on **both** home and `/projects`. Server-side helpers in `src/lib/projects.ts` already use OR. |
+| Home | `HomeFilter.ts`: `?filter=vr` sets cookie and hides non-matching tiles; optional cookie read when no query (Phase 3). |
+| Projects | `ProjectFilter.ts`: URL preselect and multi-select should align to OR (Phase 3 — today multi-select may differ). |
+| Links | Filter-aware nav links append `?filter=` from cookie when present. |
+
+Quick check: `/?filter=vr,front-end` shows tiles with role `vr` **or** `front-end`.
 
 ## Testing
 

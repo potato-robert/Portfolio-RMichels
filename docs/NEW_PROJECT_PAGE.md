@@ -36,9 +36,30 @@ order: 1
 Body markdown converted from case study sections.
 ```
 
-**Important:** `slug` in frontmatter sets the URL (`/yourSlug`). Do not add `slug` to the Zod schema in `config.ts` — Astro treats it as a reserved routing field.
+**Slug and URL (three-way coupling):**
+
+| Piece | Rule |
+|-------|------|
+| Markdown filename | `src/content/projects/{slug}.md` — basename (without `.md`) is the canonical slug |
+| Frontmatter | `slug: yourSlug` must **match the filename** (`npm run test:content` fails on mismatch) |
+| Public URL | `/yourSlug` and `/de/yourSlug` — Astro generates routes from the **collection entry id** (filename), not from a field in [`config.ts`](src/content/config.ts) |
+| Runtime code | [`getProjectSlug()`](src/lib/projects.ts) returns `project.id` with `.md` stripped — same value as the filename slug |
+| Hero / gallery assets | `public/assets/img/{slug}.jpg` and `public/assets/img/{slug}/lqip/*` use the same string |
+
+`slug` is **not** in the Zod schema in `config.ts` (Astro content layer); it is still required in frontmatter and validated by `scripts/validate-content.mjs` / `scripts/content-schema.mjs`.
 
 Frontmatter must match between EN and DE files for the same slug (validated by `npm run test:content`). Only the markdown body differs by locale.
+
+### Schema parity checklist
+
+When you add or change project frontmatter fields in [`src/content/config.ts`](src/content/config.ts), also update:
+
+- [`scripts/content-schema.mjs`](scripts/content-schema.mjs) — Zod mirror used by `validate-content.mjs`
+- `PARITY_FIELDS` in the same file — list fields that must match EN/DE for each slug
+
+Then run `npm run test:content`.
+
+**Internal case-study links:** In DE bodies, link to other projects with `/de/{slug}` (e.g. `/de/clirioCloud`). EN bodies use `/{slug}`.
 
 ## Body layout (HTML in markdown)
 
@@ -162,10 +183,10 @@ npm run dev
 
 Push to `main` → CI builds `dist/` → FTPS deploy. No database or new PHP file required.
 
-## Slug coupling (unchanged concept)
+## Slug coupling
 
 ```
-src/content/projects/yourSlug.md  ↔  slug frontmatter  ↔  public/assets/img/yourSlug.jpg
+src/content/projects/yourSlug.md  ↔  slug: frontmatter  ↔  public/assets/img/yourSlug.jpg  ↔  /yourSlug URL
 ```
 
-All three must use the same slug string.
+All four must use the same slug string. DE uses the same slug in `src/content/projects-de/yourSlug.md` (path prefix `/de/` only).
