@@ -23,7 +23,7 @@
     "@astrojs/sitemap": "^3.3.1",
     "@fontsource/dm-sans": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.3.0",
-    "astro": "^5.7.10",
+    "astro": "^7.3.5",
     "lenis": "^1.1.14",
     "photoswipe": "^5.4.4",
     "three": "^0.175.0",
