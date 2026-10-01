@@ -9,6 +9,7 @@ Options -MultiViews
   AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
   AddOutputFilterByType DEFLATE application/javascript application/json
   AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE font/woff2
 </IfModule>
 
 # =============================================================================
@@ -72,6 +73,11 @@ FileETag MTime Size
 # Cache: mod_headers — explicit Cache-Control (complements mod_expires)
 # =============================================================================
 <IfModule mod_headers.c>
+  # Security headers (safe defaults for static portfolio)
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+
   # Static HTML pages — revalidate so deploys are visible immediately
   <FilesMatch "\.(html|htm)$">
     Header set Cache-Control "no-cache, must-revalidate"
