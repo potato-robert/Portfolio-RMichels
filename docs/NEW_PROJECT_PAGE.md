@@ -111,15 +111,17 @@ Gallery paths: `/assets/img/{slug}/lqip/*` (LQIP island swaps to full-res on loa
 
 ### Video and iframe embeds
 
-Wrap YouTube, Figma, and similar embeds in the responsive wrapper:
+Wrap YouTube, Figma, Sketchfab, and Clirio View embeds in the responsive wrapper. At build time, `transformExternalEmbeds()` replaces each `<iframe src="https://…">` with a click-to-load placeholder (privacy / TDDDG). Only hosts registered in [`src/lib/external-embeds.ts`](src/lib/external-embeds.ts) are allowed — unknown hosts fail the build.
 
 ```html
 <div class="auto-resizable-iframe">
   <div>
-    <iframe src="..." allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
   </div>
 </div>
 ```
+
+To add a new provider (e.g. another CDN), extend the registry in `external-embeds.ts`, add a row to the privacy policy provider list in `src/lib/legal.ts`, and run `npm run build`.
 
 For side-by-side embeds, place each `auto-resizable-iframe` inside a `mediaRow mediaRow-equalWidth`.
 
