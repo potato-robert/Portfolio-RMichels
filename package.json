@@ -7,7 +7,7 @@
     "build": "astro build",
     "check": "astro check",
     "preview": "astro preview",
-    "export:content": "node scripts/export-db-to-content.mjs",
+    "deprecated:export-content": "node scripts/export-db-to-content.mjs",
     "test": "vitest run",
     "test:unit": "vitest run",
     "test:watch": "vitest",
@@ -32,7 +32,9 @@
   "devDependencies": {
     "@playwright/test": "^1.50.0",
     "happy-dom": "^20.11.1",
+    "js-yaml": "^5.4.2",
     "sass": "^1.77.0",
-    "vitest": "^3.0.0"
+    "vitest": "^3.0.0",
+    "zod": "^4.6.5"
   }
 }

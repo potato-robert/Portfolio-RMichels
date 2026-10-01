@@ -17,7 +17,7 @@ The Astro migration is complete. **Markdown collections are the source of truth:
 This script no longer embeds project metadata. It only regenerates DE markdown bodies from existing EN files, applying gettext PO translations when `scripts/archive/messages.po` is present.
 
 ```bash
-npm run export:content   # optional; prefer editing markdown directly
+npm run deprecated:export-content   # optional; prefer editing markdown directly
 ```
 
 Do not use this to add or change project metadata — edit the markdown files instead.
