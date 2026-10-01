@@ -27,7 +27,7 @@ test.describe('projects page filter', () => {
     await expect(projectCount).toHaveText(String(vrOnlyCount));
   });
 
-  test('?filter=vr,front-end applies OR in one pass', async ({ page }) => {
+  test('?filter=vr,front-end applies OR in one pass', async ({ page, context }) => {
     await page.goto('/projects?filter=vr,front-end');
 
     await expect(page.locator('.filterBtn[data-js="vr"]')).toHaveClass(/filterBtn--selected/);
@@ -37,8 +37,7 @@ test.describe('projects page filter', () => {
     const orFromUrl = Number(await projectCount.textContent());
     expect(orFromUrl).toBeGreaterThan(1);
 
-    const cookies = await page.context().cookies();
-    const raw = cookies.find((c) => c.name === 'visitorFilter')?.value ?? '';
-    expect(decodeURIComponent(raw)).toBe('vr,front-end');
+    const stored = await page.evaluate(() => sessionStorage.getItem('rmVisitorFilter'));
+    expect(stored).toBe('vr,front-end');
   });
 });

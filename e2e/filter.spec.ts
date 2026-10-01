@@ -1,14 +1,10 @@
 import { test, expect } from './fixtures';
 
-test.describe('homepage filter cookie', () => {
-  test('?filter=vr sets visitorFilter cookie and home link preserves it', async ({ page, context }) => {
+test.describe('homepage filter session', () => {
+  test('?filter=vr sets session filter and home link preserves it', async ({ page }) => {
     await page.goto('/?filter=vr');
 
-    await page.waitForFunction(() => document.cookie.includes('visitorFilter=vr'));
-
-    const cookies = await context.cookies();
-    const visitorFilter = cookies.find((c) => c.name === 'visitorFilter');
-    expect(visitorFilter?.value).toBe('vr');
+    await page.waitForFunction(() => sessionStorage.getItem('rmVisitorFilter') === 'vr');
 
     await expect(page.locator('#MyWork .projRow:not(.projRow--hidden)')).toHaveCount(3);
 
@@ -18,14 +14,14 @@ test.describe('homepage filter cookie', () => {
     await expect(homeLink).toHaveAttribute('href', /\?filter=vr$/);
   });
 
-  test('visitorFilter persists on bare / and filters rows from cookie', async ({ page, context }) => {
+  test('session filter persists on bare / and filters rows', async ({ page }) => {
     await page.goto('/?filter=vr');
-    await page.waitForFunction(() => document.cookie.includes('visitorFilter=vr'));
+    await page.waitForFunction(() => sessionStorage.getItem('rmVisitorFilter') === 'vr');
 
     await page.goto('/');
 
-    const cookies = await context.cookies();
-    expect(cookies.find((c) => c.name === 'visitorFilter')?.value).toBe('vr');
+    const stored = await page.evaluate(() => sessionStorage.getItem('rmVisitorFilter'));
+    expect(stored).toBe('vr');
 
     await expect(page.locator('#MyWork .projRow:not(.projRow--hidden)')).toHaveCount(3);
 

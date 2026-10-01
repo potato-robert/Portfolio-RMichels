@@ -126,10 +126,12 @@ const requiredPaths = [
   'projects/index.html',
   'about/index.html',
   'privacyPolicy/index.html',
+  'legalNotice/index.html',
   'futureEarth/index.html',
   'de/index.html',
   'de/projects/index.html',
   'de/privacyPolicy/index.html',
+  'de/legalNotice/index.html',
   'de/futureEarth/index.html',
 ];
 
@@ -169,6 +171,49 @@ for (const slug of inDevelopmentSlugs) {
   forbidPath(`${slug}/index.html`);
   forbidPath(`de/${slug}/index.html`);
   checkProjectHtmlRendering(slug);
+}
+
+const ALLOWED_THIRD_PARTY_SCRIPT_HOSTS = new Set(['cloud.umami.is']);
+
+function collectHtmlFiles(dir, base = '') {
+  /** @type {string[]} */
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const rel = base ? `${base}/${entry.name}` : entry.name;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...collectHtmlFiles(full, rel));
+    } else if (entry.name.endsWith('.html')) {
+      files.push(rel);
+    }
+  }
+  return files;
+}
+
+function checkNoRawThirdPartyEmbeds(relPath) {
+  const full = path.join(dist, ...relPath.split('/'));
+  const html = fs.readFileSync(full, 'utf8');
+
+  const iframeSrcRe = /<iframe[^>]+src\s*=\s*["'](https?:\/\/[^"']+)["']/gi;
+  for (const match of html.matchAll(iframeSrcRe)) {
+    errors.push(`${relPath}: raw third-party iframe src ${match[1]}`);
+  }
+
+  const scriptSrcRe = /<script[^>]+src\s*=\s*["'](https?:\/\/[^"']+)["']/gi;
+  for (const match of html.matchAll(scriptSrcRe)) {
+    try {
+      const host = new URL(match[1]).hostname;
+      if (!ALLOWED_THIRD_PARTY_SCRIPT_HOSTS.has(host)) {
+        errors.push(`${relPath}: unexpected third-party script src ${match[1]}`);
+      }
+    } catch {
+      errors.push(`${relPath}: invalid script src ${match[1]}`);
+    }
+  }
+}
+
+for (const relPath of collectHtmlFiles(dist)) {
+  checkNoRawThirdPartyEmbeds(relPath);
 }
 
 if (errors.length > 0) {

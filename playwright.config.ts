@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 const blockedHosts = [
   'googletagmanager.com',
+  'cloud.umami.is',
   'unpkg.com',
 ];
 
