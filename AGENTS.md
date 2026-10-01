@@ -97,17 +97,21 @@ UI strings: `t('key', locale)` from `src/lib/i18n.ts`. Language toggle links to 
 
 ## Homepage and projects filters
 
-Intended behavior (Phase 3 implements code changes where noted):
-
 | Topic | Behavior |
 |-------|----------|
-| Cookie | `visitorFilter` stores the last `?filter=` value (comma-separated role slugs). It should **persist** when visiting `/` or `/projects` **without** a query string — not cleared on bare paths. |
+| Session filter | `sessionStorage` key `rmVisitorFilter` stores the last `?filter=` value (comma-separated role slugs) for the browser tab. It persists when visiting `/` or `/projects` **without** a query string until the tab is closed. |
 | OR semantics | Comma-separated filters match projects whose `roles` include **any** listed slug (OR), on **both** home and `/projects`. Server-side helpers in `src/lib/projects.ts` already use OR. |
-| Home | `HomeFilter.ts`: `?filter=vr` sets cookie and hides non-matching tiles; optional cookie read when no query (Phase 3). |
-| Projects | `ProjectFilter.ts`: URL preselect and multi-select should align to OR (Phase 3 — today multi-select may differ). |
-| Links | Filter-aware nav links append `?filter=` from cookie when present. |
+| Home | `HomeFilter.ts`: `?filter=vr` writes session storage and hides non-matching tiles; reads session when no query. |
+| Projects | `ProjectFilter.ts`: URL preselect and multi-select use OR semantics. |
+| Links | Filter-aware nav links append `?filter=` from session storage when present. |
 
 Quick check: `/?filter=vr,front-end` shows tiles with role `vr` **or** `front-end`.
+
+## Privacy
+
+- The Site sets **no HTTP cookies**. Analytics uses cookieless Umami (EU) on production only; visitors can opt out on the privacy policy page.
+- Third-party iframes (YouTube, Sketchfab, Figma, Clirio Azure) are converted at build time to click-to-load placeholders via `src/lib/external-embeds.ts`. Unregistered iframe hosts **fail the build**.
+- Gists are inlined at build time (`remark-gist-embed`); no GitHub requests on page view.
 
 ## Testing
 
@@ -139,6 +143,18 @@ npm run test:content && npm run build && npm run test:verify
 - **Merge to `main`:** deploy workflow runs `check`, `test:unit`, `test:content`, build, `test:verify`, then FTPS upload of `./dist/`
 - Deploy uses `state-name: .ftp-deploy-sync-state-dist.json` and `dangerous-clean-slate: false` so the legacy full-repo FTP state cannot delete `/subdomains/*`; remove stale PHP files on the server root manually once after cutover
 - `subdomains/` are deployed manually via FTPS (not in CI)
+
+## Trello (Portfolio SCRUM)
+
+Work is tracked on the **Portfolio SCRUM** board via MCP (`project-0-htdocs-trello`). Credentials: `TRELLO_API_KEY`, `TRELLO_TOKEN`, `TRELLO_BOARD_ID` in Cursor MCP env (not in git).
+
+| Rule | Detail |
+|------|--------|
+| Card refs | `#127` = Trello `idShort`; use `#127: Card title` + bullet sub-tasks in **Agent Notes** |
+| Commits | Footer `Refs: Trello #127`; after each commit, **comment** on each linked card with full SHA + subject |
+| Descriptions | Agents edit **only** under `## Agent Notes`; never change text above that heading |
+
+Skills: `.cursor/skills/trello-workflow/SKILL.md`, `.cursor/skills/commit-messages/SKILL.md`. Rule: `.cursor/rules/trello-workflow.mdc`.
 
 ## Never Edit or Commit
 
