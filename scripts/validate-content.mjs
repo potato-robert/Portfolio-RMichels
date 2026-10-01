@@ -317,8 +317,16 @@ function checkProjects() {
 /**
  * @param {Map<string, { slug: string, inDevelopment: boolean, draft: boolean }>} projectsBySlug
  */
-function checkInDevelopmentRouting(_projectsBySlug) {
-  // inDevelopment projects are excluded from [slug] via Astro getStaticPaths filters.
+function checkInDevelopmentRouting(projectsBySlug) {
+  for (const [slug, meta] of projectsBySlug) {
+    if (meta.draft && meta.inDevelopment) {
+      fail(
+        slug,
+        'inDevelopment',
+        'draft and inDevelopment are both set — no /slug or /development/{slug} route will be generated',
+      );
+    }
+  }
 }
 
 function checkUiKeyParity() {

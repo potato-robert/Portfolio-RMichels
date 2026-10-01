@@ -66,26 +66,34 @@ function parseFrontmatter(content) {
   return fm;
 }
 
-function getPublishedProjectSlugs() {
+function getProjectSlugsByRouting() {
+  /** @type {{ published: string[], inDevelopment: string[] }} */
+  const result = { published: [], inDevelopment: [] };
+
   if (!fs.existsSync(projectsDir)) {
     errors.push('src/content/projects/ (content source missing)');
-    return [];
+    return result;
   }
 
-  const slugs = [];
   for (const file of fs.readdirSync(projectsDir)) {
     if (!file.endsWith('.md')) continue;
 
     const content = fs.readFileSync(path.join(projectsDir, file), 'utf8');
     const fm = parseFrontmatter(content);
 
-    if (fm.inDevelopment || fm.draft) continue;
+    if (fm.draft) continue;
 
     const slug = fm.slug || file.replace(/\.md$/, '');
-    slugs.push(slug);
+    if (fm.inDevelopment) {
+      result.inDevelopment.push(slug);
+    } else {
+      result.published.push(slug);
+    }
   }
 
-  return slugs.sort();
+  result.published.sort();
+  result.inDevelopment.sort();
+  return result;
 }
 
 /**
@@ -117,8 +125,11 @@ const requiredPaths = [
   'index.html',
   'projects/index.html',
   'about/index.html',
+  'privacyPolicy/index.html',
   'futureEarth/index.html',
   'de/index.html',
+  'de/projects/index.html',
+  'de/privacyPolicy/index.html',
   'de/futureEarth/index.html',
 ];
 
@@ -143,10 +154,20 @@ for (const assetPath of lfsCheckedAssets) {
   assertNotLfsPointer(assetPath);
 }
 
-const publishedSlugs = getPublishedProjectSlugs();
+const { published: publishedSlugs, inDevelopment: inDevelopmentSlugs } =
+  getProjectSlugsByRouting();
+
 for (const slug of publishedSlugs) {
   requirePath(`${slug}/index.html`);
   requirePath(`de/${slug}/index.html`);
+  checkProjectHtmlRendering(slug);
+}
+
+for (const slug of inDevelopmentSlugs) {
+  requirePath(`development/${slug}/index.html`);
+  requirePath(`de/development/${slug}/index.html`);
+  forbidPath(`${slug}/index.html`);
+  forbidPath(`de/${slug}/index.html`);
   checkProjectHtmlRendering(slug);
 }
 
@@ -158,6 +179,11 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
+const devNote =
+  inDevelopmentSlugs.length > 0
+    ? `, ${inDevelopmentSlugs.length} in-development slug(s) EN+DE`
+    : '';
+
 console.log(
-  `verify-build: OK (${requiredPaths.length} core routes, ${publishedSlugs.length} published project slugs EN+DE, sitemap present)`,
+  `verify-build: OK (${requiredPaths.length} core routes, ${publishedSlugs.length} published project slugs EN+DE${devNote}, sitemap present)`,
 );
