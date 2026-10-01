@@ -167,25 +167,33 @@ git add -p src/pages/about.astro   # stage remaining hunks   → commit 2
 
 ## PR message (after commits)
 
-Always suggest this when finishing a commit session. Title goes in GitHub's title field; body is copy-paste markdown.
+Always suggest when finishing a commit session. Base the content on **`git log origin/main..origin/dev`** (after `git fetch`), not only the commits you just made. Title → GitHub title field; body → copy-paste markdown.
 
-**Title:** `WebGL refactor, content pipeline, and layout polish`
+**Title:** `Privacy: Termly out, Umami in, click-to-load embeds`
 
 ````markdown
 ## Summary
 
-- Render gist embeds as static Shiki code blocks at build time; fix project page HTML from markdown blank lines; add gallery alt text and refine team metadata
-- Extract shared WebGL modules with performance tiers; update architecture docs
-- Refactor content validation around a shared schema; run check/tests before deploy
-- Fix landing model overflow and responsive see-more button; reset project tile parallax on breakpoint change
+Ships a privacy-first stack for rmichels.com: no cookie banner, no GA4, first-party EN/DE legal copy, and explicit consent before third-party embeds load. Also bundles recent dev improvements (a11y, filters, CI/E2E, deploy headers) and merges tourguide subdomain legal updates.
+
+### Privacy & legal (#127)
+- Replace Termly HTML with Astro components: Privacy Policy (EN/DE), Legal Notice / Impressum, and a **Privacy choices** panel (analytics opt-out, forget remembered embeds).
+- **Cookieless Umami** on production only, respecting DNT/GPC/opt-out; legacy `_ga` / consent cookies cleared on boot.
+
+### Agent / docs (#128)
+- Trello-linked commit workflow; `AGENTS.md` documents privacy, filters, embeds, and verification loop.
+
+Refs: Trello #127, #128
 ````
 
 ### PR message anti-patterns
 
 | Avoid | Prefer |
 |-------|--------|
-| One bullet per commit (16 bullets for 16 commits) | Group by theme (3–7 bullets) |
-| `## Test plan` section | Summary only |
-| Repeating full commit hashes/subjects | Plain-language grouped summary |
-| Title: `fix: stuff` | Title: `WebGL refactor, content pipeline, and layout polish` |
-| Prose paragraph instead of bullets | `## Summary` with `-` bullets |
+| `git log main..HEAD` on a feature branch | `origin/main..origin/dev` for the default PR |
+| Only summarizing this session’s commits | Full `dev` vs `main` delta |
+| One bullet per commit (16 bullets for 16 commits) | Themed `###` sections with grouped `-` bullets |
+| `## Test plan` (unless user asked) | Summary only |
+| Flat list under `## Summary` with no opening paragraph | Prose paragraph, then `###` subsections |
+| Title: `fix: stuff` | Title: `Privacy: Termly out, Umami in, click-to-load embeds` |
+| Missing `Refs: Trello #…` | Footer listing cards from commits in the range |
