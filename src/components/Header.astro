@@ -69,9 +69,10 @@ const altLabel = locale === 'en' ? t('deutsch', locale) : t('english', locale);
 </header>
 
 <script>
+  import { readVisitorFilterSession } from '../lib/visitor-filter';
+
   function applyVisitorFilterToHomeLinks() {
-    const match = document.cookie.match(/(?:^|;\s*)visitorFilter=([^;]*)/);
-    const filter = match ? decodeURIComponent(match[1]) : '';
+    const filter = readVisitorFilterSession();
     document.querySelectorAll('[data-home-link]').forEach((el) => {
       const base = el.getAttribute('href') || '/';
       el.setAttribute('href', filter ? `${base}?filter=${filter}` : base);

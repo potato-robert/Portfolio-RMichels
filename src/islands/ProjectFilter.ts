@@ -71,12 +71,14 @@ function initProjectRows() {
   });
 }
 
+import { writeVisitorFilterSession } from '../lib/visitor-filter';
+
 function applyUrlFilter() {
   const params = new URLSearchParams(window.location.search);
   const filter = params.get('filter');
   if (!filter) return;
 
-  document.cookie = `visitorFilter=${encodeURIComponent(filter)}; path=/; max-age=31536000`;
+  writeVisitorFilterSession(filter);
   const filters = filter.split(',').filter(Boolean);
   activeFilters.length = 0;
   activeFilters.push(...filters);
