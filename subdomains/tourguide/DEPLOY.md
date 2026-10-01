@@ -1,6 +1,6 @@
 # Tourguide subdomain — deploy
 
-Manual FTPS deploy only (not part of Astro CI). See [AGENTS.md](../../AGENTS.md).
+Manual SFTP deploy only (not part of Astro CI). See [AGENTS.md](../../AGENTS.md) and [docs/DEPLOY.md](../../docs/DEPLOY.md).
 
 ## Canonical URLs
 
@@ -15,11 +15,11 @@ The case study on the main site links out to the subdomain for the app and legal
 ## Prerequisites
 
 1. DNS for `tourguide.rmichels.com` pointing at the Hostinger subdomain docroot
-2. Hostinger FTPS credentials (same as other subdomain deploys)
+2. Hostinger SFTP access (port 65002; same SSH/FTP user as main site — see `docs/DEPLOY.md`)
 
 ## Deploy steps
 
-1. Upload the entire `subdomains/tourguide/` directory to the server path `/subdomains/tourguide/` (or the Hostinger subdomain docroot for `tourguide.rmichels.com`)
+1. Upload the entire `subdomains/tourguide/` directory to `public_html/subdomains/tourguide/` on the server (or the Hostinger docroot for `tourguide.rmichels.com`)
 2. Confirm `index.html` is served as the directory index
 3. Verify assets and entry points load:
    - https://tourguide.rmichels.com/

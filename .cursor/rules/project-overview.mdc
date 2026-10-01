@@ -9,7 +9,7 @@ alwaysApply: true
 - Content: markdown collections in `src/content/projects/` and `src/content/projects-de/`.
 - Styles: Sass in `src/styles/` (Vite build).
 - Client JS: TypeScript islands in `src/islands/` (Three.js, filters, etc.).
-- Deploy: GitHub Actions builds `dist/` → FTPS to Hostinger.
+- Deploy: GitHub Actions builds `dist/` → SFTP to Hostinger (`docs/DEPLOY.md`).
 - Do not refactor application logic unless explicitly asked.
 
 ## Page pattern

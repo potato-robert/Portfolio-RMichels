@@ -21,7 +21,7 @@ flowchart LR
   Pages --> Astro
   Astro --> Dist[dist/]
   Dist --> GHA[GitHub Actions]
-  GHA --> FTPS[Hostinger FTPS]
+  GHA --> SFTP[Hostinger SFTP upload]
 ```
 
 ## Routing
@@ -87,12 +87,12 @@ Validation checks both `public/assets/` and `assets/`.
 ## Deploy
 
 - **PR → `main`:** `npm ci` → sync assets → check → test → build → verify → Playwright E2E
-- **Merge to `main`:** check → test:unit → test:content → build → verify → `dist/` via FTPS (`dangerous-clean-slate: false`, dist-specific state file; does not touch `/subdomains/*`)
+- **Merge to `main`:** check → test:unit → test:content → build → verify → `dist/` via SFTP (port 65002; see `docs/DEPLOY.md`)
 - `public/.htaccess` → copied to `dist/` for Apache directory index and trailing slashes
 
 ## Subdomains
 
-`subdomains/tourguide/` and others are deployed manually via FTPS; not part of Astro `dist/` or CI.
+`subdomains/tourguide/` and others are deployed manually via SFTP; not part of Astro `dist/` or CI.
 
 ## Legacy
 

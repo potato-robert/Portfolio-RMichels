@@ -12,7 +12,7 @@ Personal portfolio site for [rmichels.com](https://rmichels.com). **Astro** stat
 | Client JS | TypeScript islands in `src/islands/` |
 | 3D | Three.js (per-page islands) |
 | i18n | Locale-prefixed routes + `src/i18n/ui-*.json` |
-| Deploy | GitHub Actions → FTPS (`dist/`) to Hostinger |
+| Deploy | GitHub Actions → SFTP upload (`dist/`) to Hostinger — see `docs/DEPLOY.md` |
 | Local dev | `npm run dev` (port 4321) |
 
 ## Dev Tooling
@@ -140,9 +140,9 @@ npm run test:content && npm run build && npm run test:verify
 ## Deploy
 
 - **PR → `main`:** CI runs full validation — `npm ci`, sync assets, `npm run check`, `npm run test:unit`, `npm run test:content`, `npm run build`, `npm run test:verify`, Playwright E2E
-- **Merge to `main`:** deploy workflow runs `check`, `test:unit`, `test:content`, build, `test:verify`, then FTPS upload of `./dist/`
-- Deploy uses `state-name: .ftp-deploy-sync-state-dist.json` and `dangerous-clean-slate: false` so the legacy full-repo FTP state cannot delete `/subdomains/*`; remove stale PHP files on the server root manually once after cutover
-- `subdomains/` are deployed manually via FTPS (not in CI)
+- **Merge to `main`:** deploy workflow runs `check`, `test:unit`, `test:content`, build, `test:verify`, then SFTP upload of `./dist/` (port 65002, `wlixcc/SFTP-Deploy-Action`)
+- Deploy uploads to `/home/$HOSTINGER_SFTP_USERNAME/public_html` only; `public_html/subdomains/` is excluded and never bulk-deleted
+- `subdomains/` are deployed manually via SFTP (not in CI); see `docs/DEPLOY.md`
 
 ## Trello (Portfolio SCRUM)
 
@@ -163,4 +163,5 @@ Same as before: `nopublicaccess/`, `database/`, `.cursor/mcp.json`, `_RawAssets/
 ## Further Reading
 
 - `docs/ARCHITECTURE.md` — Astro request/build flow
+- `docs/DEPLOY.md` — Hostinger SFTP secrets and hPanel SSH key setup
 - `docs/NEW_PROJECT_PAGE.md` — add a project via markdown

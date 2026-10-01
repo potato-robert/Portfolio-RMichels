@@ -183,7 +183,7 @@ npm run dev
 
 ## 7. Deploy
 
-Push to `main` → CI builds `dist/` → FTPS deploy. No database or new PHP file required.
+Push to `main` → CI builds `dist/` → SFTP deploy. No database or new PHP file required.
 
 ## Slug coupling
 
