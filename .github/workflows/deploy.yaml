@@ -57,7 +57,7 @@ jobs:
       - name: Deploy dist/ to Hostinger via FTPS
         # Note: stale PHP files on the server root must be removed manually once after cutover.
         # Use a dist-specific state file so the legacy full-repo state does not delete /subdomains/*.
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.HOSTINGER_FTPS_SERVER }}
           username: ${{ secrets.HOSTINGER_FTPS_USERNAME }}
