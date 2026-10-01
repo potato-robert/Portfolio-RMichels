@@ -15,19 +15,31 @@ docs: document agent verification loop in AGENTS.md
 chore: remove legacy PHP entrypoints after Astro cutover
 ```
 
-## Subject + body
+## Subject + body (bullets) + Trello footer
+
+```
+chore(cursor): add Trello workflow for agent commits
+
+- Add trello-workflow skill and rule: link commits via Refs footers, post SHA comments on cards, and restrict description edits to Agent Notes.
+- Extend commit-messages skill with required Trello steps.
+
+Refs: Trello #128
+```
 
 ```
 fix(islands): restore footer particle waves after Lenis refactor
 
-Lenis scroll events no longer updated the camera position used by
-the particle shader. Re-bind the scroll listener on init.
+- Re-bind the scroll listener on init so Lenis updates the camera position used by the particle shader.
+
+Refs: Trello #42
 ```
 
 ```
 feat(i18n): sync German about page with updated English copy
 
-Aligns skills list and experience dates with the EN source.
+- Align skills list and experience dates with the EN source.
+
+Refs: Trello #55
 ```
 
 ## Breaking change
@@ -43,8 +55,12 @@ Or footer (preferred when explanation is long):
 ```
 refactor(build): switch output from PHP to static dist
 
+- Remove server-side PHP routes; production serves only the Astro dist/ build.
+
 BREAKING CHANGE: all server-side PHP routes are removed.
 Production now serves only the Astro dist/ build.
+
+Refs: Trello #10
 ```
 
 ## Multi-commit split scenarios

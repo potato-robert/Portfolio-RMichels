@@ -1,0 +1,22 @@
+---
+description: Tie agent work and commits to Portfolio SCRUM Trello cards
+alwaysApply: true
+---
+
+# Trello workflow
+
+All agent work on this repo should map to one or more cards on the **Portfolio SCRUM** Trello board (MCP: `project-0-htdocs-trello`).
+
+## Commits
+
+- **Every commit** must list linked cards in the footer: `Refs: Trello #127` (comma-separated if multiple).
+- **After each successful commit**, add a Trello **comment** on every linked card with the full git SHA and commit subject (see `.cursor/skills/trello-workflow/SKILL.md`).
+- If card numbers are unknown, **ask the user before committing** — do not commit without Trello refs.
+
+## Card descriptions
+
+- Agents may edit **only** the section under the **`## Agent Notes`** heading.
+- **Never** change, delete, or reorder description content **above** `## Agent Notes`.
+- Session plans and bullets use `#<idShort>: <card title>` plus `-` sub-bullets inside Agent Notes.
+
+Full procedures: `.cursor/skills/trello-workflow/SKILL.md`. Commit steps also require `.cursor/skills/commit-messages/SKILL.md`.
