@@ -1,179 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="css/legal.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — Tourguide</title>
+  <meta name="description" content="Privacy Policy for the Tourguide mobile and web applications operated by Robert Michels.">
+  <link rel="stylesheet" href="css/legal.css">
 </head>
-<h1>Privacy Policy</h1>
-<p>Last updated: July 03, 2024</p>
-<p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
-<p>We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">Privacy Policy Generator</a>.</p>
-<h2>Interpretation and Definitions</h2>
-<h3>Interpretation</h3>
-<p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
-<h3>Definitions</h3>
-<p>For the purposes of this Privacy Policy:</p>
+<body>
+
+<h1>Tourguide Privacy Policy</h1>
+<p><em>Last updated: September 30, 2026</em></p>
+<p>
+  This Policy supplements our <a href="termsOfService.html">Terms of Service</a> and
+  <a href="communityGuidelines.html">Community Guidelines</a>.
+</p>
+
+<p>
+  This Privacy Policy describes how <strong>Robert Michels</strong> (“<strong>we</strong>,” “<strong>us</strong>,” or “<strong>our</strong>”)
+  collects, uses, discloses, and retains information when you use the Tourguide mobile application,
+  the Tourguide web experience, and related pages at
+  <a href="https://tourguide.rmichels.com/">tourguide.rmichels.com</a> (collectively, the “<strong>Service</strong>”).
+</p>
+<p>
+  We are located in British Columbia, Canada. This Policy is written with Canadian privacy expectations in mind,
+  including the <em>Personal Information Protection and Electronic Documents Act</em> (PIPEDA), where it applies to our handling
+  of personal information.
+</p>
+
+<h2>1. Who we are</h2>
+<p>
+  <strong>Operator:</strong> Robert Michels, operating the Tourguide Service in British Columbia, Canada<br>
+  <strong>Contact:</strong> <a href="mailto:contact@tourguide.rmichels.com">contact@tourguide.rmichels.com</a>
+</p>
+<p>
+  For privacy questions, access requests, and complaints, please use this email. We do not publish a personal phone number
+  or home address for general correspondence.
+</p>
+<p>
+  The Service is branded as <strong>Tourguide</strong>. It helps users discover, create, and run self-guided tours with maps,
+  navigation, community content, optional social features, and an AI guide.
+</p>
+
+<h2>2. Age requirement</h2>
+<p>
+  The Service is intended for people who are <strong>not minors</strong> in the place where they live (for example, at least 18 years old
+  where that is the age of majority). We do not knowingly collect personal information from minors. If you believe a minor has
+  provided us information, contact us and we will take reasonable steps to delete it.
+</p>
+
+<h2>3. Information we collect</h2>
+<p>We collect information in the ways below. We collect only what we need to operate the Service.</p>
+
+<h3>3.1 Account and profile</h3>
 <ul>
-<li>
-<p><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</p>
-</li>
-<li>
-<p><strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where &quot;control&quot; means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</p>
-</li>
-<li>
-<p><strong>Application</strong> refers to Tourguide, the software program provided by the Company.</p>
-</li>
-<li>
-<p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to Tourguide.</p>
-</li>
-<li>
-<p><strong>Country</strong> refers to: British Columbia, Canada</p>
-</li>
-<li>
-<p><strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.</p>
-</li>
-<li>
-<p><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</p>
-</li>
-<li>
-<p><strong>Service</strong> refers to the Application.</p>
-</li>
-<li>
-<p><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.</p>
-</li>
-<li>
-<p><strong>Third-party Social Media Service</strong> refers to any website or any social network website through which a User can log in or create an account to use the Service.</p>
-</li>
-<li>
-<p><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</p>
-</li>
-<li>
-<p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p>
-</li>
+  <li><strong>Google Sign-In (optional):</strong> If you sign in with Google, we receive information from Google needed to authenticate you
+    (such as your Google account identifier, email address, and display name). We do not offer Facebook, Twitter/X, Instagram, LinkedIn,
+    or other social login providers in the app.</li>
+  <li><strong>Anonymous (“guest”) use:</strong> You may use much of the Service after Firebase anonymous authentication, without linking Google.
+    Anonymous users receive a Firebase user ID.</li>
+  <li><strong>Optional guest contact form:</strong> If you choose to enter a name, email, and/or company on guest sign-in, we store those fields
+    in Firestore under <code>guests/{your anonymous user id}</code>, along with a timestamp and visit count.</li>
+  <li><strong>Registered user profile (Firestore <code>users/{uid}</code>):</strong> Username (public identity), email, Google sign-in ID,
+    display name (from Google; not shown as primary identity in the app), saved tour IDs, email subscription preferences,
+    embedded moderation reports you filed, and sign-in timestamps.</li>
+  <li><strong>Username registry:</strong> A mapping from normalized username to user ID in <code>usernames/</code> so usernames stay unique.</li>
 </ul>
-<h2>Collecting and Using Your Personal Data</h2>
-<h3>Types of Data Collected</h3>
-<h4>Personal Data</h4>
-<p>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
+
+<h3>3.2 User-generated and social content</h3>
 <ul>
-<li>
-<p>Email address</p>
-</li>
-<li>
-<p>First name and last name</p>
-</li>
-<li>
-<p>Phone number</p>
-</li>
-<li>
-<p>Address, State, Province, ZIP/Postal code, City</p>
-</li>
-<li>
-<p>Usage Data</p>
-</li>
+  <li><strong>Tours and waypoints:</strong> Titles, descriptions, locations, visibility, ratings aggregates, and related metadata you create or edit.</li>
+  <li><strong>Tour images:</strong> Photos you upload for tours, stored in Firebase Storage at <code>tour_images/{authorId}/{tourId}</code>.
+    You may also attach images from your device camera or photo library, or use place photos from Google Places where you select them in the app.</li>
+  <li><strong>Ratings and comments:</strong> Star ratings, comment text, vote counts, and your user ID associated with that content on public or shared tours.</li>
+  <li><strong>Reports:</strong> Content you submit when reporting tours, comments, or users (including report category and description), stored in Firestore
+    collections such as <code>user_reports</code> and <code>comment_reports</code>. Some tour-level moderation data is handled server-side and is not directly readable in the client.</li>
+  <li><strong>Friends and invites:</strong> Friend relationships, friend requests, and tour session invites between mutual friends (usernames and user IDs).</li>
+  <li><strong>Tour sessions (“Tour with friends”):</strong> Session metadata (tour ID, host, participants) and, while a session is active,
+    periodic GPS coordinates and username for participants who share location, in <code>tour_sessions/{sessionId}/locations/{userId}</code>.</li>
 </ul>
-<h4>Usage Data</h4>
-<p>Usage Data is collected automatically when using the Service.</p>
-<p>Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
-<p>When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.</p>
-<p>We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.</p>
-<h4>Information from Third-Party Social Media Services</h4>
-<p>The Company allows You to create an account and log in to use the Service through the following Third-party Social Media Services:</p>
+
+<h3>3.3 Location and maps</h3>
 <ul>
-<li>Google</li>
-<li>Facebook</li>
-<li>Instagram</li>
-<li>Twitter</li>
-<li>LinkedIn</li>
+  <li><strong>Device location:</strong> With your permission, we collect precise location to show nearby tours, run navigation, center maps,
+    and build AI context. You can decline or revoke permission in device settings; some features will be limited.</li>
+  <li><strong>Reverse geocoding:</strong> On web, city/region/country may be derived via our Cloud Function proxy to Google’s Geocoding API from coordinates you share.
+    On mobile, similar place details may be resolved on-device via platform geocoding and Google Places where used.</li>
+  <li><strong>Directions:</strong> When you request routes, waypoint coordinates and travel mode are sent to our authenticated Cloud Functions
+    (<code>fetchDirections</code>, <code>fetchSegmentDirections</code>), which call Google Directions. Optional server-side route caching may store polylines
+    under a tour document for up to about 24 hours.</li>
+  <li><strong>Google Maps and Places:</strong> Map display, place search, and place details use Google Maps Platform services subject to
+    <a href="https://policies.google.com/privacy">Google’s Privacy Policy</a>.</li>
 </ul>
-<p>If You decide to register through or otherwise grant us access to a Third-Party Social Media Service, We may collect Personal data that is already associated with Your Third-Party Social Media Service's account, such as Your name, Your email address, Your activities or Your contact list associated with that account.</p>
-<p>You may also have the option of sharing additional information with the Company through Your Third-Party Social Media Service's account. If You choose to provide such information and Personal Data, during registration or otherwise, You are giving the Company permission to use, share, and store it in a manner consistent with this Privacy Policy.</p>
-<h4>Information Collected while Using the Application</h4>
-<p>While using Our Application, in order to provide features of Our Application, We may collect, with Your prior permission:</p>
+
+<h3>3.4 AI Guide (Gemini via Firebase AI)</h3>
 <ul>
-<li>
-<p>Information regarding your location</p>
-</li>
-<li>
-<p>Pictures and other information from your Device's camera and photo library</p>
-</li>
+  <li><strong>Chat messages:</strong> Text you send to the AI guide and the model’s replies.</li>
+  <li><strong>Context sent with each turn:</strong> Local date/time; approximate location (city/region and coordinates rounded to three decimal places in the text context block when available);
+    whether you are a guest or signed-in user and your public username (not your email); running tour stop context; nearby tour titles and IDs; and focused tour context when applicable.
+    <strong>Separately,</strong> when Maps grounding is enabled, we may send <strong>precise</strong> coordinates (or a tour stop coordinate if GPS is unavailable) to Google’s Maps grounding service through Gemini. When Search grounding is enabled, your message may be processed by Google Search through Gemini.</li>
+  <li><strong>Grounding tools:</strong> Depending on configuration (Firebase Remote Config), Gemini requests may include Google Maps and/or Google Search tools. Those services process your prompt and tool-related location under Google’s policies, in addition to Firebase AI / Gemini processing.</li>
+  <li><strong>Usage limits:</strong> We track daily AI usage counts locally and in app logic to enforce guest, signed-in, and premium limits.</li>
+  <li><strong>What we try not to log in crash reports:</strong> AI error reporting is designed to avoid attaching full chat transcripts to crash analytics.</li>
 </ul>
-<p>We use this information to provide features of Our Service, to improve and customize Our Service. The information may be uploaded to the Company's servers and/or a Service Provider's server or it may be simply stored on Your device.</p>
-<p>You can enable or disable access to this information at any time, through Your Device settings.</p>
-<h3>Use of Your Personal Data</h3>
-<p>The Company may use Personal Data for the following purposes:</p>
+<p>
+  AI processing is provided through <strong>Google Firebase AI / Gemini</strong>. Google’s terms and privacy policy apply to that processing.
+</p>
+
+<h3>3.5 Purchases and premium</h3>
 <ul>
-<li>
-<p><strong>To provide and maintain our Service</strong>, including to monitor the usage of our Service.</p>
-</li>
-<li>
-<p><strong>To manage Your Account:</strong> to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.</p>
-</li>
-<li>
-<p><strong>For the performance of a contract:</strong> the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.</p>
-</li>
-<li>
-<p><strong>To contact You:</strong> To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.</p>
-</li>
-<li>
-<p><strong>To provide You</strong> with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless You have opted not to receive such information.</p>
-</li>
-<li>
-<p><strong>To manage Your requests:</strong> To attend and manage Your requests to Us.</p>
-</li>
-<li>
-<p><strong>For business transfers:</strong> We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.</p>
-</li>
-<li>
-<p><strong>For other purposes</strong>: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.</p>
-</li>
+  <li><strong>RevenueCat and Google Play Billing (Android):</strong> When the in-app purchase stack is enabled, RevenueCat receives your Firebase Auth user ID,
+    purchase history, and entitlement status. Premium status may be reflected in Firebase Auth custom claims. RevenueCat’s privacy policy applies.</li>
+  <li>On web and in some test builds, the purchase stack is disabled; premium paywalls may not be available.</li>
 </ul>
-<p>We may share Your personal information in the following situations:</p>
+
+<h3>3.6 Notifications</h3>
 <ul>
-<li><strong>With Service Providers:</strong> We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You.</li>
-<li><strong>For business transfers:</strong> We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.</li>
-<li><strong>With Affiliates:</strong> We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.</li>
-<li><strong>With business partners:</strong> We may share Your information with Our business partners to offer You certain products, services or promotions.</li>
-<li><strong>With other users:</strong> when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside. If You interact with other users or register through a Third-Party Social Media Service, Your contacts on the Third-Party Social Media Service may see Your name, profile, pictures and description of Your activity. Similarly, other users will be able to view descriptions of Your activity, communicate with You and view Your profile.</li>
-<li><strong>With Your consent</strong>: We may disclose Your personal information for any other purpose with Your consent.</li>
+  <li><strong>Firebase Cloud Messaging (FCM):</strong> If you allow notifications, we store device push tokens under
+    <code>users/{uid}/fcm_tokens/</code> to send tour invite and related push messages. Tokens are removed when you sign out (for the current device token).</li>
 </ul>
-<h3>Retention of Your Personal Data</h3>
-<p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.</p>
-<p>The Company will also retain Usage Data for internal analysis purposes. Usage Data is generally retained for a shorter period of time, except when this data is used to strengthen the security or to improve the functionality of Our Service, or We are legally obligated to retain this data for longer time periods.</p>
-<h3>Transfer of Your Personal Data</h3>
-<p>Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from Your jurisdiction.</p>
-<p>Your consent to this Privacy Policy followed by Your submission of such information represents Your agreement to that transfer.</p>
-<p>The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of Your data and other personal information.</p>
-<h3>Delete Your Personal Data</h3>
-<p>You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You.</p>
-<p>Our Service may give You the ability to delete certain information about You from within the Service.</p>
-<p>You may update, amend, or delete Your information at any time by signing in to Your Account, if you have one, and visiting the account settings section that allows you to manage Your personal information. You may also contact Us to request access to, correct, or delete any personal information that You have provided to Us.</p>
-<p>Please note, however, that We may need to retain certain information when we have a legal obligation or lawful basis to do so.</p>
-<h3>Disclosure of Your Personal Data</h3>
-<h4>Business Transactions</h4>
-<p>If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred. We will provide notice before Your Personal Data is transferred and becomes subject to a different Privacy Policy.</p>
-<h4>Law enforcement</h4>
-<p>Under certain circumstances, the Company may be required to disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).</p>
-<h4>Other legal requirements</h4>
-<p>The Company may disclose Your Personal Data in the good faith belief that such action is necessary to:</p>
+
+<h3>3.7 Analytics, diagnostics, and security</h3>
 <ul>
-<li>Comply with a legal obligation</li>
-<li>Protect and defend the rights or property of the Company</li>
-<li>Prevent or investigate possible wrongdoing in connection with the Service</li>
-<li>Protect the personal safety of Users of the Service or the public</li>
-<li>Protect against legal liability</li>
+  <li><strong>Firebase Analytics (Google):</strong> Events such as sign-in method, onboarding steps, location opt-in outcomes, tour content selections,
+    and custom auth/navigation/AI events. <strong>Important:</strong> if you submit the optional guest form, the app currently logs your guest name, email,
+    and company to Analytics as event parameters on guest login. We treat correcting or removing that logging as a product priority; you may still avoid
+    entering those fields if you do not want them stored in Analytics.</li>
+  <li><strong>Firebase Crashlytics (mobile, release/profile):</strong> Crash stacks, breadcrumbs, and diagnostic keys (for example auth phase, location source,
+    AI error types). We set Crashlytics user identifiers to your Firebase UID when signed in. Crashlytics is disabled on web and during emulator test runs.</li>
+  <li><strong>Firebase Remote Config:</strong> Fetches feature flags and configuration (for example AI model settings) without identifying you by name in the config payload.</li>
+  <li><strong>Firebase App Check:</strong> Helps protect backend APIs from abuse using attestation providers appropriate to each platform.</li>
+  <li><strong>Web App Check:</strong> On web, App Check may use Google reCAPTCHA v3, which collects signals Google uses for abuse prevention under Google’s Privacy Policy.</li>
 </ul>
-<h3>Security of Your Personal Data</h3>
-<p>The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
-<h2>Children's Privacy</h2>
-<p>Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers.</p>
-<p>If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent's consent before We collect and use that information.</p>
-<h2>Links to Other Websites</h2>
-<p>Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.</p>
-<p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.</p>
-<h2>Changes to this Privacy Policy</h2>
-<p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p>
-<p>We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the &quot;Last updated&quot; date at the top of this Privacy Policy.</p>
-<p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
-<h2>Contact Us</h2>
-<p>If you have any questions about this Privacy Policy, You can contact us:</p>
+
+<h3>3.8 Email</h3>
 <ul>
-<li>By email: <a href="mailto:contact@tourguide.rmichels.com">contact@tourguide.rmichels.com</a></li>
-</ul><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <li>When you create a registered user profile, a welcome email may be queued through our backend email pipeline.</li>
+  <li>We may send transactional emails related to reports, moderation, or tour activity, subject to your email subscription preferences where applicable.</li>
+  <li>Unsubscribe links may update your <code>emailSubscriptionsDisabled</code> preferences via a Cloud Function.</li>
+</ul>
+<p>We do not send marketing SMS. We do not run affiliate tracking networks in the app.</p>
+
+<h3>3.9 Local storage on your device</h3>
+<p>On mobile (not on web), the app uses local storage to improve performance and offline use:</p>
+<ul>
+  <li><strong>Hive databases:</strong> Cached tour lists, offline downloaded tours and metadata, cached direction polylines, and (with encryption when available) AI chat threads and messages.</li>
+  <li><strong>Flutter Secure Storage:</strong> Encryption key material for chat storage on supported platforms.</li>
+  <li><strong>Shared preferences:</strong> Onboarding flags, offline action queues (for example bookmarks/ratings to sync later), and web chat fallback storage.</li>
+</ul>
+<p>Local chat history persists across sign-out so you can continue a conversation when you sign back in on the same device. Account deletion clears local chat data on the device as part of the deletion flow.</p>
+
+<h3>3.10 Advertising</h3>
+<p>
+  The Android app manifest includes a Google AdMob application ID, and ad-related code exists but is <strong>currently commented out and not initialized</strong>
+  in production app startup. We do not show AdMob ads in the current app build. If we enable ads in a future version, we will update this Policy and applicable store disclosures.
+</p>
+
+<h2>4. How we use information</h2>
+<p>We use information to:</p>
+<ul>
+  <li>Provide authentication, profiles, tour discovery, creation, editing, running, and navigation;</li>
+  <li>Operate friends, tour sessions, invites, comments, ratings, and reporting;</li>
+  <li>Power the AI guide and enforce usage limits;</li>
+  <li>Process purchases and premium entitlements where enabled;</li>
+  <li>Send push notifications and transactional email you expect from the Service;</li>
+  <li>Secure the Service (App Check, abuse prevention, moderation workflows);</li>
+  <li>Measure feature usage and fix crashes;</li>
+  <li>Comply with law and enforce our Terms of Service and Community Guidelines.</li>
+</ul>
+<p>We do not use your information for third-party behavioral advertising in the current app version.</p>
+
+<h2>5. How we share information</h2>
+<p>We share information only as described below:</p>
+<ul>
+  <li><strong>Service providers:</strong> Google (Firebase, Maps, Geocoding, Directions, Sign-In, Analytics, Crashlytics, Cloud Messaging, AI/Gemini, reCAPTCHA, and AI grounding tools),
+    RevenueCat, and email delivery infrastructure used by our Cloud Functions. Maps and Search may also process data when used for AI grounding (see Section 3.4). They process data under their own terms and privacy policies.</li>
+  <li><strong>Other users:</strong> Usernames, public tours, comments, ratings, and live session location (for participants in the same active tour session) are visible
+    to other users according to tour visibility and session membership.</li>
+  <li><strong>Legal and safety:</strong> When required by law or to protect users, the public, or our rights.</li>
+</ul>
+<p>We do not sell personal information.</p>
+
+<h2>6. International transfers</h2>
+<p>
+  We and our service providers (including Google Cloud and Firebase, typically in the United States and other countries) may process and store information
+  outside Canada. Where required, we rely on appropriate contractual and organizational measures offered by those providers. By using the Service, you understand
+  that your information may be transferred internationally.
+</p>
+
+<h2>7. Retention</h2>
+<p>
+  We keep information for as long as needed to provide the Service, resolve disputes, enforce agreements, and meet legal obligations. Examples:
+</p>
+<ul>
+  <li>Account and profile data: until you delete your Firebase Authentication account or we delete it after a verified request, subject to the gaps in Section 8.</li>
+  <li>Tour content and comments: until deleted by you or removed through moderation; backups and logs may persist for a limited time.</li>
+  <li>Tour session locations: while a session is active and for a short period thereafter; stale location documents may stop displaying after a few minutes of inactivity.</li>
+  <li>Directions cache on server: about 24 hours when tour-scoped caching is used.</li>
+  <li>Analytics and crash data: according to Google’s default retention settings for Firebase projects unless we configure shorter periods.</li>
+  <li>Guest lead records (<code>guests/</code>): until removed through a support request; the app does not offer self-serve deletion of guest documents.</li>
+</ul>
+
+<h2>8. Access, correction, and deletion</h2>
+<p>
+  Depending on where you live, you may have rights to access, correct, or delete personal information we hold about you, or to withdraw consent where processing is consent-based.
+  Contact us at <a href="mailto:contact@tourguide.rmichels.com">contact@tourguide.rmichels.com</a>. We may need to verify your identity.
+</p>
+
+<h3>8.1 In-app account deletion (registered Google users)</h3>
+<p>
+  Registered users can delete their Firebase Authentication account from Profile → Delete Account (typing “DELETE” to confirm). That flow:
+</p>
+<ul>
+  <li>Deletes your Firebase Authentication user when the operation succeeds (recent sign-in may be required);</li>
+  <li>Clears local AI chat storage on the device;</li>
+  <li>Disconnects Google Sign-In on the device.</li>
+</ul>
+<p>
+  The in-app screen states that your tours and ratings will be removed. <strong>In the current app version, account deletion does not automatically delete
+  all Firestore or Storage data tied to your user ID</strong> (for example your <code>users/{uid}</code> document, tours you authored, comments, ratings, friend graphs,
+  FCM tokens, RevenueCat customer history, or optional <code>guests/{uid}</code> records from earlier anonymous use). Some of that data may become unreachable to you
+  after Auth deletion but may remain until we complete backend cleanup or you request deletion by email. We are working to align backend deletion with user expectations.
+</p>
+<p>
+  Anonymous accounts can use the Service without the guest form; optional guest contact fields are the main additional personal data tied to anonymous IDs.
+</p>
+
+<h2>9. Security</h2>
+<p>
+  We use industry-standard measures appropriate to the Service, including HTTPS, Firebase security rules, App Check on backend calls, and encrypted local chat storage
+  when the device supports it. No method of transmission or storage is completely secure.
+</p>
+
+<h2>10. Third-party links</h2>
+<p>
+  The Service may link to third-party sites (for example Google policies or map content). We are not responsible for their privacy practices.
+</p>
+
+<h2>11. Changes to this Policy</h2>
+<p>
+  We may update this Privacy Policy from time to time. We will post the updated version at this URL and change the “Last updated” date.
+  Material changes may also be communicated in the app or by email where appropriate.
+</p>
+
+<h2>12. Contact</h2>
+<p>
+  Questions or requests about privacy:
+  <a href="mailto:contact@tourguide.rmichels.com">contact@tourguide.rmichels.com</a>
+</p>
+
+</body>
+</html>
