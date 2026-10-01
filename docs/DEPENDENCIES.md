@@ -12,7 +12,7 @@ npm audit fix          # non-breaking fixes only
 
 After dependency changes: `npm run test:fast && npm run build && npm run test:verify`.
 
-Dependabot (`.github/dependabot.yml`) opens weekly PRs for `npm` and GitHub Actions; review those before merging.
+GitHub **Dependabot alerts** (repo Security tab) still notify you of known CVEs in the lockfile; this repo does not use scheduled version-update PRs.
 
 ## Last planned audit pass
 
