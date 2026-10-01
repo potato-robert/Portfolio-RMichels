@@ -1,7 +1,42 @@
 ---
 import styles from '../content/privacy-policy-styles.html?raw';
 import body from '../content/privacy-policy-body.html?raw';
+import type { Locale } from '../lib/i18n';
+import { t } from '../lib/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
 ---
 
 <Fragment set:html={styles} />
+{
+  locale === 'de' && (
+    <aside class="privacy-policy-locale-notice" role="note" lang="de">
+      <p>
+        {t('privacy_policy_english_body_notice', locale)}{' '}
+        <a href="/privacyPolicy">{t('privacy_policy_english_version_link', locale)}</a>
+      </p>
+    </aside>
+  )
+}
 <Fragment set:html={body} />
+
+<style>
+  .privacy-policy-locale-notice {
+    max-width: 40rem;
+    margin: 5rem auto 0;
+    padding: 0 1rem;
+    color: #bbbbbb;
+    font-family: Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .privacy-policy-locale-notice a {
+    color: #228c8c;
+    word-break: break-word;
+  }
+</style>
