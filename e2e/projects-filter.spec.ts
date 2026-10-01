@@ -1,7 +1,7 @@
 import { test, expect } from './fixtures';
 
 test.describe('projects page filter', () => {
-  test('AND logic updates projectCount and URL filter pre-selects button', async ({ page }) => {
+  test('OR logic updates projectCount and URL filter pre-selects buttons', async ({ page }) => {
     await page.goto('/projects');
 
     const projectCount = page.locator('#projectCount');
@@ -13,13 +13,32 @@ test.describe('projects page filter', () => {
 
     await vrBtn.click();
     await expect(vrBtn).toHaveClass(/filterBtn--selected/);
-    await expect(projectCount).toHaveText('3');
+    const vrOnlyCount = Number(await projectCount.textContent());
+    expect(vrOnlyCount).toBe(3);
 
     await frontEndBtn.click();
     await expect(frontEndBtn).toHaveClass(/filterBtn--selected/);
-    await expect(projectCount).toHaveText('1');
+    const orCount = Number(await projectCount.textContent());
+    expect(orCount).toBeGreaterThan(1);
+    expect(orCount).toBeGreaterThanOrEqual(vrOnlyCount);
 
     await page.goto('/projects?filter=vr');
     await expect(page.locator('.filterBtn[data-js="vr"]')).toHaveClass(/filterBtn--selected/);
+    await expect(projectCount).toHaveText(String(vrOnlyCount));
+  });
+
+  test('?filter=vr,front-end applies OR in one pass', async ({ page }) => {
+    await page.goto('/projects?filter=vr,front-end');
+
+    await expect(page.locator('.filterBtn[data-js="vr"]')).toHaveClass(/filterBtn--selected/);
+    await expect(page.locator('.filterBtn[data-js="front-end"]')).toHaveClass(/filterBtn--selected/);
+
+    const projectCount = page.locator('#projectCount');
+    const orFromUrl = Number(await projectCount.textContent());
+    expect(orFromUrl).toBeGreaterThan(1);
+
+    const cookies = await page.context().cookies();
+    const raw = cookies.find((c) => c.name === 'visitorFilter')?.value ?? '';
+    expect(decodeURIComponent(raw)).toBe('vr,front-end');
   });
 });
