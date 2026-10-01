@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalNoticeEn from '../components/legal/LegalNoticeEn.astro';
+
+const locale = 'en' as const;
+---
+
+<BaseLayout
+  title="Legal Notice | Robert Michels Portfolio"
+  description="Legal notice for rmichels.com"
+  locale={locale}
+  pageType="privacy"
+  canonicalPath="/legalNotice"
+>
+  <LegalNoticeEn />
+</BaseLayout>

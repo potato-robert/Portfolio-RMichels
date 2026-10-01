@@ -1,0 +1,236 @@
+---
+import {
+  CONTACT_EMAIL,
+  CONTROLLER_LOCATION,
+  CONTROLLER_NAME,
+  EXTERNAL_MEDIA_PROVIDERS,
+  formatPrivacyLastUpdated,
+} from '../../lib/legal';
+
+const lastUpdated = formatPrivacyLastUpdated('en');
+const legalNoticeHref = '/legalNotice';
+---
+
+<section class="sectionText privacy" lang="en">
+  <h1>Privacy Policy</h1>
+  <p class="privacy__updated"><strong>Last updated:</strong> {lastUpdated}</p>
+
+  <p>
+    This Privacy Policy describes how {CONTROLLER_NAME} (“I”, “me”) handles information when you visit
+    <a href="https://rmichels.com">rmichels.com</a> (the “Site”). I am based in {CONTROLLER_LOCATION}.
+    Questions: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+    See also the <a href={legalNoticeHref}>Legal Notice</a>.
+  </p>
+
+  <h2>Summary</h2>
+  <ul>
+    <li>The Site does <strong>not</strong> use advertising or cross-site tracking cookies.</li>
+    <li>I use <strong>cookieless, EU-hosted analytics</strong> (Umami) to understand traffic, unless you opt out or send Do Not Track / Global Privacy Control.</li>
+    <li>Embedded videos and interactive demos (YouTube, Sketchfab, Figma, Clirio View) load <strong>only when you click to load them</strong>.</li>
+    <li>Code samples on case studies are rendered at build time; your browser does not load GitHub unless you follow a link.</li>
+    <li>I do not sell personal information.</li>
+  </ul>
+
+  <h2>Scope</h2>
+  <p>
+    This policy applies to the portfolio Site only. <strong>Tourguide</strong> (
+    <a href="https://tourguide.rmichels.com/privacyPolicy.html" rel="noopener noreferrer"
+      >tourguide.rmichels.com</a
+    >) is a separate product with its own privacy policy.
+  </p>
+  <p>
+    The Site is a static website hosted by Hostinger. I do not operate user accounts or registration on
+    the Site.
+  </p>
+
+  <h2>Information I collect</h2>
+  <h3>What you provide</h3>
+  <p>
+    The Site has no contact forms. If you email me at
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, I receive whatever you choose to send
+    (for example your email address and message content) through your and my email providers.
+  </p>
+
+  <h3>Hosting and server logs</h3>
+  <p>
+    When you visit the Site, Hostinger (and any content delivery network in front of it) may process
+    server logs such as IP address, request time, requested URL, referrer, and browser user agent to
+    deliver and secure the Site. Retention is governed by Hostinger’s configuration in my hosting
+    account. I do not operate a separate application database for visitors.
+  </p>
+
+  <h3>Analytics</h3>
+  <p>
+    Unless you opt out (see <a href="#choices">Your choices</a>) or your browser sends Do Not Track or
+    Global Privacy Control, I use <strong>Umami Analytics</strong> (Umami Software, EU cloud region) to
+    collect aggregated usage data such as pages viewed and referrer. Umami is configured without
+    cookies and without storing full IP addresses. Analytics scripts are limited to production on
+    <code>rmichels.com</code> and do not run on local preview builds.
+  </p>
+  <p>
+    <strong>Legal bases:</strong> Canada (PIPEDA) — reasonable purposes with notice; EEA/UK (GDPR) —
+    legitimate interests in operating and improving the Site (Art. 6(1)(f)), balanced against your
+    rights. You may object at any time via the opt-out in <a href="#choices">Your choices</a>.
+  </p>
+
+  <h3>Application links</h3>
+  <p>
+    Links I share with employers may include <code>?portfolio_link=</code> followed by a short
+    reference (for example a company name). When analytics is active, I record a single custom event
+    that an application link was opened with that reference. I do not combine this with other personal
+    data about you.
+  </p>
+
+  <h3 id="external-media">External media (embeds)</h3>
+  <p>
+    Some case studies offer embedded content from third parties. Until you click <strong>Load
+    content</strong>, no request is sent to these providers. If you choose <strong>Always load</strong>
+    for a provider, that choice is stored in your browser (see table below) until you clear it on this
+    page.
+  </p>
+  <ul>
+    {
+      EXTERNAL_MEDIA_PROVIDERS.map((p) => (
+        <li>
+          <strong>{p.displayName}</strong> —{' '}
+          <a href={p.privacyUrl} rel="noopener noreferrer">privacy information</a>
+        </li>
+      ))
+    }
+  </ul>
+  <p>
+    <strong>Legal bases:</strong> consent when you load or remember an embed (GDPR Art. 6(1)(a); Germany
+    TDDDG §25(1)). Providers in the United States may rely on the EU–US Data Privacy Framework or
+    standard contractual clauses.
+  </p>
+
+  <h3>Code snippets</h3>
+  <p>
+    GitHub Gist content referenced in markdown is fetched when I build the Site and served as static HTML
+    from rmichels.com. Viewing a case study does not call GitHub’s servers unless you click “View gist on
+    GitHub”.
+  </p>
+
+  <h3>Fonts and assets</h3>
+  <p>Fonts and other assets are self-hosted from rmichels.com; I do not load Google Fonts or similar CDNs.</p>
+
+  <h2>Browser storage</h2>
+  <p>The Site does not set HTTP cookies. I use browser storage only as follows:</p>
+  <table class="privacy__table">
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Purpose</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>rmExternalMedia</code></td>
+        <td>Remembers which embed providers you chose to always load</td>
+        <td>Until you remove entries under Your choices</td>
+      </tr>
+      <tr>
+        <td><code>rmVisitorFilter</code> (session)</td>
+        <td>Project filter on home/projects for this browser tab</td>
+        <td>Until you close the tab</td>
+      </tr>
+      <tr>
+        <td><code>lenisSmoothScrolling</code></td>
+        <td>Smooth scrolling on/off preference</td>
+        <td>Until you clear site data</td>
+      </tr>
+      <tr>
+        <td><code>rmAnalyticsOptOut</code></td>
+        <td>Stores your decision to disable analytics</td>
+        <td>Until you clear site data or re-enable</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Why I use information and legal bases (email)</h2>
+  <p>
+    If you email me about a job or collaboration, I process your message to respond and keep reasonable
+    records. <strong>Legal bases:</strong> steps at your request before a contract (GDPR Art. 6(1)(b))
+    and legitimate interest in professional communication (Art. 6(1)(f)); Canada — PIPEDA compatible
+    purposes.
+  </p>
+
+  <h2>Sharing and processors</h2>
+  <ul>
+    <li>
+      <strong>Hostinger</strong> — web hosting (<a
+        href="https://www.hostinger.com/legal/privacy-policy"
+        rel="noopener noreferrer">privacy policy</a
+      >)
+    </li>
+    <li>
+      <strong>Umami Software</strong> — cookieless analytics, EU region (<a
+        href="https://umami.is/privacy"
+        rel="noopener noreferrer">privacy policy</a
+      >)
+    </li>
+    <li>
+      <strong>Embed providers</strong> — only after you load content (listed above)
+    </li>
+  </ul>
+
+  <h2>International transfers</h2>
+  <p>
+    Canada has an EU adequacy decision for many transfers from the EEA. Hostinger, Umami (EU), and US
+    embed providers may process data outside your country; they use appropriate safeguards where
+    required.
+  </p>
+
+  <h2>Retention</h2>
+  <ul>
+    <li>Server logs: per Hostinger settings in my account.</li>
+    <li>Umami analytics: per my Umami project settings (aggregated data).</li>
+    <li>Browser storage keys: as in the table above.</li>
+    <li>Email: as long as needed to respond and for reasonable professional record-keeping, then deleted or archived.</li>
+  </ul>
+
+  <h2>Your rights</h2>
+  <h3>Canada</h3>
+  <p>
+    You may request access to or correction of personal information I hold about you. You may contact the
+    Office of the Privacy Commissioner of Canada at <a href="https://www.priv.gc.ca">priv.gc.ca</a> and
+    the BC Office of the Information and Privacy Commissioner at <a href="https://www.oipc.bc.ca"
+      >oipc.bc.ca</a
+    >.
+  </p>
+  <h3>EEA / UK / Switzerland</h3>
+  <p>
+    You may have rights to access, rectify, erase, restrict, object (including to analytics under Art.
+    21), and data portability where applicable, and to withdraw consent for embeds at any time. You may
+    lodge a complaint with your supervisory authority (<a
+      href="https://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm"
+      rel="noopener noreferrer">EU list</a
+    >).
+  </p>
+  <p>There is no automated decision-making or profiling on this Site.</p>
+
+  <h2>Children</h2>
+  <p>The Site is not directed at children under 18.</p>
+
+  <h2>Security</h2>
+  <p>I use reasonable measures appropriate to a static personal website.</p>
+
+  <h2>Changes</h2>
+  <p>
+    I may update this policy from time to time. The “Last updated” date at the top will change when I do.
+    Material changes will be described on this page.
+  </p>
+
+  <h2 id="choices">Your choices</h2>
+  <div id="privacy-choices-mount" class="privacy-choices" data-privacy-choices></div>
+
+  <h2>Contact</h2>
+  <p>
+    Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ({CONTROLLER_NAME}, {CONTROLLER_LOCATION}).
+  </p>
+</section>
+
+<script>
+  import '../../islands/PrivacyChoices.ts';
+</script>

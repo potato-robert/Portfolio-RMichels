@@ -15,7 +15,7 @@ description:
   de: "Scan Share ist eine Funktion der Clirio-Produktreihe zum schnellen Teilen von Photogrammetrie-Scans und deren Anzeige in einem Webviewer."
 links:
   - label: "Sample Share"
-    url: "https://clirioview-viw-dev.azurewebsites.net/guest/f-aVQEv0LytBKHa8vARMx-Nl"
+    url: "https://clirioview-viw-prd.azurewebsites.net/guest/MEVdEANk9_Zhr6tlm4ibd1Vn"
   - label: "Clirio View Desktop"
     url: "https://apps.microsoft.com/store/detail/clirio-view-desktop/9NB14S8DFWFP"
 order: 2

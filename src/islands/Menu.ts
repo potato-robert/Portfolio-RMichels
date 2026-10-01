@@ -7,14 +7,18 @@ export function initMenu() {
   if (!menuToggle || !overlayMenu || !mainGrid || !contentToBlur || !menuContent) return;
 
   overlayMenu.classList.add('hidden');
+  menuToggle.setAttribute('aria-expanded', 'false');
   let tmpDisable = false;
 
   const toggle = () => {
     tmpDisable = true;
+    const opening = overlayMenu.classList.contains('hidden');
     menuToggle.classList.toggle('change');
     overlayMenu.classList.toggle('hidden');
     contentToBlur.classList.toggle('blur');
     mainGrid.classList.toggle('noClick');
+    menuToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    if (!opening) menuToggle.focus();
     setTimeout(() => {
       tmpDisable = false;
     }, 200);
@@ -24,7 +28,7 @@ export function initMenu() {
 
   document.addEventListener('click', (event) => {
     if (!overlayMenu.classList.contains('hidden') && !tmpDisable) {
-      if (!menuContent.contains(event.target as Node)) toggle();
+      if (!menuContent.contains(event.target as Node) && event.target !== menuToggle) toggle();
     }
   });
 

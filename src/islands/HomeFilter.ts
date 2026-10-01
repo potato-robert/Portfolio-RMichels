@@ -1,14 +1,20 @@
 // Homepage URL filter — client-side cookie for static build (?filter=vr)
-const section = document.getElementById('MyWork');
-if (section) {
+import {
+  readVisitorFilterSession,
+  writeVisitorFilterSession,
+} from '../lib/visitor-filter';
+
+function applyHomeFilter(): void {
+  const section = document.getElementById('MyWork');
+  if (!section) return;
+
   const params = new URLSearchParams(window.location.search);
   const filterParam = params.get('filter');
-  const filters = filterParam ? filterParam.split(',').filter(Boolean) : [];
+  const effectiveFilter = filterParam ?? readVisitorFilterSession();
+  const filters = effectiveFilter ? effectiveFilter.split(',').filter(Boolean) : [];
 
   if (filterParam) {
-    document.cookie = `visitorFilter=${encodeURIComponent(filterParam)}; path=/; max-age=31536000`;
-  } else {
-    document.cookie = 'visitorFilter=; path=/; max-age=0';
+    writeVisitorFilterSession(filterParam);
   }
 
   const rows = Array.from(section.querySelectorAll<HTMLElement>('.projRow'));
@@ -26,3 +32,5 @@ if (section) {
     row.style.display = visible ? '' : 'none';
   });
 }
+
+applyHomeFilter();

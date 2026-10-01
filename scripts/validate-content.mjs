@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import yaml from 'js-yaml';
+import { load as yamlLoad } from 'js-yaml';
 import { projectSchema, PARITY_FIELDS } from './content-schema.mjs';
 import {
   findHtmlBlankLineIssues,
@@ -82,7 +82,7 @@ function parseFrontmatterObject(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return null;
   try {
-    return yaml.load(match[1]);
+    return yamlLoad(match[1]);
   } catch (err) {
     return null;
   }
@@ -317,8 +317,16 @@ function checkProjects() {
 /**
  * @param {Map<string, { slug: string, inDevelopment: boolean, draft: boolean }>} projectsBySlug
  */
-function checkInDevelopmentRouting(_projectsBySlug) {
-  // inDevelopment projects are excluded from [slug] via Astro getStaticPaths filters.
+function checkInDevelopmentRouting(projectsBySlug) {
+  for (const [slug, meta] of projectsBySlug) {
+    if (meta.draft && meta.inDevelopment) {
+      fail(
+        slug,
+        'inDevelopment',
+        'draft and inDevelopment are both set — no /slug or /development/{slug} route will be generated',
+      );
+    }
+  }
 }
 
 function checkUiKeyParity() {

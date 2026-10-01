@@ -1,5 +1,4 @@
 const activeFilters: string[] = [];
-const andActive = true;
 
 function sortProjects() {
   const hiddenDiv = document.getElementById('projectTileHidden');
@@ -15,27 +14,33 @@ function sortProjects() {
   itemsArr.forEach((item) => visibleDiv.appendChild(item));
 }
 
+function rowMatchesFilters(roles: string[]): boolean {
+  if (activeFilters.length === 0) return true;
+  return activeFilters.some((slug) => roles.includes(slug));
+}
+
+function applyActiveFilters() {
+  document.dispatchEvent(
+    new CustomEvent('updateProject', {
+      bubbles: true,
+      detail: {},
+    }),
+  );
+  setTimeout(sortProjects, 10);
+  window.locoScroll?.update();
+}
+
 function initFilterButtons() {
   document.querySelectorAll<HTMLButtonElement>('.filterBtn').forEach((item) => {
-    let toggle = false;
     const slug = item.dataset.js;
     if (!slug) return;
     item.addEventListener('click', () => {
       item.classList.toggle('filterBtn--selected');
-      toggle = !toggle;
-      if (toggle) activeFilters.push(slug);
-      else {
-        const index = activeFilters.indexOf(slug);
-        if (index > -1) activeFilters.splice(index, 1);
-      }
-      document.dispatchEvent(
-        new CustomEvent('updateProject', {
-          bubbles: true,
-          detail: { slug: () => slug, toggle: () => toggle },
-        }),
-      );
-      setTimeout(sortProjects, 10);
-      window.locoScroll?.update();
+      const selected = item.classList.contains('filterBtn--selected');
+      const index = activeFilters.indexOf(slug);
+      if (selected && index === -1) activeFilters.push(slug);
+      else if (!selected && index > -1) activeFilters.splice(index, 1);
+      applyActiveFilters();
     });
   });
 }
@@ -53,15 +58,7 @@ function initProjectRows() {
     counter++;
 
     window.addEventListener('updateProject', () => {
-      let active = false;
-      let missedHit = false;
-      if (activeFilters.length > 0) {
-        activeFilters.forEach((element) => {
-          if (roles.includes(element)) active = true;
-          else if (andActive) missedHit = true;
-        });
-      } else active = true;
-      if (missedHit) active = false;
+      const active = rowMatchesFilters(roles);
 
       if (active) {
         item.classList.remove('projRow--hidden');
@@ -74,19 +71,24 @@ function initProjectRows() {
   });
 }
 
+import { writeVisitorFilterSession } from '../lib/visitor-filter';
+
 function applyUrlFilter() {
   const params = new URLSearchParams(window.location.search);
   const filter = params.get('filter');
-  if (!filter) {
-    document.cookie = 'visitorFilter=; Max-Age=0; path=/';
-    return;
-  }
-  document.cookie = `visitorFilter=${encodeURIComponent(filter)}; path=/; max-age=31536000`;
-  const filters = filter.split(',');
-  filters.forEach((slug) => {
-    const btn = document.querySelector<HTMLButtonElement>(`.filterBtn[data-js="${slug}"]`);
-    if (btn) btn.click();
+  if (!filter) return;
+
+  writeVisitorFilterSession(filter);
+  const filters = filter.split(',').filter(Boolean);
+  activeFilters.length = 0;
+  activeFilters.push(...filters);
+
+  document.querySelectorAll<HTMLButtonElement>('.filterBtn').forEach((btn) => {
+    const slug = btn.dataset.js;
+    btn.classList.toggle('filterBtn--selected', !!slug && filters.includes(slug));
   });
+
+  applyActiveFilters();
 }
 
 initFilterButtons();

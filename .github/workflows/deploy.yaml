@@ -5,6 +5,13 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -40,6 +47,12 @@ jobs:
 
       - name: Verify build output
         run: npm run test:verify
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E tests
+        run: npm run test:e2e
 
       - name: Deploy dist/ to Hostinger via FTPS
         # Note: stale PHP files on the server root must be removed manually once after cutover.

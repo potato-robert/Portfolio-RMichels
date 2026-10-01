@@ -24,7 +24,7 @@ const locale = 'en';
 </BaseLayout>
 ```
 
-Subdirectory routes: `src/pages/development/[slug].astro` for in-development projects (e.g. tourguide).
+Published case studies: `src/pages/[slug].astro` (e.g. `/tourguide`). In-development only: `src/pages/development/[slug].astro` when `inDevelopment: true`.
 
 ## Slug coupling
 

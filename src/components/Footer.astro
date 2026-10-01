@@ -11,6 +11,7 @@ const { locale, pageType = 'default' } = Astro.props;
 const showContact = pageType !== 'about';
 
 const privacyHref = locale === 'de' ? '/de/privacyPolicy' : '/privacyPolicy';
+const legalNoticeHref = locale === 'de' ? '/de/legalNotice' : '/legalNotice';
 const portfolioHref = locale === 'de' ? '/de/portfolio' : '/portfolio';
 const year = new Date().getFullYear();
 ---
@@ -25,29 +26,31 @@ const year = new Date().getFullYear();
           </a>
         </div>
         <small class="js-emaillink">hi@rmichels.com</small>
-        <a href="https://linkedin.com/in/robert-michels" target="_blank" title="LinkedIn"><li><Icon name="linkedin-in" size="2x" /></li></a>
-        <a href="https://github.com/potato-robert" target="_blank" title="GitHub"><li><Icon name="github" size="2x" /></li></a>
-        <a href="https://play.google.com/store/apps/developer?id=Studio+RM" target="_blank" title="Google Play"><li><Icon name="google-play" size="2x" /></li></a>
-        <a href="https://rmichels.itch.io/" target="_blank"><li><Icon name="itch-io" size="2x" /></li></a>
+        <a href="https://linkedin.com/in/robert-michels" target="_blank" rel="noopener noreferrer" title="LinkedIn"><li><Icon name="linkedin-in" size="2x" /></li></a>
+        <a href="https://github.com/potato-robert" target="_blank" rel="noopener noreferrer" title="GitHub"><li><Icon name="github" size="2x" /></li></a>
+        <a href="https://play.google.com/store/apps/developer?id=Studio+RM" target="_blank" rel="noopener noreferrer" title="Google Play"><li><Icon name="google-play" size="2x" /></li></a>
+        <a href="https://rmichels.itch.io/" target="_blank" rel="noopener noreferrer"><li><Icon name="itch-io" size="2x" /></li></a>
       </ul>
     </div>
   )}
   {showContact && <noscript><small>hi@rmichels.com</small></noscript>}
-  <div class="footerEnd">
-    <small>
-      {t('portfolio_developed', locale)}
-      <a href={portfolioHref}>{t('developed', locale)}</a>
-      {t('with_astro', locale)}
-    </small>
-    <small>{t('copyright', locale)} &copy; {year} {t('rights_reserved', locale)}</small>
-    <label class="toggle-label">
-      <input type="checkbox" id="lenisScrollToggle" checked />
-      <small>{t('enable_smooth_scrolling', locale)}</small>
-    </label>
-    <div>
-      <a href={privacyHref}><small>{t('privacy_policy', locale)}</small></a>
+    <div class="footerEnd">
+      <small>
+        {t('portfolio_developed', locale)}
+        <a href={portfolioHref}>{t('developed', locale)}</a>
+        {t('with_astro', locale)}
+      </small>
+      <small>{t('copyright', locale)} &copy; {year} {t('rights_reserved', locale)}</small>
+      <label class="toggle-label">
+        <input type="checkbox" id="lenisScrollToggle" checked />
+        <small>{t('enable_smooth_scrolling', locale)}</small>
+      </label>
+      <div class="footerLegal">
+        <a href={privacyHref}><small>{t('privacy_policy', locale)}</small></a>
+        <span class="footerLegal__sep" aria-hidden="true">·</span>
+        <a href={legalNoticeHref}><small>{t('legal_notice', locale)}</small></a>
+      </div>
     </div>
-  </div>
 </footer>
 <div class="footerBuffer"></div>
 

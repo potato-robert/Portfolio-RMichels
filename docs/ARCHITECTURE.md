@@ -43,16 +43,18 @@ flowchart LR
 
 ## Client Islands
 
-Loaded per page via dynamic imports in `PageBoot.ts` or page `<script>` tags:
+Loaded via `PageBootCore.ts` (BaseLayout), `ProjectPageBoot.ts` (ProjectLayout), or page `<script>` tags:
 
 | Island | Pages |
 |--------|-------|
 | HomeWebGL | Home |
-| ProjectFilter | Home, Projects |
-| ProjectLightbox, Lqip | Case studies |
-| ThreeMockup | tourguide, clirioScanViews |
-| WebGLBackground | All (footer waves) |
-| Menu, LenisSetup | All |
+| ProjectFilter | Home (client), Projects (eager script) |
+| ProjectLightbox, ThreeMockup, ProjectToc | Case studies (`ProjectPageBoot`) |
+| Lqip | Footer (case study tiles) |
+| ThreeMockup | Projects with mockup markup |
+| WebGLBackground | Home, About, Projects, case studies |
+| Menu | All BaseLayout pages |
+| LenisSetup | Home, About, Projects, case studies (not privacy) |
 
 ## Content Model
 

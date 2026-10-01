@@ -1,7 +1,13 @@
 ---
-import styles from '../content/privacy-policy-styles.html?raw';
-import body from '../content/privacy-policy-body.html?raw';
+import type { Locale } from '../lib/i18n';
+import PrivacyPolicyDe from './legal/PrivacyPolicyDe.astro';
+import PrivacyPolicyEn from './legal/PrivacyPolicyEn.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
 ---
 
-<Fragment set:html={styles} />
-<Fragment set:html={body} />
+{locale === 'de' ? <PrivacyPolicyDe /> : <PrivacyPolicyEn />}

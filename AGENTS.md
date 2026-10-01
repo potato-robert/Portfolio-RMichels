@@ -28,7 +28,7 @@ npm run test:verify    # Post-build dist/ route checks (run after build)
 npm run test:e2e       # Playwright (after build)
 ```
 
-- Content export (dev helper): `npm run export:content` — **deprecated**; syncs DE bodies from EN markdown with optional PO translations (see `scripts/README.md`)
+- Content export (dev helper): `npm run deprecated:export-content` — **deprecated**; syncs DE bodies from EN markdown with optional PO translations (see `scripts/README.md`)
 - Commit `package-lock.json`; `node_modules/` is gitignored
 
 ## Directory Map
@@ -92,9 +92,26 @@ UI strings: `t('key', locale)` from `src/lib/i18n.ts`. Language toggle links to 
 
 ## URL Preservation
 
-- Case study slugs use camelCase via `slug:` frontmatter (e.g. `futureEarth`)
-- Homepage filter: `/?filter=vr` sets `visitorFilter` cookie
-- `tourguide` is published at `/tourguide` (beta on Google Play and web; `inDevelopment: false`)
+- Case study slugs use camelCase via `slug:` frontmatter (e.g. `futureEarth`); runtime slug comes from markdown filename via `getProjectSlug()` (see `docs/NEW_PROJECT_PAGE.md`).
+- `tourguide` is published at `/tourguide` (beta on Google Play and web; `inDevelopment: false`). Product landing and legal pages live on `https://tourguide.rmichels.com/` (manual subdomain deploy).
+
+## Homepage and projects filters
+
+| Topic | Behavior |
+|-------|----------|
+| Session filter | `sessionStorage` key `rmVisitorFilter` stores the last `?filter=` value (comma-separated role slugs) for the browser tab. It persists when visiting `/` or `/projects` **without** a query string until the tab is closed. |
+| OR semantics | Comma-separated filters match projects whose `roles` include **any** listed slug (OR), on **both** home and `/projects`. Server-side helpers in `src/lib/projects.ts` already use OR. |
+| Home | `HomeFilter.ts`: `?filter=vr` writes session storage and hides non-matching tiles; reads session when no query. |
+| Projects | `ProjectFilter.ts`: URL preselect and multi-select use OR semantics. |
+| Links | Filter-aware nav links append `?filter=` from session storage when present. |
+
+Quick check: `/?filter=vr,front-end` shows tiles with role `vr` **or** `front-end`.
+
+## Privacy
+
+- The Site sets **no HTTP cookies**. Analytics uses cookieless Umami (EU) on production only; visitors can opt out on the privacy policy page.
+- Third-party iframes (YouTube, Sketchfab, Figma, Clirio Azure) are converted at build time to click-to-load placeholders via `src/lib/external-embeds.ts`. Unregistered iframe hosts **fail the build**.
+- Gists are inlined at build time (`remark-gist-embed`); no GitHub requests on page view.
 
 ## Testing
 
@@ -126,6 +143,18 @@ npm run test:content && npm run build && npm run test:verify
 - **Merge to `main`:** deploy workflow runs `check`, `test:unit`, `test:content`, build, `test:verify`, then FTPS upload of `./dist/`
 - Deploy uses `state-name: .ftp-deploy-sync-state-dist.json` and `dangerous-clean-slate: false` so the legacy full-repo FTP state cannot delete `/subdomains/*`; remove stale PHP files on the server root manually once after cutover
 - `subdomains/` are deployed manually via FTPS (not in CI)
+
+## Trello (Portfolio SCRUM)
+
+Work is tracked on the **Portfolio SCRUM** board via MCP (`project-0-htdocs-trello`). Credentials: `TRELLO_API_KEY`, `TRELLO_TOKEN`, `TRELLO_BOARD_ID` in Cursor MCP env (not in git).
+
+| Rule | Detail |
+|------|--------|
+| Card refs | `#127` = Trello `idShort`; use `#127: Card title` + bullet sub-tasks in **Agent Notes** |
+| Commits | Footer `Refs: Trello #127`; after each commit, **comment** on each linked card with full SHA + subject |
+| Descriptions | Agents edit **only** under `## Agent Notes`; never change text above that heading |
+
+Skills: `.cursor/skills/trello-workflow/SKILL.md`, `.cursor/skills/commit-messages/SKILL.md`. Rule: `.cursor/rules/trello-workflow.mdc`.
 
 ## Never Edit or Commit
 

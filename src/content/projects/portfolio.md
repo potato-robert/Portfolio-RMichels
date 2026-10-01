@@ -26,8 +26,8 @@ order: 8
   <section class="sectionMedia">
     <div class="mediaColumn">
       <figure>
-        <img src="/assets/img/portfolio/erDiagram.png" alt="ER Diagram of the portfolio database.">
-        <figcaption class="center">ER Diagram of the portfolio database.</figcaption>
+        <img src="/assets/img/portfolio/erDiagram.png" alt="Historical ER diagram of the portfolio database (pre-Astro LAMP stack).">
+        <figcaption class="center">Historical ER diagram of the portfolio database (pre-Astro LAMP stack).</figcaption>
       </figure>
     </div>
   </section>

@@ -111,4 +111,12 @@ export function initProjectLightbox() {
   (window as Window & { viewImage?: typeof openAt }).viewImage = openAt;
 }
 
-initProjectLightbox();
+function bootProjectLightbox(): void {
+  if (!document.getElementById('projContent')) {
+    requestAnimationFrame(bootProjectLightbox);
+    return;
+  }
+  initProjectLightbox();
+}
+
+bootProjectLightbox();

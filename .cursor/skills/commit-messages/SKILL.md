@@ -2,10 +2,10 @@
 name: commit-messages
 description: >-
   Analyze the working copy, split changes into logical Conventional Commits
-  when appropriate, commit them sequentially, and always suggest a copy-paste
-  GitHub PR message summarizing unmerged commits. Use when the user asks to
-  commit, write commit messages, stage changes, review the working copy, or
-  wants a PR summary.
+  when appropriate, commit them sequentially, link each commit to Trello cards,
+  post Trello commit comments, and always suggest a copy-paste GitHub PR
+  message summarizing unmerged commits. Use when the user asks to commit, write
+  commit messages, stage changes, review the working copy, or wants a PR summary.
 ---
 
 # Commit Messages
@@ -17,9 +17,21 @@ Use **[Conventional Commits](https://www.conventionalcommits.org/)** — the de-
 ```
 <type>[optional scope]: <description>
 
-[optional body]
+- <what changed or why, one bullet per logical slice>
+- <another bullet if needed>
 
-[optional footer(s)]
+Refs: Trello #127[, Trello #140 …]
+```
+
+Canonical example:
+
+```
+chore(cursor): add Trello workflow for agent commits
+
+- Add trello-workflow skill and rule: link commits via Refs footers, post SHA comments on cards, and restrict description edits to Agent Notes.
+- Extend commit-messages skill with required Trello steps.
+
+Refs: Trello #128
 ```
 
 ### Subject line
@@ -50,29 +62,34 @@ Use **[Conventional Commits](https://www.conventionalcommits.org/)** — the de-
 | `chore` | Maintenance that doesn't fit above (tooling config, housekeeping) |
 | `revert` | Revert a prior commit |
 
-### Body (optional)
+### Body (bullet list)
 
-Separate from the subject with a blank line. Use when the *why* isn't obvious:
+Separate from the subject with a **blank line**. Use **`-` bullets** (not paragraphs):
 
-- Explain motivation and contrast with previous behavior
-- Wrap at ~72 characters
-- Do not repeat the subject
+- **One bullet per logical slice** of the commit (file group, behavior, or outcome)
+- Each bullet is a **full sentence** or clear phrase; capitalize the first word; end with a period when it reads as a sentence
+- Cover **what changed** and, when useful, **why** — do not repeat the subject line verbatim
+- Wrap long bullets at ~72 characters when practical
+- Omit the body only when the subject fully describes a **single-file / trivial** change; still include the Trello footer
 
-### Footer (optional)
+For breaking changes, add a `BREAKING CHANGE:` footer **above** `Refs:` (prose is ok there).
+
+### Footer
 
 ```
 BREAKING CHANGE: <description of what broke and how to migrate>
-Refs: #123
+Refs: Trello #127, Trello #140
 ```
 
+- **`Refs: Trello #<idShort>` is required on every commit** — one or more Portfolio SCRUM cards (see `.cursor/skills/trello-workflow/SKILL.md`). Ask the user for card numbers if missing.
 - `BREAKING CHANGE` (or `type!:` in the subject, e.g. `feat!:`) signals a major-version bump
-- Issue/PR references go in the footer, not the subject
+- GitHub issue refs may appear **after** Trello refs on the same `Refs:` line if needed
 
 ## Writing rules
 
 1. **One logical change per commit** — each commit should build and make sense on its own.
 2. **Subject = what + where** — `fix(e2e): correct gallery selector after layout change`
-3. **Body = why** — only when the subject alone isn't enough.
+3. **Body = `-` bullets** — one line per slice; skip only for trivial single-purpose commits.
 4. **Scope is optional but encouraged** when it aids navigation in `git log`.
 5. **Never commit secrets** — exclude `nopublicaccess/`, credentials, `.env`, and similar paths.
 
@@ -175,14 +192,22 @@ git diff --cached
 git commit -m "$(cat <<'EOF'
 <type>(<scope>): <description>
 
-<optional body>
+- <bullet one>
+- <bullet two>
 
+Refs: Trello #127
 EOF
 )"
 
 # Confirm clean staging area before the next group
 git status
 ```
+
+After **each** successful commit in this group:
+
+1. `git rev-parse HEAD` for the full SHA.
+2. On **each** card listed in `Refs:`, call Trello MCP `add_comment` with SHA + subject (template in `trello-workflow` skill).
+3. Update **Agent Notes** on those cards if the commit completes or changes planned work.
 
 Use `git add -p` when a single file contains hunks belonging to different commits.
 
@@ -255,6 +280,15 @@ Body template:
 - Reorder project filter roles for job-application focus
 ````
 
+## Trello (required)
+
+Follow `.cursor/skills/trello-workflow/SKILL.md` in parallel with this skill.
+
+- [ ] Linked Trello card(s) confirmed before the first commit in the session
+- [ ] Each commit footer includes `Refs: Trello #…`
+- [ ] Trello comment posted on each linked card after each commit
+- [ ] Agent Notes updated when task status changed; human description above `## Agent Notes` untouched
+
 ## Quick checklist
 
 - [ ] Full working copy surveyed before first `git add`
@@ -263,7 +297,7 @@ Body template:
 - [ ] `git diff --cached` reviewed before every `git commit`
 - [ ] Commits applied sequentially, not batched at the end
 - [ ] Subject matches `type[(scope)]: description` — lowercase, imperative, no period
-- [ ] Body explains *why*, not *what*
+- [ ] Body uses `-` bullets (unless trivial single-purpose commit)
 - [ ] Breaking changes flagged with `!` or `BREAKING CHANGE:` footer
 - [ ] No secrets or unintended build artifacts staged
 - [ ] PR title + markdown summary suggested (grouped bullets, no test plan)
