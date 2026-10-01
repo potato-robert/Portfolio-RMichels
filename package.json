@@ -26,7 +26,7 @@
     "astro": "^5.7.10",
     "lenis": "^1.1.14",
     "photoswipe": "^5.4.4",
-    "three": "^0.175.0",
+    "three": "^0.186.1",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
