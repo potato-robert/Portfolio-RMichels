@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { project, locale } = Astro.props;
-const { html: rawHtml } = await renderProjectMarkdown(project.body ?? '', project.data);
+const { html: rawHtml } = await renderProjectMarkdown(project.body ?? '', project.data, locale);
 const { html, toc } = prepareProjectContent(rawHtml);
 const showToc = toc.length >= 2;
 ---
