@@ -3,9 +3,10 @@ name: commit-messages
 description: >-
   Analyze the working copy, split changes into logical Conventional Commits
   when appropriate, commit them sequentially, link each commit to Trello cards,
-  post Trello commit comments, and always suggest a copy-paste GitHub PR
-  message summarizing unmerged commits. Use when the user asks to commit, write
-  commit messages, stage changes, review the working copy, or wants a PR summary.
+  post Trello commit comments, and always suggest a copy-paste GitHub PR title
+  and summary from origin/main..origin/dev (prose, themed ### sections, Trello
+  Refs). Use when the user asks to commit, write commit messages, stage changes,
+  review the working copy, or wants a PR summary.
 ---
 
 # Commit Messages
@@ -103,7 +104,7 @@ Refs: Trello #127, Trello #140
 | `e2e` | Playwright tests |
 | `islands` | Client-side TypeScript islands |
 | `styles` | Sass / CSS |
-| `deploy` | FTPS, hosting, `.htaccess` |
+| `deploy` | SFTP/Hostinger, hosting, `.htaccess` |
 | `deps` | `package.json` / lockfile updates |
 
 Omit scope when the change is repo-wide or doesn't fit a single area.
@@ -228,56 +229,88 @@ Created 3 commits:
 
 ### 5. Suggest a PR message (always)
 
-**After every commit session**, suggest a PR message for the unmerged branch. Do this even when the user only asked to commit — they should not need a separate request.
+**After every commit session** (and when the user asks for a PR title/summary), suggest a **current** PR message for merging **`dev` into `main`**. Do this even when the user only asked to commit — they should not need a separate request.
 
-Determine the base branch (`main` unless the user specifies otherwise):
+The summary must reflect **everything on `dev` that is not on `main`**, not only commits from the current session.
+
+#### Gather branch delta (required)
+
+Run (in parallel when useful):
 
 ```bash
-git log main..HEAD --oneline
-git branch --show-current
+git fetch origin main dev
+git log origin/main..origin/dev --oneline
+git log origin/main..origin/dev --format='%s%n%b---'
 ```
+
+If `origin` is unavailable, use local refs: `git log main..dev --oneline`.
+
+- **Headline theme** — read commit subjects and bodies; skim `git diff origin/main...origin/dev --stat` when grouping is unclear.
+- **Trello cards** — collect `Refs: Trello #…` from commits in the range; use those numbers in subsection headings and in the footer. If commits lack refs, ask the user or omit card numbers in headings (still use `Refs:` only for cards you can justify from the branch).
+
+When the user names a different base or head branch, use that pair instead; default remains **`dev` → `main`**.
 
 #### PR message format
 
 Output **two parts**:
 
-1. **Title** — one short line for the GitHub PR title field (≤ ~72 chars). Name the main theme, not every commit.
-2. **Body** — markdown only, wrapped in a fenced `markdown` code block so the user can copy-paste into GitHub.
+1. **Title** — one line for GitHub’s title field (≤ ~72 chars). Lead with the main user-facing theme (often privacy, content, or a named feature), not a commit laundry list.
+2. **Body** — markdown in a fenced `markdown` code block for copy-paste.
 
-**No test plan.** Summary only.
+**No test plan** unless the user explicitly asks for one.
 
-Body template:
+Body structure:
 
 ````markdown
 ## Summary
 
-- <grouped change 1>
-- <grouped change 2>
-- …
+<One short paragraph: what this PR ships for rmichels.com and any notable bundled work (e.g. “Also bundles … on `dev`”). Plain language; past tense or present perfect is fine.>
+
+### <Theme> (#<idShort>)
+- <bullet>
+- <bullet>
+
+### <Another theme> (#<idShort> or no card)
+- <bullet>
+
+Refs: Trello #127, #128
 ````
 
-#### Writing rules
+Rules for the body:
 
-- **Group related commits** into one bullet — do not list one bullet per commit unless there are ≤3 commits total.
-- **Past tense or neutral phrasing** is fine in bullets (`Add …`, `Fix …`, `Refactor …`); match commit intent, not commit subject verbatim.
-- **Order bullets** by importance: user-facing changes first, then refactors/tooling/chore last.
-- **Chore-only commits** (cursor skills, formatting) can be omitted from the summary unless they are the whole branch.
-- If the branch has a single commit, one bullet is enough.
+- **`## Summary`** — always start with a **prose paragraph** (2–4 sentences), then optional **`###` subsections** for each theme.
+- **Subsection headings** — short label plus Trello `#idShort` when that slice maps to a card (e.g. `### Privacy & legal (#127)`). Omit `(#…)` when there is no linked card.
+- **Bullets** — under each `###`, use `-` bullets; one idea per bullet; **bold** sparingly for product terms (e.g. **Cookieless Umami**).
+- **Group by theme**, not one bullet per commit. Typical groups: privacy/legal, site quality/CI, content, agent/docs, subdomain merges.
+- **Order** — user-facing and legal first; CI/tooling/agent last unless the PR is chore-only.
+- **Footer** — end with `Refs: Trello #…` listing every card referenced in the PR (comma-separated `#idShort`, same line as in commits).
+- **Chore-only** cursor/skills commits can fold into an “Agent / docs” subsection or be omitted if trivial.
 
 #### Example output
 
-**Title:** `WebGL refactor, content pipeline, and layout polish`
+**Title:** `Privacy: Termly out, Umami in, click-to-load embeds`
 
 ````markdown
 ## Summary
 
-- Render gist embeds as static Shiki code blocks at build time; fix project page HTML from markdown blank lines; add gallery alt text and refine team metadata
-- Extract shared WebGL modules with performance tiers; update architecture docs
-- Refactor content validation around a shared schema; run check/tests before deploy
-- Archive legacy LAMP PHP/JS artifacts
-- Fix project panel hero distortion; tighten content margins; refactor about page to CSS grid; remove resume links and refresh bio copy
-- Fix landing model overflow and responsive see-more button; reset project tile parallax on breakpoint change
-- Reorder project filter roles for job-application focus
+Ships a privacy-first stack for rmichels.com: no cookie banner, no GA4, first-party EN/DE legal copy, and explicit consent before third-party embeds load. Also bundles recent dev improvements (a11y, filters, CI/E2E, deploy headers) and merges tourguide subdomain legal updates.
+
+### Privacy & legal (#127)
+- Replace Termly HTML with Astro components: Privacy Policy (EN/DE), Legal Notice / Impressum, and a **Privacy choices** panel (analytics opt-out, forget remembered embeds).
+- **Cookieless Umami** on production only, respecting DNT/GPC/opt-out; legacy `_ga` / consent cookies cleared on boot.
+- Case-study **iframes** (YouTube, Sketchfab, Figma, Clirio) become click-to-load placeholders at build time; unregistered hosts fail the build.
+- Role filters use **`sessionStorage`** (`rmVisitorFilter`) instead of consent-gated cookies.
+
+### Site quality (already on `dev`)
+- Menu/skip-link a11y, Lenis/page-boot split, OR filter semantics, security headers + woff2 on deploy.
+- Stronger CI: E2E on deploy, extended `verify-build` (legal routes + dist scan for raw third-party iframes/scripts).
+- Tourguide case-study copy + subdomain legal terms merge.
+
+### Agent / docs (#128)
+- Trello-linked commit workflow; `AGENTS.md` documents privacy, filters, embeds, and verification loop.
+- `dev.bat` — Windows shortcut for `npm run dev`.
+
+Refs: Trello #127, #128
 ````
 
 ## Trello (required)
@@ -300,7 +333,7 @@ Follow `.cursor/skills/trello-workflow/SKILL.md` in parallel with this skill.
 - [ ] Body uses `-` bullets (unless trivial single-purpose commit)
 - [ ] Breaking changes flagged with `!` or `BREAKING CHANGE:` footer
 - [ ] No secrets or unintended build artifacts staged
-- [ ] PR title + markdown summary suggested (grouped bullets, no test plan)
+- [ ] PR title + markdown summary suggested (`origin/main..origin/dev`, prose + `###` sections + Trello `Refs`, no test plan unless asked)
 
 ## Additional resources
 

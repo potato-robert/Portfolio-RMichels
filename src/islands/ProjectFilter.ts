@@ -26,7 +26,7 @@ function applyActiveFilters() {
       detail: {},
     }),
   );
-  setTimeout(sortProjects, 10);
+  sortProjects();
   window.locoScroll?.update();
 }
 

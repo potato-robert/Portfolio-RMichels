@@ -1,11 +1,11 @@
 # VLCouch subdomain — deploy
 
-Manual FTPS deploy only (not part of Astro CI). See [AGENTS.md](../../AGENTS.md).
+Manual SFTP deploy only (not part of Astro CI). See [AGENTS.md](../../AGENTS.md) and [docs/DEPLOY.md](../../docs/DEPLOY.md).
 
 ## Prerequisites
 
 1. DNS A/CNAME record for `vlcouch.rmichels.com` pointing at the same host as `tourguide.rmichels.com`
-2. Hostinger FTPS credentials (same as other subdomain deploys)
+2. Hostinger SFTP access (port 65002; see `docs/DEPLOY.md`)
 
 ## Deploy steps
 

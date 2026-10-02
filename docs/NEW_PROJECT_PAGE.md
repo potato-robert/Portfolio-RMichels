@@ -42,7 +42,7 @@ Body markdown converted from case study sections.
 |-------|------|
 | Markdown filename | `src/content/projects/{slug}.md` — basename (without `.md`) is the canonical slug |
 | Frontmatter | `slug: yourSlug` must **match the filename** (`npm run test:content` fails on mismatch) |
-| Public URL | `/yourSlug` and `/de/yourSlug` — Astro generates routes from the **collection entry id** (filename), not from a field in [`config.ts`](src/content/config.ts) |
+| Public URL | `/yourSlug` and `/de/yourSlug` — Astro generates routes from the **collection entry id** (filename), not from a field in [`content.config.ts`](src/content.config.ts) |
 | Runtime code | [`getProjectSlug()`](src/lib/projects.ts) returns `project.id` with `.md` stripped — same value as the filename slug |
 | Hero / gallery assets | `public/assets/img/{slug}.jpg` and `public/assets/img/{slug}/lqip/*` use the same string |
 
@@ -52,7 +52,7 @@ Frontmatter must match between EN and DE files for the same slug (validated by `
 
 ### Schema parity checklist
 
-When you add or change project frontmatter fields in [`src/content/config.ts`](src/content/config.ts), also update:
+When you add or change project frontmatter fields in [`src/content.config.ts`](src/content.config.ts), also update:
 
 - [`scripts/content-schema.mjs`](scripts/content-schema.mjs) — Zod mirror used by `validate-content.mjs`
 - `PARITY_FIELDS` in the same file — list fields that must match EN/DE for each slug
@@ -183,7 +183,7 @@ npm run dev
 
 ## 7. Deploy
 
-Push to `main` → CI builds `dist/` → FTPS deploy. No database or new PHP file required.
+Push to `main` → CI builds `dist/` → SFTP deploy. No database or new PHP file required.
 
 ## Slug coupling
 

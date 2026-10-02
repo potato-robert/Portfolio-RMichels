@@ -1,9 +1,17 @@
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://rmichels.com',
   output: 'static',
+  compressHTML: true,
+  markdown: {
+    processor: unified({
+      gfm: true,
+      smartypants: true,
+    }),
+  },
   build: {
     format: 'directory',
   },

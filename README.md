@@ -1,6 +1,6 @@
 # Portfolio-RMichels
 
-[<img alt="Deployed with FTP Deploy Action" src="https://img.shields.io/badge/Deployed With-FTP DEPLOY ACTION-%3CCOLOR%3E?style=for-the-badge&color=228c8c">](https://github.com/SamKirkland/FTP-Deploy-Action)
+[<img alt="Deployed with SFTP Deploy Action" src="https://img.shields.io/badge/Deployed With-SFTP Deploy-%3CCOLOR%3E?style=for-the-badge&color=228c8c">](https://github.com/wlixcc/SFTP-Deploy-Action)
 
 [Hosted Portfolio Website](https://rmichels.com)
 
@@ -17,4 +17,4 @@ My personal portfolio website which serves as an online presence for my software
 - **Local dev:** `npm install` then `npm run dev` (http://localhost:4321)
 - **Build:** `npm run build` → output in `dist/`
 - **Assets:** `cp -r assets public/assets` before build (CI does this automatically)
-- Hosted with Hostinger via GitHub Actions FTPS deploy
+- Hosted with Hostinger via GitHub Actions SFTP deploy (see [docs/DEPLOY.md](docs/DEPLOY.md))

@@ -1,9 +1,10 @@
-name: Deploy to Hostinger via FTPS
+name: Deploy to Hostinger via SFTP
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,16 +16,17 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           lfs: true
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -54,19 +56,18 @@ jobs:
       - name: E2E tests
         run: npm run test:e2e
 
-      - name: Deploy dist/ to Hostinger via FTPS
-        # Note: stale PHP files on the server root must be removed manually once after cutover.
-        # Use a dist-specific state file so the legacy full-repo state does not delete /subdomains/*.
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      # SFTP login root is /home/USER; the live site is public_html/ (same as legacy FTPS server-dir ./ when FTP was rooted there).
+      # No remote delete: upload/overwrite only. Never touch public_html/subdomains/ (manual deploys only).
+      - name: Deploy dist/ to Hostinger via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
-          server: ${{ secrets.HOSTINGER_FTPS_SERVER }}
-          username: ${{ secrets.HOSTINGER_FTPS_USERNAME }}
-          password: ${{ secrets.HOSTINGER_FTPS_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist/
-          state-name: .ftp-deploy-sync-state-dist.json
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/subdomains/**
+          server: ${{ secrets.HOSTINGER_SFTP_HOST }}
+          username: ${{ secrets.HOSTINGER_SFTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_SFTP_PASSWORD }}
+          port: 65002
+          local_path: ./dist/*
+          remote_path: /home/${{ secrets.HOSTINGER_SFTP_USERNAME }}/public_html
+          sftp_only: true
+          delete_remote_files: false
+          rsyncArgs: --exclude=subdomains --exclude=subdomains/**
+          sftpArgs: -o ConnectTimeout=30
