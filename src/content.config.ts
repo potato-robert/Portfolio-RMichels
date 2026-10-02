@@ -1,4 +1,6 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 const projectSchema = z.object({
   name: z.object({ en: z.string(), de: z.string() }),
@@ -17,7 +19,25 @@ const projectSchema = z.object({
   order: z.number().optional(),
 });
 
+const markdownId = {
+  generateId: ({ entry }: { entry: string }) => entry.replace(/\.md$/i, ''),
+};
+
 export const collections = {
-  projects: defineCollection({ type: 'content', schema: projectSchema }),
-  'projects-de': defineCollection({ type: 'content', schema: projectSchema }),
+  projects: defineCollection({
+    loader: glob({
+      base: './src/content/projects',
+      pattern: '**/*.md',
+      ...markdownId,
+    }),
+    schema: projectSchema,
+  }),
+  'projects-de': defineCollection({
+    loader: glob({
+      base: './src/content/projects-de',
+      pattern: '**/*.md',
+      ...markdownId,
+    }),
+    schema: projectSchema,
+  }),
 };

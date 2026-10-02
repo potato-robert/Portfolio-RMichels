@@ -1,5 +1,5 @@
 /**
- * Zod schema mirrored from src/content/config.ts for validate-content.mjs.
+ * Zod schema mirrored from src/content.config.ts for validate-content.mjs.
  * Keep in sync when project frontmatter fields change.
  */
 import { z } from 'zod';
