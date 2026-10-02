@@ -5,10 +5,12 @@ import {
   CONTROLLER_NAME,
   EXTERNAL_MEDIA_PROVIDERS,
   formatPrivacyLastUpdated,
+  getPrivacySettingsPath,
 } from '../../lib/legal';
 
 const lastUpdated = formatPrivacyLastUpdated('en');
 const legalNoticeHref = '/legalNotice';
+const privacySettingsHref = getPrivacySettingsPath('en');
 ---
 
 <section class="sectionText privacy" lang="en">
@@ -19,14 +21,16 @@ const legalNoticeHref = '/legalNotice';
     This Privacy Policy describes how {CONTROLLER_NAME} (“I”, “me”) handles information when you visit
     <a href="https://rmichels.com">rmichels.com</a> (the “Site”). I am based in {CONTROLLER_LOCATION}.
     Questions: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
-    See also the <a href={legalNoticeHref}>Legal Notice</a>.
+    See also the <a href={legalNoticeHref}>Legal Notice</a> and <a href={privacySettingsHref}
+      >Privacy settings</a
+    >.
   </p>
 
   <h2>Summary</h2>
   <ul>
     <li>The Site does <strong>not</strong> use advertising or cross-site tracking cookies.</li>
     <li>I use <strong>cookieless, EU-hosted analytics</strong> (Umami) to understand traffic, unless you opt out or send Do Not Track / Global Privacy Control.</li>
-    <li>Embedded videos and interactive demos (YouTube, Sketchfab, Figma, Clirio View) load <strong>only when you click to load them</strong>.</li>
+    <li>Embedded videos and interactive demos (YouTube, Sketchfab, Figma, Clirio View) load <strong>only when you click to load them</strong>, unless you opt in on <a href={privacySettingsHref}>Privacy settings</a>.</li>
     <li>Code samples on case studies are rendered at build time; your browser does not load GitHub unless you follow a link.</li>
     <li>I do not sell personal information.</li>
   </ul>
@@ -61,7 +65,7 @@ const legalNoticeHref = '/legalNotice';
 
   <h3>Analytics</h3>
   <p>
-    Unless you opt out (see <a href="#choices">Your choices</a>) or your browser sends Do Not Track or
+    Unless you opt out (see <a href={privacySettingsHref}>Privacy settings</a>) or your browser sends Do Not Track or
     Global Privacy Control, I use <strong>Umami Analytics</strong> (Umami Software, EU cloud region) to
     collect aggregated usage data such as pages viewed and referrer. Umami is configured without
     cookies and without storing full IP addresses. Analytics scripts are limited to production on
@@ -70,7 +74,7 @@ const legalNoticeHref = '/legalNotice';
   <p>
     <strong>Legal bases:</strong> Canada (PIPEDA) — reasonable purposes with notice; EEA/UK (GDPR) —
     legitimate interests in operating and improving the Site (Art. 6(1)(f)), balanced against your
-    rights. You may object at any time via the opt-out in <a href="#choices">Your choices</a>.
+    rights. You may object at any time via the opt-out on <a href={privacySettingsHref}>Privacy settings</a>.
   </p>
 
   <h3>Application links</h3>
@@ -84,9 +88,11 @@ const legalNoticeHref = '/legalNotice';
   <h3 id="external-media">External media (embeds)</h3>
   <p>
     Some case studies offer embedded content from third parties. Until you click <strong>Load
-    content</strong>, no request is sent to these providers. If you choose <strong>Always load</strong>
-    for a provider, that choice is stored in your browser (see table below) until you clear it on this
-    page.
+    content</strong>, no request is sent to these providers. You may opt in on <a href={privacySettingsHref}
+      >Privacy settings</a
+    > to <strong>always load embeds on this device</strong>, or use <strong>Always load embedded content</strong>
+    on a case study (same choice for all listed providers). Those preferences are stored in your browser
+    (see table below) until you change them on Privacy settings.
   </p>
   <ul>
     {
@@ -127,8 +133,8 @@ const legalNoticeHref = '/legalNotice';
     <tbody>
       <tr>
         <td><code>rmExternalMedia</code></td>
-        <td>Remembers which embed providers you chose to always load</td>
-        <td>Until you remove entries under Your choices</td>
+        <td>Remembers embed providers you chose to always load (site-wide or per provider)</td>
+        <td>Until you change or remove entries on Privacy settings</td>
       </tr>
       <tr>
         <td><code>rmVisitorFilter</code> (session)</td>
@@ -222,15 +228,13 @@ const legalNoticeHref = '/legalNotice';
     Material changes will be described on this page.
   </p>
 
-  <h2 id="choices">Your choices</h2>
-  <div id="privacy-choices-mount" class="privacy-choices" data-privacy-choices></div>
+  <h2>Your choices</h2>
+  <p>
+    Manage analytics and embed preferences on the <a href={privacySettingsHref}>Privacy settings</a> page.
+  </p>
 
   <h2>Contact</h2>
   <p>
     Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ({CONTROLLER_NAME}, {CONTROLLER_LOCATION}).
   </p>
 </section>
-
-<script>
-  import '../../islands/PrivacyChoices.ts';
-</script>

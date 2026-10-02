@@ -1,25 +1,16 @@
 import { ANALYTICS_OPT_OUT_KEY } from '../lib/analytics';
-import { EXTERNAL_MEDIA_PROVIDERS, EXTERNAL_MEDIA_STORAGE_KEY } from '../lib/legal';
-
-type RememberedMedia = Partial<Record<string, boolean>>;
-
-function readRemembered(): RememberedMedia {
-  try {
-    const raw = localStorage.getItem(EXTERNAL_MEDIA_STORAGE_KEY);
-    if (!raw) return {};
-    return JSON.parse(raw) as RememberedMedia;
-  } catch {
-    return {};
-  }
-}
-
-function writeRemembered(map: RememberedMedia): void {
-  try {
-    localStorage.setItem(EXTERNAL_MEDIA_STORAGE_KEY, JSON.stringify(map));
-  } catch {
-    /* ignore */
-  }
-}
+import {
+  clearAllEmbedsRemembered,
+  forgetEmbedProvider,
+  isAllEmbedsRemembered,
+  isAnyEmbedRemembered,
+  isEmbedProviderRemembered,
+  readRememberedMedia,
+  rememberAllEmbeds,
+  rememberEmbedProvider,
+} from '../lib/external-media-prefs';
+import { EXTERNAL_MEDIA_PROVIDERS } from '../lib/legal';
+import { uiCheckboxMarkup } from '../lib/checkbox-markup';
 
 function isGerman(): boolean {
   return document.documentElement.lang === 'de' || window.location.pathname.startsWith('/de/');
@@ -28,28 +19,43 @@ function isGerman(): boolean {
 function strings() {
   if (isGerman()) {
     return {
-      title: 'Einstellungen auf diesem Gerät',
+      analyticsTitle: 'Analytics',
       analytics: 'Analytics deaktivieren',
       analyticsHint:
         'Wenn aktiviert, wird Umami nicht geladen. Do Not Track und Global Privacy Control werden immer respektiert.',
-      analyticsGpc: 'Ihr Browser sendet bereits Do Not Track oder Global Privacy Control — Analytics ist deaktiviert.',
-      embeds: 'Gespeicherte Einbettungen',
-      none: 'Keine Anbieter gespeichert.',
-      forget: 'Vergessen',
+      analyticsGpc:
+        'Ihr Browser sendet bereits Do Not Track oder Global Privacy Control — Analytics ist deaktiviert.',
+      embedsTitle: 'Einbettungen',
+      alwaysLoadAll: 'Alle Einbettungen auf diesem Gerät immer laden',
+      alwaysLoadAllHint:
+        'Fallstudien laden Inhalte Dritter automatisch, ohne vorher auf „Inhalt laden“ zu klicken.',
+      alwaysLoadProvider: 'Immer laden',
+      privacyInfo: 'Datenschutzhinweise',
       reloadHint: 'Seite neu laden, damit Änderungen an Einbettungen wirksam werden.',
     };
   }
   return {
-    title: 'Settings on this device',
+    analyticsTitle: 'Analytics',
     analytics: 'Disable analytics',
     analyticsHint:
       'When enabled, Umami will not load. Do Not Track and Global Privacy Control are always honored.',
     analyticsGpc: 'Your browser already sends Do Not Track or Global Privacy Control — analytics is off.',
-    embeds: 'Remembered embeds',
-    none: 'No providers saved.',
-    forget: 'Forget',
+    embedsTitle: 'Embeds',
+    alwaysLoadAll: 'Always load all embeds on this device',
+    alwaysLoadAllHint:
+      'Case studies will load third-party content automatically without clicking Load content first.',
+    alwaysLoadProvider: 'Always load',
+    privacyInfo: 'Privacy information',
     reloadHint: 'Reload the page for embed changes to take effect.',
   };
+}
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function dntOrGpcActive(): boolean {
@@ -59,38 +65,65 @@ function dntOrGpcActive(): boolean {
   return dnt === '1' || dnt === 'yes';
 }
 
+function renderCheckbox(inputAttrs: string, labelText: string, extraClassNames = ''): string {
+  return uiCheckboxMarkup(inputAttrs, escapeHtml(labelText), extraClassNames);
+}
+
+function renderProviderRows(remembered: ReturnType<typeof readRememberedMedia>, t: ReturnType<typeof strings>): string {
+  return EXTERNAL_MEDIA_PROVIDERS.map((provider) => {
+    const checked = isEmbedProviderRemembered(provider.id, remembered);
+    const ariaLabel = `${t.alwaysLoadProvider}: ${provider.displayName}`;
+    return `<li class="privacy-choices__provider">
+      <div class="privacy-choices__provider-meta">
+        <span class="privacy-choices__provider-name">${escapeHtml(provider.displayName)}</span>
+        <a class="privacy-choices__provider-link" href="${escapeHtml(provider.privacyUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t.privacyInfo)}</a>
+      </div>
+      ${uiCheckboxMarkup(
+        `data-embed-provider="${escapeHtml(provider.id)}" aria-label="${escapeHtml(ariaLabel)}" ${checked ? 'checked' : ''}`,
+        escapeHtml(t.alwaysLoadProvider),
+        'ui-checkbox--compact',
+      )}
+    </li>`;
+  }).join('');
+}
+
 function render(): void {
   const mount = document.querySelector('[data-privacy-choices]');
   if (!mount) return;
 
   const t = strings();
-  const remembered = readRemembered();
-  const providerIds = Object.keys(remembered).filter((id) => remembered[id]);
+  const remembered = readRememberedMedia();
 
   const analyticsOptOut = localStorage.getItem(ANALYTICS_OPT_OUT_KEY) === '1';
   const gpc = dntOrGpcActive();
-
-  let embedList = `<p>${t.none}</p>`;
-  if (providerIds.length > 0) {
-    embedList = `<ul class="privacy-choices__list">${providerIds
-      .map((id) => {
-        const label = EXTERNAL_MEDIA_PROVIDERS.find((p) => p.id === id)?.displayName ?? id;
-        return `<li><span>${label}</span><button type="button" data-forget-embed="${id}">${t.forget}</button></li>`;
-      })
-      .join('')}</ul><p><small>${t.reloadHint}</small></p>`;
-  }
+  const allEmbeds = isAllEmbedsRemembered(remembered);
+  const someEmbeds = isAnyEmbedRemembered(remembered) && !allEmbeds;
 
   mount.innerHTML = `
-    <h3>${t.title}</h3>
-    <div class="privacy-choices__row">
-      <label>
-        <input type="checkbox" id="privacyAnalyticsOptOut" ${analyticsOptOut ? 'checked' : ''} ${gpc ? 'disabled' : ''} />
-        ${t.analytics}
-      </label>
-    </div>
-    <p><small>${gpc ? t.analyticsGpc : t.analyticsHint}</small></p>
-    <h3>${t.embeds}</h3>
-    ${embedList}
+    <section class="privacy-choices__block" aria-labelledby="privacy-analytics-heading">
+      <h2 id="privacy-analytics-heading">${escapeHtml(t.analyticsTitle)}</h2>
+      <div class="privacy-choices__row">
+        ${renderCheckbox(
+          `id="privacyAnalyticsOptOut" ${analyticsOptOut ? 'checked' : ''} ${gpc ? 'disabled' : ''}`,
+          t.analytics,
+          'ui-checkbox--block',
+        )}
+      </div>
+      <p class="privacy-choices__hint">${escapeHtml(gpc ? t.analyticsGpc : t.analyticsHint)}</p>
+    </section>
+    <section class="privacy-choices__block" aria-labelledby="privacy-embeds-heading">
+      <h2 id="privacy-embeds-heading">${escapeHtml(t.embedsTitle)}</h2>
+      <p class="privacy-choices__lede">${escapeHtml(t.alwaysLoadAllHint)}</p>
+      <div class="privacy-choices__row">
+        ${renderCheckbox(
+          `id="privacyAlwaysLoadEmbeds" ${allEmbeds ? 'checked' : ''}`,
+          t.alwaysLoadAll,
+          'ui-checkbox--block',
+        )}
+      </div>
+      <ul class="privacy-choices__providers">${renderProviderRows(remembered, t)}</ul>
+      <p class="privacy-choices__hint">${escapeHtml(t.reloadHint)}</p>
+    </section>
   `;
 
   const optOut = mount.querySelector<HTMLInputElement>('#privacyAnalyticsOptOut');
@@ -102,13 +135,28 @@ function render(): void {
     }
   });
 
-  mount.querySelectorAll<HTMLButtonElement>('[data-forget-embed]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.forgetEmbed;
+  const alwaysLoadEmbeds = mount.querySelector<HTMLInputElement>('#privacyAlwaysLoadEmbeds');
+  if (alwaysLoadEmbeds && someEmbeds) {
+    alwaysLoadEmbeds.indeterminate = true;
+  }
+  alwaysLoadEmbeds?.addEventListener('change', () => {
+    if (alwaysLoadEmbeds.checked) {
+      rememberAllEmbeds();
+    } else {
+      clearAllEmbedsRemembered();
+    }
+    render();
+  });
+
+  mount.querySelectorAll<HTMLInputElement>('[data-embed-provider]').forEach((input) => {
+    input.addEventListener('change', () => {
+      const id = input.dataset.embedProvider;
       if (!id) return;
-      const map = readRemembered();
-      delete map[id];
-      writeRemembered(map);
+      if (input.checked) {
+        rememberEmbedProvider(id);
+      } else {
+        forgetEmbedProvider(id);
+      }
       render();
     });
   });

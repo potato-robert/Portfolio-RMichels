@@ -30,11 +30,13 @@ test.describe('privacy and embeds', () => {
     await expect(placeholder.locator('iframe')).toHaveCount(1);
   });
 
-  test('remember embed provider persists in localStorage', async ({ page }) => {
+  test('always load embedded content button persists all providers', async ({ page }) => {
     await page.goto('/pavilions');
     const placeholder = page.locator('[data-external-embed][data-provider="youtube"]').first();
-    await placeholder.locator('[data-embed-remember]').check();
-    await placeholder.locator('[data-embed-load]').click();
+    await placeholder.locator('[data-embed-load-all]').click();
+    const stored = await page.evaluate(() => localStorage.getItem('rmExternalMedia'));
+    expect(stored).toContain('"youtube":true');
+    expect(stored).toContain('"clirio":true');
     await page.reload();
     await expect(page.locator('[data-external-embed][data-provider="youtube"]').first().locator('iframe')).toHaveCount(1);
   });
@@ -42,6 +44,16 @@ test.describe('privacy and embeds', () => {
   test('German privacy page is in German', async ({ page }) => {
     await page.goto('/de/privacyPolicy');
     await expect(page.locator('section.privacy[lang="de"] h1')).toHaveText('Datenschutzerklärung');
+  });
+
+  test('privacy settings page renders controls', async ({ page }) => {
+    await page.goto('/privacySettings');
+    await expect(page.locator('section.privacy[lang="en"] h1')).toHaveText('Privacy settings');
+    await expect(page.locator('#privacyAlwaysLoadEmbeds')).toBeVisible();
+    await expect(page.locator('[data-embed-provider="youtube"]')).toBeVisible();
+    await expect(page.locator('[data-embed-provider="clirio"]')).toBeVisible();
+    await page.goto('/de/privacySettings');
+    await expect(page.locator('section.privacy[lang="de"] h1')).toHaveText('Privacy-Einstellungen');
   });
 
   test('legal notice routes render', async ({ page }) => {
@@ -54,10 +66,32 @@ test.describe('privacy and embeds', () => {
   test('forget remembered embed on privacy choices', async ({ page }) => {
     await page.goto('/pavilions');
     const placeholder = page.locator('[data-external-embed][data-provider="youtube"]').first();
-    await placeholder.locator('[data-embed-remember]').check();
-    await placeholder.locator('[data-embed-load]').click();
-    await page.goto('/privacyPolicy');
-    await page.locator('[data-forget-embed="youtube"]').click();
+    await placeholder.locator('[data-embed-load-all]').click();
+    await page.goto('/privacySettings');
+    await page.locator('[data-embed-provider="youtube"]').uncheck();
+    const stored = await page.evaluate(() => localStorage.getItem('rmExternalMedia'));
+    expect(stored).not.toContain('"youtube":true');
+    expect(stored).toContain('"clirio":true');
+  });
+
+  test('always load all embeds on privacy choices persists providers', async ({ page }) => {
+    await page.goto('/privacySettings');
+    await page.locator('#privacyAlwaysLoadEmbeds').check();
+    const stored = await page.evaluate(() => localStorage.getItem('rmExternalMedia'));
+    expect(stored).toContain('"youtube":true');
+    expect(stored).toContain('"sketchfab":true');
+    expect(stored).toContain('"figma":true');
+    expect(stored).toContain('"clirio":true');
+    await page.goto('/pavilions');
+    await expect(
+      page.locator('[data-external-embed][data-provider="youtube"]').first().locator('iframe'),
+    ).toHaveCount(1);
+  });
+
+  test('uncheck always load all embeds clears storage', async ({ page }) => {
+    await page.goto('/privacySettings');
+    await page.locator('#privacyAlwaysLoadEmbeds').check();
+    await page.locator('#privacyAlwaysLoadEmbeds').uncheck();
     const stored = await page.evaluate(() => localStorage.getItem('rmExternalMedia'));
     expect(stored).toBe('{}');
   });

@@ -1,6 +1,8 @@
 ---
+import { getPrivacySettingsPath } from '../lib/legal';
 import { t, type Locale } from '../lib/i18n';
 import Icon from './Icon.astro';
+import Checkbox from './Checkbox.astro';
 
 interface Props {
   locale: Locale;
@@ -11,6 +13,7 @@ const { locale, pageType = 'default' } = Astro.props;
 const showContact = pageType !== 'about';
 
 const privacyHref = locale === 'de' ? '/de/privacyPolicy' : '/privacyPolicy';
+const privacySettingsHref = getPrivacySettingsPath(locale);
 const legalNoticeHref = locale === 'de' ? '/de/legalNotice' : '/legalNotice';
 const portfolioHref = locale === 'de' ? '/de/portfolio' : '/portfolio';
 const year = new Date().getFullYear();
@@ -41,13 +44,12 @@ const year = new Date().getFullYear();
         {t('with_astro', locale)}
       </small>
       <small>{t('copyright', locale)} &copy; {year} {t('rights_reserved', locale)}</small>
-      <label class="toggle-label">
-        <input type="checkbox" id="lenisScrollToggle" checked />
+      <Checkbox id="lenisScrollToggle" checked variant="auto">
         <small>{t('enable_smooth_scrolling', locale)}</small>
-      </label>
+      </Checkbox>
       <div class="footerLegal">
         <a href={privacyHref}><small>{t('privacy_policy', locale)}</small></a>
-        <span class="footerLegal__sep" aria-hidden="true">·</span>
+        <a href={privacySettingsHref}><small>{t('privacy_settings', locale)}</small></a>
         <a href={legalNoticeHref}><small>{t('legal_notice', locale)}</small></a>
       </div>
     </div>

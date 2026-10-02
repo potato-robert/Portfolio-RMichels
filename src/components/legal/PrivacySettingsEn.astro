@@ -1,0 +1,22 @@
+---
+import { CONTACT_EMAIL, getPrivacyPolicyPath } from '../../lib/legal';
+
+const privacyPolicyHref = getPrivacyPolicyPath('en');
+---
+
+<section class="sectionText privacy privacy-settings" lang="en" id="choices">
+  <h1>Privacy settings</h1>
+  <p>
+    Manage analytics and embedded content on this device. These controls use browser storage only (no
+    cookies). For context on what is collected and why, see the <a href={privacyPolicyHref}>Privacy
+    Policy</a>.
+  </p>
+  <p>
+    Questions: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+  </p>
+  <div class="privacy-choices" data-privacy-choices></div>
+</section>
+
+<script>
+  import '../../islands/PrivacyChoices.ts';
+</script>

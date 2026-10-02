@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrivacySettingsContent from '../../components/PrivacySettingsContent.astro';
+
+const locale = 'de' as const;
+---
+
+<BaseLayout
+  title="Privacy-Einstellungen | Robert Michels Portfolio"
+  description="Analytics- und Einbettungs-Einstellungen für rmichels.com"
+  locale={locale}
+  pageType="privacy"
+  canonicalPath="/de/privacySettings"
+>
+  <PrivacySettingsContent locale={locale} />
+</BaseLayout>
