@@ -1,11 +1,12 @@
 import type { Locale } from './i18n';
 
-export const CONTACT_EMAIL = 'hi@rmichels.com';
+/** Legal / privacy contact (portfolio general contact remains hi@ in footer). */
+export const CONTACT_EMAIL = 'contact@rmichels.com';
 export const CONTROLLER_NAME = 'Robert Michels';
 export const CONTROLLER_LOCATION = 'British Columbia, Canada';
 
 /** ISO date — update when the privacy policy changes materially. */
-export const PRIVACY_LAST_UPDATED_ISO = '2026-10-01';
+export const PRIVACY_LAST_UPDATED_ISO = '2026-10-03';
 
 export function formatPrivacyLastUpdated(locale: Locale): string {
   const date = new Date(`${PRIVACY_LAST_UPDATED_ISO}T12:00:00Z`);
@@ -47,3 +48,11 @@ export const EXTERNAL_MEDIA_PROVIDERS: ExternalMediaProvider[] = [
 ];
 
 export const EXTERNAL_MEDIA_STORAGE_KEY = 'rmExternalMedia';
+
+export function getPrivacyPolicyPath(locale: Locale): string {
+  return locale === 'de' ? '/de/privacyPolicy' : '/privacyPolicy';
+}
+
+export function getPrivacySettingsPath(locale: Locale): string {
+  return locale === 'de' ? '/de/privacySettings' : '/privacySettings';
+}

@@ -1,0 +1,35 @@
+---
+/**
+ * Custom-styled checkbox (native input). Structure matches `lib/checkbox-markup.ts`.
+ */
+interface Props {
+  id?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  variant?: 'default' | 'block' | 'auto' | 'compact';
+  class?: string;
+}
+
+const { id, checked = false, disabled = false, variant = 'default', class: className } = Astro.props;
+
+const variantClass =
+  variant === 'block'
+    ? 'ui-checkbox--block'
+    : variant === 'auto'
+      ? 'ui-checkbox--auto'
+      : variant === 'compact'
+        ? 'ui-checkbox--compact'
+        : '';
+---
+
+<label class:list={['ui-checkbox', variantClass, className]}>
+  <input
+    type="checkbox"
+    class="ui-checkbox__input"
+    id={id}
+    checked={checked || undefined}
+    disabled={disabled || undefined}
+  />
+  <span class="ui-checkbox__box" aria-hidden="true"></span>
+  <span class="ui-checkbox__text"><slot /></span>
+</label>

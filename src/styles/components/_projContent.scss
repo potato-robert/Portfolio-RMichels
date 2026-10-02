@@ -1,14 +1,7 @@
 #projContent {
 	margin: 12rem 0 10rem 0;
 
-	//____________________________________ Clirio Scan Embed
-	.clirioScanShareEmbed{
-		height: 40rem;
-
-		@include xl {
-			height: 60rem;
-		}
-	}
+	// Clirio embed height: see _external-embed.scss (.external-embed-placeholder.clirioScanShareEmbed)
 
 	//____________________________________ YT
 	.auto-resizable-iframe {

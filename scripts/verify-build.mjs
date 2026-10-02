@@ -126,11 +126,13 @@ const requiredPaths = [
   'projects/index.html',
   'about/index.html',
   'privacyPolicy/index.html',
+  'privacySettings/index.html',
   'legalNotice/index.html',
   'futureEarth/index.html',
   'de/index.html',
   'de/projects/index.html',
   'de/privacyPolicy/index.html',
+  'de/privacySettings/index.html',
   'de/legalNotice/index.html',
   'de/futureEarth/index.html',
 ];

@@ -111,24 +111,41 @@ Omit scope when the change is repo-wide or doesn't fit a single area.
 
 ## Split or single commit?
 
-**Default: analyze the full working copy first.** Do not blindly commit everything in one shot.
+**Default: analyze the full working copy first.** Do not blindly commit everything in one shot — and **do not over-split**. Most agent sessions on this repo should land as **one commit**, or **two** when there is a clear second story (e.g. unrelated CI fix).
+
+### Target commit count
+
+| Situation | Typical commits |
+|-----------|-----------------|
+| One feature, fix, or content slice (incl. styles, tests, i18n, verify-build for that slice) | **1** |
+| Feature + unrelated housekeeping (e.g. `feat` + `chore(cursor)` skill tweak) | **2** |
+| Unrelated changes the user asked to split (e.g. privacy work + new case study) | **2–3**, rarely more |
+
+**Avoid** slicing the same user story into many commits by layer (`ui` → `lib` → `islands` → `style` → `test`). That makes review and PR noise worse without helping bisect.
 
 ### Keep a single commit when
 
-- All changes serve **one story** (e.g. a bug fix and its regression test)
+- All changes serve **one story** (e.g. a bug fix and its regression test, or a feature with its styles and E2E)
 - The diff is **small and atomic** (typo, config tweak, single-file change)
 - Splitting would leave **intermediate commits broken** (feature without its required companion change in the same push)
 - Changes are **tightly coupled** — separating them obscures intent more than it helps review
+- The user asked to **commit** without asking to **split** — default to **one** commit unless the working copy has obvious unrelated hunks
 
 ### Split into multiple commits when
 
-- Changes span **different types** (`feat` + `ci` + `docs`)
-- Changes span **unrelated scopes** (`content` case study + unrelated `islands` fix)
-- A **refactor** is mixed with feature or fix work — isolate the refactor so the functional commit stays readable
+- Changes span **unrelated stories** (privacy page + unrelated case study + CI workflow)
+- Changes span **different types** that are genuinely independent (`feat` + unrelated `ci` deploy fix)
+- A **large refactor** on shared infrastructure must land before a separate feature that depends on it **and** reviewers need that refactor isolated
 - **Generated or bulk files** (lockfile, `dist/`) should be separate from source changes — or excluded entirely unless intentional
-- Any slice would make **`git bisect`** or **`git revert`** painful if kept together
+- Reverting one slice without the other must stay easy **and** the slices are independent stories
 
-When splitting, **commit sequentially** — finish and verify each commit before starting the next. Do not batch-plan five commits and only run `git commit` once at the end.
+When splitting, **commit sequentially** — finish and verify each commit before starting the next. Cap planned splits at **three commits** unless the user explicitly wants finer granularity.
+
+### Over-splitting (avoid)
+
+- Do **not** commit shared UI, lib helpers, islands, Sass, and E2E as separate commits when they ship one feature together.
+- Do **not** split EN/DE routes, matching copy, and styles for the same page into separate commits.
+- Do **not** treat `style` or `test` as mandatory separate commits when they belong to the same story — fold them into the `feat` or `fix` commit.
 
 ### Grouping guide
 
@@ -176,7 +193,7 @@ Plan (3 commits):
 5. `docs`
 6. `chore` / `style` — housekeeping last (unless formatting would obscure an earlier diff)
 
-If unsure whether to split, prefer splitting — but ask the user when groups are ambiguous or equally valid.
+If unsure whether to split, **prefer one commit** for a single story; ask the user when there are clearly unrelated hunks or they asked to split.
 
 ### 3. Commit one group at a time
 
@@ -325,7 +342,7 @@ Follow `.cursor/skills/trello-workflow/SKILL.md` in parallel with this skill.
 ## Quick checklist
 
 - [ ] Full working copy surveyed before first `git add`
-- [ ] Split decision made consciously (single vs multi)
+- [ ] Split decision made consciously (default one commit per story; avoid layer-by-layer splits)
 - [ ] Each commit: one type, one story, builds on its own
 - [ ] `git diff --cached` reviewed before every `git commit`
 - [ ] Commits applied sequentially, not batched at the end

@@ -5,10 +5,12 @@ import {
   CONTROLLER_NAME,
   EXTERNAL_MEDIA_PROVIDERS,
   formatPrivacyLastUpdated,
+  getPrivacySettingsPath,
 } from '../../lib/legal';
 
 const lastUpdated = formatPrivacyLastUpdated('de');
 const legalNoticeHref = '/de/legalNotice';
+const privacySettingsHref = getPrivacySettingsPath('de');
 ---
 
 <section class="sectionText privacy" lang="de">
@@ -19,14 +21,16 @@ const legalNoticeHref = '/de/legalNotice';
     Diese Datenschutzerklärung beschreibt, wie {CONTROLLER_NAME} („ich“) Informationen verarbeitet, wenn
     Sie <a href="https://rmichels.com">rmichels.com</a> (die „Website“) besuchen. Ich lebe in {CONTROLLER_LOCATION}.
     Fragen: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
-    Siehe auch das <a href={legalNoticeHref}>Impressum</a>.
+    Siehe auch das <a href={legalNoticeHref}>Impressum</a> und <a href={privacySettingsHref}
+      >Privacy-Einstellungen</a
+    >.
   </p>
 
   <h2>Kurzfassung</h2>
   <ul>
     <li>Die Website verwendet <strong>keine</strong> Werbe- oder Cross-Site-Tracking-Cookies.</li>
     <li>Ich nutze <strong>cookieless Analytics</strong> (Umami, EU-Region), sofern Sie nicht widersprechen und kein Do Not Track / Global Privacy Control gesendet wird.</li>
-    <li>Eingebettete Medien (YouTube, Sketchfab, Figma, Clirio View) werden <strong>nur nach Ihrem Klick</strong> geladen.</li>
+    <li>Eingebettete Medien (YouTube, Sketchfab, Figma, Clirio View) werden <strong>nur nach Ihrem Klick</strong> geladen, sofern Sie nicht unter <a href={privacySettingsHref}>Privacy-Einstellungen</a> zustimmen.</li>
     <li>Codebeispiele werden beim Build statisch ausgeliefert; GitHub wird nicht automatisch aufgerufen.</li>
     <li>Ich verkaufe keine personenbezogenen Daten.</li>
   </ul>
@@ -59,7 +63,7 @@ const legalNoticeHref = '/de/legalNotice';
 
   <h3>Analytics</h3>
   <p>
-    Sofern Sie nicht widersprechen (siehe <a href="#choices">Ihre Wahlmöglichkeiten</a>) und Ihr Browser
+    Sofern Sie nicht widersprechen (siehe <a href={privacySettingsHref}>Privacy-Einstellungen</a>) und Ihr Browser
     kein Do Not Track oder Global Privacy Control sendet, nutze ich <strong>Umami Analytics</strong>
     (Umami Software, EU-Cloud) für aggregierte Nutzungsstatistiken. Umami ist ohne Cookies und ohne
     Speicherung vollständiger IP-Adressen konfiguriert. Analytics läuft nur auf
@@ -68,7 +72,7 @@ const legalNoticeHref = '/de/legalNotice';
   <p>
     <strong>Rechtsgrundlagen:</strong> Kanada (PIPEDA) — angemessene Zwecke mit Transparenz; EWR/UK (DSGVO)
     — berechtigtes Interesse am Betrieb der Website (Art. 6 Abs. 1 lit. f), abgewogen mit Ihren Rechten.
-    Widerspruch jederzeit über die Opt-out-Option unten.
+    Widerspruch jederzeit über die Opt-out-Option unter <a href={privacySettingsHref}>Privacy-Einstellungen</a>.
   </p>
 
   <h3>Bewerbungslinks</h3>
@@ -81,8 +85,11 @@ const legalNoticeHref = '/de/legalNotice';
   <h3 id="external-media">Externe Medien (Einbettungen)</h3>
   <p>
     Fallstudien können Inhalte Dritter anbieten. Bis Sie <strong>Inhalt laden</strong> klicken, werden keine
-    Anfragen an diese Anbieter gesendet. Mit <strong>immer laden</strong> speichern Sie die Wahl im Browser
-    (siehe Tabelle), bis Sie sie auf dieser Seite entfernen.
+    Anfragen an diese Anbieter gesendet. Unter <a href={privacySettingsHref}>Privacy-Einstellungen</a> können
+    Sie <strong>Einbettungen auf diesem Gerät immer laden</strong> oder in einer Fallstudie <strong
+      >Einbettungen immer laden</strong
+    > (gilt für alle genannten Anbieter). Die Einstellung wird im Browser gespeichert (siehe Tabelle), bis
+    Sie sie auf Privacy-Einstellungen ändern.
   </p>
   <ul>
     {
@@ -122,8 +129,8 @@ const legalNoticeHref = '/de/legalNotice';
     <tbody>
       <tr>
         <td><code>rmExternalMedia</code></td>
-        <td>Merkt, welche Einbettungs-Anbieter immer geladen werden sollen</td>
-        <td>Bis Sie Einträge unter Ihre Wahlmöglichkeiten entfernen</td>
+        <td>Merkt Einbettungs-Anbieter für „immer laden“ (siteweit oder pro Anbieter)</td>
+        <td>Bis Sie Einträge unter Privacy-Einstellungen ändern oder entfernen</td>
       </tr>
       <tr>
         <td><code>rmVisitorFilter</code> (Session)</td>
@@ -207,15 +214,14 @@ const legalNoticeHref = '/de/legalNotice';
   <h2>Änderungen</h2>
   <p>Änderungen werden durch das Datum „Stand“ oben kenntlich gemacht.</p>
 
-  <h2 id="choices">Ihre Wahlmöglichkeiten</h2>
-  <div id="privacy-choices-mount" class="privacy-choices" data-privacy-choices></div>
+  <h2>Ihre Wahlmöglichkeiten</h2>
+  <p>
+    Analytics und Einbettungen verwalten Sie auf der Seite <a href={privacySettingsHref}>Privacy-Einstellungen</a
+    >.
+  </p>
 
   <h2>Kontakt</h2>
   <p>
     E-Mail: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> ({CONTROLLER_NAME}, {CONTROLLER_LOCATION}).
   </p>
 </section>
-
-<script>
-  import '../../islands/PrivacyChoices.ts';
-</script>

@@ -1,0 +1,13 @@
+---
+import type { Locale } from '../lib/i18n';
+import PrivacySettingsDe from './legal/PrivacySettingsDe.astro';
+import PrivacySettingsEn from './legal/PrivacySettingsEn.astro';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+---
+
+{locale === 'de' ? <PrivacySettingsDe /> : <PrivacySettingsEn />}

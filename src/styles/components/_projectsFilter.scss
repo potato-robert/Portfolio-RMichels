@@ -27,64 +27,6 @@
             margin: 0;
             margin-right: 6rem;
         }
-
-        ////////////////////////toggle
-        .onoffswitch {
-            //margin: auto .5rem 0 0;
-            margin: 0;
-            position: relative; width: 5rem; 
-            -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-
-            //hide on small devices
-            display: none;
-            @include sm {
-                display: block;
-            }
-        }
-        .onoffswitch-checkbox {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .onoffswitch-label {
-            display: block; overflow: hidden; cursor: pointer;
-            border: 1px solid _colour(white); border-radius: .5rem;
-        }
-        .onoffswitch-inner {
-            display: block; width: 200%; margin-left: -100%; height: .8rem;
-            transition: margin 0.3s ease-in 0s;
-        }
-        .onoffswitch-inner:before, .onoffswitch-inner:after {
-            display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-            color: white; font-size: _size(textS); font-family: _font(family-body); font-weight: _font(weight-medium);
-            box-sizing: border-box;
-        }
-        .onoffswitch-inner:before {
-            content: "And";
-            padding-left: 10px;
-            background-color: _colour(bg); color:_colour(white);
-        }
-        .onoffswitch-inner:after {
-            content: "Or";
-            padding-right: 10px;
-            background-color: _colour(bg); color: _colour(white);
-            text-align: right;
-            padding-right: 1rem; //edit
-        }
-        .onoffswitch-switch {
-            display: block; width: 35px; margin: -2.5px;
-            background: #FFFFFF;
-            position: absolute; top: 0; bottom: 0;
-            right: 3.1rem;
-            border: 1px solid _colour(white); border-radius: .5rem;
-            transition: all 0.3s ease-in 0s; 
-        }
-        .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-            margin-left: 0;
-        }
-        .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-            right: 0px; 
-        }
     }
 
     //Filter Button

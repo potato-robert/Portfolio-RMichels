@@ -38,6 +38,8 @@ export default defineConfig({
       preprocessorOptions: {
         scss: {
           api: 'modern-compiler',
+          // Legacy @import stack in src/styles/; migrate to @use before Dart Sass 3.0.
+          silenceDeprecations: ['import', 'global-builtin', 'if-function'],
         },
       },
     },

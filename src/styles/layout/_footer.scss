@@ -53,8 +53,7 @@ footer {
 		align-items: center;
 		align-content: space-between;
 
-		div,
-		.footerLegal {
+		div {
 			display: flex;
 			flex-direction: row;
 			flex-wrap: nowrap;
@@ -65,8 +64,13 @@ footer {
 			gap: 1rem;
 		}
 
-		.footerLegal__sep {
-			color: rgba(_colour(white), 0.45);
+		.footerLegal {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			gap: 0.35rem 0.75rem;
 		}
 	}
 
@@ -201,37 +205,4 @@ ul.icons {
 	}
 }
 
-.toggle-label {
-	display: flex;
-	align-items: center;
-	margin: .75rem 0;
-	cursor: pointer;
-  }
-  
-  .toggle-label input[type="checkbox"] {
-	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	width: 14px;
-	height: 14px;
-	border: 2px solid white;
-	margin-right: .4rem;
-	position: relative;
-	cursor: pointer;
-  
-	&:checked {
-	  background-color:  _colour(blue);
-	  border-color:  _colour(blue);
-  
-	  &::after {
-		content: '\2714';
-		font-size: 14px;
-		color: white;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	  }
-	}
-  }
   

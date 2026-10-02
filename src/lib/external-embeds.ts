@@ -1,5 +1,5 @@
 import type { Locale } from './i18n';
-import { EXTERNAL_MEDIA_PROVIDERS } from './legal';
+import { EXTERNAL_MEDIA_PROVIDERS, getPrivacySettingsPath } from './legal';
 
 export type EmbedProviderId = 'youtube' | 'sketchfab' | 'figma' | 'clirio';
 
@@ -133,18 +133,16 @@ function embedStrings(locale: Locale) {
       notice: (name: string) =>
         `Dieser Inhalt wird von ${name} bereitgestellt. Beim Laden können Daten an den Anbieter übertragen werden.`,
       load: 'Inhalt laden',
-      always: (name: string) => `${name} immer laden`,
-      open: (name: string) => `Auf ${name} öffnen`,
-      privacyLink: 'Mehr in der Datenschutzerklärung',
+      alwaysLoadAll: 'Einbettungen immer laden',
+      privacySettings: 'Privacy-Einstellungen',
     };
   }
   return {
     notice: (name: string) =>
       `This content is provided by ${name}. Loading it may send data to that provider.`,
     load: 'Load content',
-    always: (name: string) => `Always load ${name}`,
-    open: (name: string) => `Open on ${name}`,
-    privacyLink: 'More in the privacy policy',
+    alwaysLoadAll: 'Always load embedded content',
+    privacySettings: 'Privacy settings',
   };
 }
 
@@ -160,7 +158,7 @@ function buildPlaceholder(
 
   const displayName = providerDisplayName(provider.id);
   const strings = embedStrings(locale);
-  const privacyHref = locale === 'de' ? '/de/privacyPolicy#external-media' : '/privacyPolicy#external-media';
+  const choicesHref = getPrivacySettingsPath(locale);
 
   const passthrough = { ...attrs, src };
   const dataAttrs = Object.entries(passthrough)
@@ -174,19 +172,18 @@ function buildPlaceholder(
   const title = attrs.title ? escapeAttr(attrs.title) : displayName;
 
   return `<div class="external-embed-placeholder${className}"${style}${width}${height} data-external-embed data-provider="${provider.id}" ${dataAttrs} role="group" aria-label="${escapeAttr(title)}">
-  <p class="external-embed-placeholder__notice">${escapeAttr(strings.notice(displayName))}</p>
-  <div class="external-embed-placeholder__actions">
-    <button type="button" class="external-embed-placeholder__load" data-embed-load>${escapeAttr(strings.load)}</button>
-    <label class="external-embed-placeholder__remember">
-      <input type="checkbox" data-embed-remember />
-      <span>${escapeAttr(strings.always(displayName))}</span>
-    </label>
+  <div class="external-embed-placeholder__stage">
+    <div class="external-embed-placeholder__overlay">
+      <p class="external-embed-placeholder__notice">${escapeAttr(strings.notice(displayName))}</p>
+      <div class="external-embed-placeholder__actions">
+        <button type="button" class="external-embed-placeholder__load" data-embed-load>${escapeAttr(strings.load)}</button>
+        <button type="button" class="external-embed-placeholder__load-all" data-embed-load-all>${escapeAttr(strings.alwaysLoadAll)}</button>
+      </div>
+      <p class="external-embed-placeholder__settings">
+        <a href="${choicesHref}">${escapeAttr(strings.privacySettings)}</a>
+      </p>
+    </div>
   </div>
-  <p class="external-embed-placeholder__links">
-    <a href="${escapeAttr(src)}" target="_blank" rel="noopener noreferrer">${escapeAttr(strings.open(displayName))}</a>
-    ·
-    <a href="${privacyHref}">${escapeAttr(strings.privacyLink)}</a>
-  </p>
 </div>`;
 }
 
