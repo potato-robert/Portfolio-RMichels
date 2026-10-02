@@ -156,9 +156,34 @@ When splitting, **commit sequentially** — finish and verify each commit before
 | Bug fix + minimal fix to the test that caught it | Two unrelated bug fixes |
 | Lockfile bump + the dep change that required it | Dep bump + feature work in the same session |
 
+## Pre-commit verification (required)
+
+**Before the first `git add` / `git commit` in a session**, run the same checks as CI and **do not commit until they pass**. If anything fails, fix the code (or tests) first, re-run, then commit.
+
+```bash
+npm run test:all
+```
+
+That alias runs: `check` → `test:unit` → `test:content` → `build` → `test:verify` → `test:e2e` (matches the deploy/PR pipeline on `main`).
+
+| When | Minimum gate |
+|------|----------------|
+| **Default (any commit that touches app code, tests, or build)** | **`npm run test:all`** |
+| Docs-only under `docs/` or `.cursor/` with no runtime impact | `npm run test:fast` is acceptable if the user agrees |
+| Content-only (markdown + images, no TS/Sass/islands) | `npm run test:content && npm run build && npm run test:verify` |
+
+After fixing failures, run **`npm run test:all` again** from a clean tree (or restage only intended files) before committing.
+
+**Local tip:** E2E starts `npm run preview` on port **4321**. Stop `npm run dev` (or anything else on that port) first, or Playwright will fail to start the server when `CI=true`.
+
 ## Workflow
 
 When asked to commit:
+
+### 0. Run full CI locally (gate)
+
+- [ ] `npm run test:all` completed successfully **after** all intended changes are in the working copy
+- [ ] Do not proceed to `git add` / `git commit` while any step is failing
 
 ### 1. Survey the working copy
 
@@ -341,6 +366,7 @@ Follow `.cursor/skills/trello-workflow/SKILL.md` in parallel with this skill.
 
 ## Quick checklist
 
+- [ ] **`npm run test:all` passed** before first `git add` (unless docs-only exception above)
 - [ ] Full working copy surveyed before first `git add`
 - [ ] Split decision made consciously (default one commit per story; avoid layer-by-layer splits)
 - [ ] Each commit: one type, one story, builds on its own
