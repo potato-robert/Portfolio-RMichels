@@ -15,6 +15,7 @@ composer.phar
 
 # Node / Astro
 /node_modules/
+/.ci-node22/
 /dist/
 .astro/
 playwright-report/

@@ -58,7 +58,7 @@ Loaded via `PageBootCore.ts` (BaseLayout), `ProjectPageBoot.ts` (ProjectLayout),
 
 ## Content Model
 
-Two collections share the same Zod schema (`src/content/config.ts`):
+Two collections share the same Zod schema (`src/content.config.ts`):
 
 | Collection | Purpose |
 |------------|---------|

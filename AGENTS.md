@@ -6,7 +6,7 @@ Personal portfolio site for [rmichels.com](https://rmichels.com). **Astro** stat
 
 | Layer | Technology |
 |-------|------------|
-| Site generator | Astro 5 (static output) |
+| Site generator | Astro 7 (static output) |
 | Content | Markdown collections in `src/content/projects/` |
 | Styles | Sass in `src/styles/` (Vite build) |
 | Client JS | TypeScript islands in `src/islands/` |
@@ -28,6 +28,7 @@ npm run test:verify    # Post-build dist/ route checks (run after build)
 npm run test:e2e       # Playwright (after build)
 ```
 
+- **Node.js ≥22.12.0** (matches CI; Astro 7 fails on Node 20). After switching Node major, run `npm ci` so native deps (e.g. Rolldown) match the runtime.
 - Content export (dev helper): `npm run deprecated:export-content` — **deprecated**; syncs DE bodies from EN markdown with optional PO translations (see `scripts/README.md`)
 - Commit `package-lock.json`; `node_modules/` is gitignored
 
@@ -42,8 +43,8 @@ npm run test:e2e       # Playwright (after build)
 │   ├── .htaccess            # Static hosting rules (copied to dist/)
 │   └── css/normalize.css
 ├── src/
+│   ├── content.config.ts    # Content Layer loaders + Zod schemas
 │   ├── content/
-│   │   ├── config.ts        # Zod schemas
 │   │   ├── projects/        # EN case study frontmatter + body
 │   │   └── projects-de/     # DE case study bodies (translated)
 │   ├── i18n/ui-en.json, ui-de.json
