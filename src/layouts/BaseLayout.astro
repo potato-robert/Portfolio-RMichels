@@ -89,8 +89,9 @@ const showHomeIcon = pageType === 'project' || pageType === 'about';
   <body data-page-type={pageType}>
     <a class="skip-link" href="#Content">Skip to content</a>
     <script>
-      import { getDevicePerformanceTier } from '../lib/device-capability';
-      document.body.dataset.perfTier = getDevicePerformanceTier();
+      import { syncPerfTierToDocument } from '../lib/device-capability';
+      syncPerfTierToDocument();
+      document.addEventListener('DOMContentLoaded', syncPerfTierToDocument);
     </script>
     <div>
       <div id="MainGrid">

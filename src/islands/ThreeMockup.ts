@@ -66,9 +66,24 @@ export function initThreeMockup() {
 
   scene.add(new THREE.AmbientLight(0xffffff, 1));
 
+  const perfQuietMode = new URLSearchParams(window.location.search).has('perf');
   let videoTexture: THREE.VideoTexture | undefined;
-  if (video) {
-    video.play().catch(() => video.load());
+  let screenTexture: THREE.Texture | undefined;
+
+  if (video && perfQuietMode) {
+    // Audit loads with ?perf=1; looping MP4 prevents networkidle — use poster frame only.
+    screenTexture = new THREE.TextureLoader().load('/assets/video/frame.jpg');
+  } else if (video) {
+    video.preload = 'auto';
+    const startVideo = () => {
+      video.play().catch(() => {});
+    };
+    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      startVideo();
+    } else {
+      video.addEventListener('loadeddata', startVideo, { once: true });
+      video.load();
+    }
     videoTexture = new THREE.VideoTexture(video);
   }
 
@@ -80,8 +95,9 @@ export function initThreeMockup() {
     mockupMesh.traverse((node) => {
       if ((node as THREE.Mesh).isMesh) {
         const mesh = node as THREE.Mesh;
-        if (isPhone && (mesh.material as THREE.MeshStandardMaterial).name === 'screen' && videoTexture) {
-          mesh.material = new THREE.MeshBasicMaterial({ map: videoTexture });
+        if (isPhone && (mesh.material as THREE.MeshStandardMaterial).name === 'screen') {
+          const map = videoTexture ?? screenTexture;
+          if (map) mesh.material = new THREE.MeshBasicMaterial({ map });
         }
       }
     });

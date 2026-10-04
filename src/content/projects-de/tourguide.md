@@ -30,7 +30,7 @@ order: 3
     <p>Mein Auge war auf das Flutter-Framework gerichtet, und dies schien mir die perfekte Gelegenheit zu sein, die Sprache Dart zu lernen und zu erfahren, wie man mit Flutter eine plattformübergreifende Anwendung erstellt.</p>
     <p>Tourguide ist als Beta im <a href="https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp" title="Tourguide im Google Play Store (Beta)" target="_blank">Google Play Store</a> und als <a href="https://tourguide-firebase.web.app" title="Tourguide Web-App (Beta)" target="_blank">Web-App</a> verfügbar.</p>
   </section>
-  <video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" autoplay="true" loop="true" muted="true" poster="/assets/video/frame.jpg"></video>
+  <video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" loop muted playsinline poster="/assets/video/frame.jpg"></video>
   <section class="sectionText">
     <h2>Entwicklung</h2>
     <h3>Web-Verbesserungen, tts, und mehr - 2. Oktober 2024</h3>

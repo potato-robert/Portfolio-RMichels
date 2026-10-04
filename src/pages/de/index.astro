@@ -43,6 +43,11 @@ const description = 'Robert Michels — Designer und Entwickler aus Vancouver.';
   <div id="landingArea">
     <div class="row">
       <div class="col-50" id="landingText">
+        <h1 class="visually-hidden">
+          {greeting
+            ? `${t('hi_greeting', locale)}${greeting}${t('greeting_suffix', locale)}`
+            : `${t('hi_im_robert', locale)} — Portfolio`}
+        </h1>
         <p>
           {greeting ? (
             <>

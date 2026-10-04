@@ -1,5 +1,8 @@
 import { cleanupLegacyCookies } from '../lib/legacy-cookie-cleanup';
 import { initAnalyticsEvents } from '../lib/analytics';
+import { syncPerfTierToDocument } from '../lib/device-capability';
+
+syncPerfTierToDocument();
 
 cleanupLegacyCookies();
 initAnalyticsEvents();

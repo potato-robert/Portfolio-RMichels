@@ -5,6 +5,22 @@ type NavigatorWithMemory = Navigator & { deviceMemory?: number };
 
 export type DevicePerformanceTier = 'full' | 'reduced' | 'minimal';
 
+const AUDIT_TIER_VALUES: DevicePerformanceTier[] = ['full', 'reduced', 'minimal'];
+
+/**
+ * When `?perf=1&auditTier=` is present (local audit / interaction matrix), force tier for deterministic runs.
+ */
+export function getAuditTierOverride(): DevicePerformanceTier | null {
+  if (typeof window === 'undefined' || !window.location?.search) return null;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('perf') !== '1') return null;
+  const raw = params.get('auditTier');
+  if (raw && (AUDIT_TIER_VALUES as string[]).includes(raw)) {
+    return raw as DevicePerformanceTier;
+  }
+  return null;
+}
+
 let cachedRendererString: string | null | undefined;
 
 /** Heuristic for devices that should skip heavy WebGL / scroll effects. */
@@ -38,11 +54,24 @@ export function isLowPoweredDevice(): boolean {
 export function getDevicePerformanceTier(): DevicePerformanceTier {
   if (typeof navigator === 'undefined') return 'full';
 
+  const auditOverride = getAuditTierOverride();
+  if (auditOverride) return auditOverride;
+
   if (isLowPoweredDevice()) return 'minimal';
 
   if (isIntelIntegratedGpu()) return 'reduced';
 
   return 'full';
+}
+
+/** Writes current tier to `body[data-perf-tier]` (audit interaction + debugging). */
+export function syncPerfTierToDocument(): DevicePerformanceTier {
+  resetWebGLRendererCache();
+  const tier = getDevicePerformanceTier();
+  if (typeof document !== 'undefined' && document.body) {
+    document.body.dataset.perfTier = tier;
+  }
+  return tier;
 }
 
 export function isRetinaDisplay(): boolean {

@@ -30,7 +30,7 @@ order: 3
     <p>I had my eye on the Flutter framework, and this seemed like the perfect opportunity to learn the Dart language and how to build a crossplatform app with Flutter.</p>
     <p>Tourguide is in beta on <a href="https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp" title="Tourguide on Google Play (Beta)" target="_blank">Google Play</a> and as a <a href="https://tourguide-firebase.web.app" title="Tourguide Web App (Beta)" target="_blank">web app</a>.</p>
   </section>
-  <video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" autoplay="true" loop="true" muted="true" poster="/assets/video/frame.jpg"></video>
+  <video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" loop muted playsinline poster="/assets/video/frame.jpg"></video>
   <section class="sectionText">
     <h2>Development History</h2>
     <h3>Web Improvements, tts, and more - October 2, 2024</h3>
