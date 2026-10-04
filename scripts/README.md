@@ -4,7 +4,7 @@
 |--------|---------|
 | `validate-content.mjs` | Pre-build validation (`npm run test:content`) — assets, i18n keys, EN/DE parity |
 | `verify-build.mjs` | Post-build route checks (`npm run test:verify`) |
-| `assess-scroll-perf.mjs` | Optional scroll performance profiling |
+| *(removed)* | Scroll profiling → `npm run audit -- --stages interaction` (see `docs/AUDIT.md`) |
 | `export-db-to-content.mjs` | **Deprecated** — see below |
 
 ## export-db-to-content.mjs (deprecated)

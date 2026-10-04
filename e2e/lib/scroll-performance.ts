@@ -1,4 +1,10 @@
 import type { Page } from '@playwright/test';
+import {
+  startFrameSampling,
+  stopFrameSampling,
+  summarizeFrameTimes,
+  type FrameSampleMetrics,
+} from '../../audit/lib/frame-sampler.ts';
 
 export type ScrollPerfBudget = {
   p95MaxMs: number;
@@ -22,29 +28,9 @@ export const SCROLL_PERF_PAGE_BUDGETS: Record<string, Partial<ScrollPerfBudget>>
   clirioScanViews: { p95MaxMs: 50, maxFrameMs: 200, maxLongTasks: 10 },
 };
 
-export interface ScrollPerfMetrics {
-  frameCount: number;
-  p50: number;
-  p95: number;
-  max: number;
-  framesOver50ms: number;
-  framesOver100ms: number;
-  framesOver200ms: number;
-  longTasks: number;
-  durationMs: number;
-}
+export type ScrollPerfMetrics = FrameSampleMetrics;
 
-declare global {
-  interface Window {
-    __scrollPerf?: {
-      frameTimes: number[];
-      sampling: boolean;
-      longTasks: number;
-      observer?: PerformanceObserver;
-      rafId?: number;
-    };
-  }
-}
+export { summarizeFrameTimes, startFrameSampling, stopFrameSampling };
 
 export function getCpuThrottleRate(): number {
   const raw = process.env.PERF_CPU_THROTTLE;
@@ -61,108 +47,6 @@ export async function enableCpuThrottle(page: Page, rate: number): Promise<void>
 export async function disableCpuThrottle(page: Page): Promise<void> {
   const cdp = await page.context().newCDPSession(page);
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
-}
-
-function percentile(sorted: number[], p: number): number {
-  if (sorted.length === 0) return 0;
-  const idx = Math.min(sorted.length - 1, Math.ceil((p / 100) * sorted.length) - 1);
-  return sorted[Math.max(0, idx)];
-}
-
-export function summarizeFrameTimes(
-  frameTimes: number[],
-  longTasks: number,
-  durationMs: number,
-): ScrollPerfMetrics {
-  const sorted = [...frameTimes].sort((a, b) => a - b);
-  return {
-    frameCount: frameTimes.length,
-    p50: percentile(sorted, 50),
-    p95: percentile(sorted, 95),
-    max: sorted.at(-1) ?? 0,
-    framesOver50ms: frameTimes.filter((t) => t > 50).length,
-    framesOver100ms: frameTimes.filter((t) => t > 100).length,
-    framesOver200ms: frameTimes.filter((t) => t > 200).length,
-    longTasks,
-    durationMs,
-  };
-}
-
-export async function startFrameSampling(page: Page): Promise<void> {
-  await page.evaluate(() => {
-    window.__scrollPerf = {
-      frameTimes: [],
-      sampling: true,
-      longTasks: 0,
-    };
-
-    let last = performance.now();
-    let isFirst = true;
-
-    const sample = (now: number) => {
-      const perf = window.__scrollPerf;
-      if (!perf?.sampling) return;
-
-      if (!isFirst) {
-        perf.frameTimes.push(now - last);
-      } else {
-        isFirst = false;
-      }
-      last = now;
-      perf.rafId = requestAnimationFrame(sample);
-    };
-
-    window.__scrollPerf.rafId = requestAnimationFrame(sample);
-
-    try {
-      const observer = new PerformanceObserver((list) => {
-        if (window.__scrollPerf) {
-          window.__scrollPerf.longTasks += list.getEntries().length;
-        }
-      });
-      observer.observe({ type: 'longtask', buffered: true });
-      window.__scrollPerf.observer = observer;
-    } catch {
-      // longtask is not available in every Chromium build/context.
-    }
-  });
-}
-
-export async function stopFrameSampling(
-  page: Page,
-  durationMs: number,
-): Promise<ScrollPerfMetrics> {
-  return page.evaluate((measuredMs) => {
-    const perf = window.__scrollPerf;
-    if (!perf) {
-      throw new Error('Frame sampling was not started');
-    }
-
-    perf.sampling = false;
-    if (perf.rafId !== undefined) {
-      cancelAnimationFrame(perf.rafId);
-    }
-    perf.observer?.disconnect();
-
-    const sorted = [...perf.frameTimes].sort((a, b) => a - b);
-    const pct = (p: number) => {
-      if (sorted.length === 0) return 0;
-      const idx = Math.min(sorted.length - 1, Math.ceil((p / 100) * sorted.length) - 1);
-      return sorted[Math.max(0, idx)];
-    };
-
-    return {
-      frameCount: perf.frameTimes.length,
-      p50: pct(50),
-      p95: pct(95),
-      max: sorted.at(-1) ?? 0,
-      framesOver50ms: perf.frameTimes.filter((t) => t > 50).length,
-      framesOver100ms: perf.frameTimes.filter((t) => t > 100).length,
-      framesOver200ms: perf.frameTimes.filter((t) => t > 200).length,
-      longTasks: perf.longTasks,
-      durationMs: measuredMs,
-    };
-  }, durationMs);
 }
 
 export interface ScrollPerfOptions {

@@ -16,7 +16,15 @@
     "test:e2e": "playwright test --grep-invert @perf",
     "test:perf": "playwright test --grep @perf",
     "test:fast": "npm run check && npm run test:unit && npm run test:content",
-    "test:all": "npm run test:fast && npm run build && npm run test:verify && npm run test:e2e"
+    "test:all": "npm run test:fast && npm run build && npm run test:verify && npm run test:e2e",
+    "test:complete": "npm run test:all && npm run test:perf",
+    "playwright:install": "playwright install --with-deps chromium webkit",
+    "audit": "tsx --import ./audit/lib/playwright-env-preload.mjs audit/cli.ts --level full",
+    "audit:quick": "tsx --import ./audit/lib/playwright-env-preload.mjs audit/cli.ts --level quick --skip-ci-gate",
+    "audit:compare": "tsx audit/compare.ts",
+    "audit:report": "tsx audit/report.ts",
+    "audit:docker:build": "node scripts/audit-docker-build.mjs",
+    "audit:interaction:smoke": "tsx --import ./audit/lib/playwright-env-preload.mjs audit/cli.ts --level full --skip-ci-gate --stages interaction --pages /,/projects"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -32,10 +40,16 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
+    "chrome-launcher": "^1.1.2",
     "happy-dom": "^20.14.5",
     "js-yaml": "^5.4.2",
+    "lighthouse": "^12.3.0",
+    "linkinator": "^6.1.2",
+    "node-html-parser": "^7.0.1",
     "sass": "^1.77.0",
+    "tsx": "^4.19.3",
     "vitest": "^4.1.11",
+    "web-vitals": "^4.2.4",
     "zod": "^4.6.5"
   }
 }
