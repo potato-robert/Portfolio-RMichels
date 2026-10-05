@@ -56,6 +56,8 @@ Loaded via `PageBootCore.ts` (BaseLayout), `ProjectPageBoot.ts` (ProjectLayout),
 | Menu | All BaseLayout pages |
 | LenisSetup | Home, About, Projects, case studies (not privacy) |
 
+**Case-study mockups (`ThreeMockup`)** lazy-load via `ProjectPageBoot` and delegate to `src/lib/webgl/mockup/` (Lenis scroll rotation, mouse camera, shared `animationLoop`). Tier behavior: **minimal** — static fallback (`mockup--phoneSkip` on Tourguide, LQIP on Clirio Scan Views); **reduced** — phone GLB + full phone motion, hololens static LQIP only; **full** — phone + hololens GLB with legacy hololens rays/hologram motion. `?perf=1` is audit instrumentation only; UX follows `getDevicePerformanceTier()` (including `auditTier` when set).
+
 ## Content Model
 
 Two collections share the same Zod schema (`src/content.config.ts`):

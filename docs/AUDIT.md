@@ -75,7 +75,9 @@ In an interactive terminal (the dedicated PowerShell window for long audits), pr
 
 Containers use `Host: host.docker.internal`. Vite preview must allow that host (`vite.preview.allowedHosts` in `astro.config.mjs`). If an old preview is already bound to port 4321 without that setting, run `npx astro preview stop` before `npm run audit` so the audit can start a fresh preview.
 
-Docker interaction probes load the same URLs as host Playwright (`?perf=1` and optional `auditTier=` from `AUDIT_TIER`, see `audit/lib/interaction-url.ts`). After navigation, the container script waits up to 30s for `body[data-perf-tier]` to reflect a real tier (`full` / `reduced` / `minimal`, matching `auditTier` when set) instead of reading the attribute before client `syncPerfTierToDocument` runs. Tier wait timeouts fail the Docker run (non-zero exit); they are not exercised in CI unless Docker profiles run locally.
+Docker interaction probes load the same URLs as host Playwright (`?perf=1` and optional `auditTier=` from `AUDIT_TIER`, see `audit/lib/interaction-url.ts`). **`perf=1` enables frame sampling and stable network behavior; it does not force static mockups.** Mockup GLB, motion, and fallbacks follow the effective tier (`auditTier` when present, else heuristics). After navigation, the container script waits up to 30s for `body[data-perf-tier]` to reflect a real tier (`full` / `reduced` / `minimal`, matching `auditTier` when set) instead of reading the attribute before client `syncPerfTierToDocument` runs. Tier wait timeouts fail the Docker run (non-zero exit); they are not exercised in CI unless Docker profiles run locally.
+
+**Scroll @perf E2E** (`e2e/scroll-performance.spec.ts`) uses `gotoWithAuditTier` for `/tourguide` and `/clirioScanViews` at **full** plus at least one non-full tier; budgets are keyed by page × tier in `SCROLL_PERF_TIER_BUDGETS`. CI runs the full scroll matrix when E2E is enabled; local full audit interaction still maps each profile’s `expectedTier` to the same mockup UX (e.g. `laptop-intel-reduced` → phone motion + hololens static).
 
 ## Emulation limits
 
