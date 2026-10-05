@@ -5,6 +5,7 @@ import {
   summarizeFrameTimes,
   type FrameSampleMetrics,
 } from '../../audit/lib/frame-sampler.ts';
+import type { DevicePerformanceTier } from '../../src/lib/device-capability.ts';
 
 export type ScrollPerfBudget = {
   p95MaxMs: number;
@@ -29,6 +30,57 @@ export const SCROLL_PERF_PAGE_BUDGETS: Record<string, Partial<ScrollPerfBudget>>
   tourguide: { p95MaxMs: 55, p99MaxMs: 180, maxFramesOver200ms: 1, maxLongTasks: 8 },
   futureEarth: { p95MaxMs: 50, p99MaxMs: 120, maxFramesOver200ms: 1, maxLongTasks: 10 },
 };
+
+/** Nested page × tier budgets (static mockup paths are lighter on WebGL). */
+export const SCROLL_PERF_TIER_BUDGETS: Record<
+  string,
+  Partial<Record<DevicePerformanceTier, Partial<ScrollPerfBudget>>>
+> = {
+  clirioScanViews: {
+    full: { p95MaxMs: 55, p99MaxMs: 200, maxFramesOver200ms: 1, maxLongTasks: 10 },
+    reduced: { p95MaxMs: 48, p99MaxMs: 110, maxFramesOver200ms: 1, maxLongTasks: 8 },
+    minimal: { p95MaxMs: 45, p99MaxMs: 100, maxFramesOver200ms: 0, maxLongTasks: 6 },
+  },
+  tourguide: {
+    full: { p95MaxMs: 55, p99MaxMs: 180, maxFramesOver200ms: 1, maxLongTasks: 8 },
+    reduced: { p95MaxMs: 52, p99MaxMs: 160, maxFramesOver200ms: 1, maxLongTasks: 8 },
+    minimal: { p95MaxMs: 45, p99MaxMs: 100, maxFramesOver200ms: 0, maxLongTasks: 6 },
+  },
+};
+
+export function resolveScrollPerfBudget(pageLabel: string, tier?: DevicePerformanceTier): ScrollPerfBudget {
+  const base = { ...SCROLL_PERF_BUDGETS, ...SCROLL_PERF_PAGE_BUDGETS[pageLabel] };
+  if (tier && SCROLL_PERF_TIER_BUDGETS[pageLabel]?.[tier]) {
+    return { ...base, ...SCROLL_PERF_TIER_BUDGETS[pageLabel][tier] };
+  }
+  return base as ScrollPerfBudget;
+}
+
+/** Navigate with audit instrumentation + forced tier (mirrors buildInteractionUrl). */
+export async function gotoWithAuditTier(
+  page: Page,
+  path: string,
+  tier?: DevicePerformanceTier,
+): Promise<void> {
+  const params = new URLSearchParams({ perf: '1' });
+  if (tier) params.set('auditTier', tier);
+  const qs = params.toString();
+  const url = path === '/' ? `/?${qs}` : `${path}?${qs}`;
+  await page.goto(url);
+}
+
+/** Minimal emulation hints so auditTier override matches intended UX in Playwright. */
+export async function applyAuditTierEmulation(
+  page: Page,
+  tier: DevicePerformanceTier,
+): Promise<void> {
+  if (tier === 'minimal') {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'deviceMemory', { get: () => 4, configurable: true });
+      Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 4, configurable: true });
+    });
+  }
+}
 
 export type ScrollPerfMetrics = FrameSampleMetrics;
 

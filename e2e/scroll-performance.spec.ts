@@ -1,12 +1,14 @@
 import { test, expect } from './fixtures';
+import type { DevicePerformanceTier } from '../src/lib/device-capability';
 import {
-  SCROLL_PERF_BUDGETS,
-  SCROLL_PERF_PAGE_BUDGETS,
+  applyAuditTierEmulation,
   disableCpuThrottle,
   enableCpuThrottle,
   formatScrollPerfMetrics,
   getCpuThrottleRate,
+  gotoWithAuditTier,
   measureScrollPerformance,
+  resolveScrollPerfBudget,
   type ScrollPerfMetrics,
   waitForScrollEffectsReady,
 } from './lib/scroll-performance';
@@ -25,8 +27,12 @@ test.describe('scroll performance @perf', () => {
     await disableCpuThrottle(page);
   });
 
-  function assertScrollBudgets(metrics: ScrollPerfMetrics, pageLabel: string) {
-    const budgets = { ...SCROLL_PERF_BUDGETS, ...SCROLL_PERF_PAGE_BUDGETS[pageLabel] };
+  function assertScrollBudgets(
+    metrics: ScrollPerfMetrics,
+    pageLabel: string,
+    tier?: DevicePerformanceTier,
+  ) {
+    const budgets = resolveScrollPerfBudget(pageLabel, tier);
     const summary = formatScrollPerfMetrics(metrics);
     test.info().annotations.push({ type: 'scroll-perf', description: `${pageLabel}: ${summary}` });
 
@@ -69,13 +75,25 @@ test.describe('scroll performance @perf', () => {
     assertScrollBudgets(metrics, 'projects');
   });
 
-  test(`case study /clirioScanViews (CPU throttle ${throttleRate}x)`, async ({ page }) => {
-    await page.goto('/clirioScanViews');
+  test(`case study /clirioScanViews full tier (CPU throttle ${throttleRate}x)`, async ({ page }) => {
+    await gotoWithAuditTier(page, '/clirioScanViews', 'full');
     await expect(page.locator('#projLanding h1')).toBeVisible();
+    await expect(page.locator('body')).toHaveAttribute('data-perf-tier', 'full');
     await waitForScrollEffectsReady(page);
 
     const metrics = await measureScrollPerformance(page);
-    assertScrollBudgets(metrics, 'clirioScanViews');
+    assertScrollBudgets(metrics, 'clirioScanViews', 'full');
+  });
+
+  test(`case study /clirioScanViews reduced tier (CPU throttle ${throttleRate}x)`, async ({ page }) => {
+    await applyAuditTierEmulation(page, 'reduced');
+    await gotoWithAuditTier(page, '/clirioScanViews', 'reduced');
+    await expect(page.locator('#projLanding h1')).toBeVisible();
+    await expect(page.locator('body')).toHaveAttribute('data-perf-tier', 'reduced');
+    await waitForScrollEffectsReady(page);
+
+    const metrics = await measureScrollPerformance(page);
+    assertScrollBudgets(metrics, 'clirioScanViews', 'reduced');
   });
 
   test(`case study /futureEarth (CPU throttle ${throttleRate}x)`, async ({ page }) => {
@@ -87,12 +105,24 @@ test.describe('scroll performance @perf', () => {
     assertScrollBudgets(metrics, 'futureEarth');
   });
 
-  test(`case study /tourguide (CPU throttle ${throttleRate}x)`, async ({ page }) => {
-    await page.goto('/tourguide');
+  test(`case study /tourguide full tier (CPU throttle ${throttleRate}x)`, async ({ page }) => {
+    await gotoWithAuditTier(page, '/tourguide', 'full');
     await expect(page.locator('#projLanding h1')).toBeVisible();
+    await expect(page.locator('body')).toHaveAttribute('data-perf-tier', 'full');
     await waitForScrollEffectsReady(page);
 
     const metrics = await measureScrollPerformance(page);
-    assertScrollBudgets(metrics, 'tourguide');
+    assertScrollBudgets(metrics, 'tourguide', 'full');
+  });
+
+  test(`case study /tourguide minimal tier (CPU throttle ${throttleRate}x)`, async ({ page }) => {
+    await applyAuditTierEmulation(page, 'minimal');
+    await gotoWithAuditTier(page, '/tourguide', 'minimal');
+    await expect(page.locator('#projLanding h1')).toBeVisible();
+    await expect(page.locator('body')).toHaveAttribute('data-perf-tier', 'minimal');
+    await waitForScrollEffectsReady(page);
+
+    const metrics = await measureScrollPerformance(page);
+    assertScrollBudgets(metrics, 'tourguide', 'minimal');
   });
 });
