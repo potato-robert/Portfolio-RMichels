@@ -139,6 +139,8 @@ main {
 
 		&.mockup--staticFallback.hololens:not(:has(canvas.mockupCanvas--active)) {
 			padding-bottom: 4rem;
+			// Negative hololens margins extend the section box over the next gallery; do not steal clicks.
+			pointer-events: none;
 		}
 
 		&.hololens{
