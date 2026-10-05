@@ -4,6 +4,7 @@
     sampling: true,
     longTasks: 0,
     longAnimationFrames: 0,
+    loafScripts: [],
   };
 
   let last = performance.now();
@@ -38,8 +39,16 @@
 
   try {
     const loafObserver = new PerformanceObserver(function (list) {
-      if (window.__scrollPerf) {
-        window.__scrollPerf.longAnimationFrames += list.getEntries().length;
+      const perf = window.__scrollPerf;
+      if (!perf) return;
+      for (const entry of list.getEntries()) {
+        perf.longAnimationFrames += 1;
+        const scripts = entry.scripts;
+        if (scripts && scripts.length) {
+          for (const s of scripts) {
+            if (s.sourceURL) perf.loafScripts.push(s.sourceURL);
+          }
+        }
       }
     });
     loafObserver.observe({ type: 'long-animation-frame', buffered: true });

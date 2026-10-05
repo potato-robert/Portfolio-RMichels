@@ -28,7 +28,13 @@ import {
 
 import { runPreflight, formatPreflightFailure } from './lib/preflight.ts';
 
-import { finalizeAuditRun, type AuditFailure } from './lib/finalize-run.ts';
+import {
+  formatDockerSmokeFailure,
+  runDockerSmoke,
+  shouldRunDockerSmoke,
+} from './lib/docker-smoke.ts';
+
+import { finalizeAuditRun, serializeAuditError, type AuditFailure } from './lib/finalize-run.ts';
 
 import { createAuditAbort, isAuditAborted } from './lib/abort.ts';
 
@@ -50,6 +56,8 @@ export interface CliOptions {
 
   pages?: string[];
 
+  allPages: boolean;
+
   profiles?: string[];
 
   runs: number;
@@ -63,6 +71,10 @@ export interface CliOptions {
   skipCiGate: boolean;
 
   skipPreflight: boolean;
+
+  interactionJobTimeoutMs?: number;
+
+  interactionFullScenarios: boolean;
 
 }
 
@@ -82,6 +94,8 @@ function parseArgs(argv: string[]): CliOptions {
 
   let pages: string[] | undefined;
 
+  let allPages = false;
+
   let profiles: string[] | undefined;
 
   let runs = 0;
@@ -95,6 +109,10 @@ function parseArgs(argv: string[]): CliOptions {
   let skipCiGate = false;
 
   let skipPreflight = false;
+
+  let interactionJobTimeoutMs: number | undefined;
+
+  let interactionFullScenarios = false;
 
 
 
@@ -120,7 +138,9 @@ function parseArgs(argv: string[]): CliOptions {
 
       pages = argv[++i]!.split(',').map((p) => p.trim());
 
-    } else if (arg === '--profiles' && argv[i + 1]) {
+    } else if (arg === '--all-pages') allPages = true;
+
+    else if (arg === '--profiles' && argv[i + 1]) {
 
       profiles = argv[++i]!.split(',').map((p) => p.trim());
 
@@ -137,6 +157,10 @@ function parseArgs(argv: string[]): CliOptions {
     else if (arg === '--skip-ci-gate') skipCiGate = true;
 
     else if (arg === '--skip-preflight') skipPreflight = true;
+
+    else if (arg === '--interaction-job-timeout-ms' && argv[i + 1]) {
+      interactionJobTimeoutMs = Number(argv[++i]);
+    } else if (arg === '--interaction-full-scenarios') interactionFullScenarios = true;
 
   }
 
@@ -158,6 +182,8 @@ function parseArgs(argv: string[]): CliOptions {
 
     pages,
 
+    allPages,
+
     profiles,
 
     runs,
@@ -171,6 +197,10 @@ function parseArgs(argv: string[]): CliOptions {
     skipCiGate,
 
     skipPreflight,
+
+    interactionJobTimeoutMs,
+
+    interactionFullScenarios,
 
   };
 
@@ -398,7 +428,15 @@ export async function runAudit(argv: string[]): Promise<number> {
 
       pageFilter: opts.pages,
 
+      allPages: opts.allPages,
+
     });
+
+    if (!opts.pages?.length && !opts.allPages) {
+      console.log(
+        `Audit pages (default): ${pages.map((p) => p.path).join(', ')} — use --all-pages for full site`,
+      );
+    }
 
 
 
@@ -456,6 +494,66 @@ export async function runAudit(argv: string[]): Promise<number> {
 
 
 
+    if (shouldRunDockerSmoke({ target: opts.target, stages: opts.stages, profiles: profileList })) {
+
+      console.log('Stage: docker-smoke');
+
+      try {
+
+        const dockerSmoke = runDockerSmoke({
+
+          profiles: profileList,
+
+          baseUrl,
+
+          onProgress: logProgress,
+
+          signal: abort.signal,
+
+        });
+
+        summary.dockerSmoke = dockerSmoke;
+
+        if (!dockerSmoke.passed) {
+
+          failure = {
+
+            stage: 'docker-smoke',
+
+            message: formatDockerSmokeFailure(dockerSmoke),
+
+          };
+
+          failureRef.current = failure;
+
+          console.error(failure.message);
+
+          exitCodeRef.current = 1;
+
+          if (!opts.continueOnFail) return exitCodeRef.current;
+
+        }
+
+      } catch (err) {
+
+        if (noteUserAbort(err, failureRef, exitCodeRef)) return exitCodeRef.current;
+
+        failure = stageError('docker-smoke', err);
+
+        failureRef.current = failure;
+
+        exitCodeRef.current = 1;
+
+        console.error(failure.message);
+
+        if (!opts.continueOnFail) return exitCodeRef.current;
+
+      }
+
+    }
+
+
+
     if (opts.stages.has('lighthouse')) {
 
       console.log(`Stage: lighthouse (${pages.length} pages, ${opts.runs} runs)`);
@@ -471,6 +569,8 @@ export async function runAudit(argv: string[]): Promise<number> {
           runs: opts.runs,
 
           rawDir,
+
+          includeMobileLowend: opts.level === 'full',
 
           onProgress: logProgress,
 
@@ -538,6 +638,9 @@ export async function runAudit(argv: string[]): Promise<number> {
 
           skipLinks: opts.level === 'quick',
 
+          lighthousePages: (summary.lighthouse as { pages?: import('./stages/lighthouse.ts').LighthousePageMedian[] })
+            ?.pages,
+
           onProgress: logProgress,
 
           signal: abort.signal,
@@ -598,9 +701,15 @@ export async function runAudit(argv: string[]): Promise<number> {
 
           trace: opts.trace,
 
+          rawDir,
+
           onProgress: logProgress,
 
           signal: abort.signal,
+
+          interactionJobTimeoutMs: opts.interactionJobTimeoutMs,
+
+          interactionFullScenarios: opts.interactionFullScenarios,
 
         });
 
@@ -682,6 +791,15 @@ export async function runAudit(argv: string[]): Promise<number> {
 
       }
 
+    }
+
+  } catch (err) {
+    if (!noteUserAbort(err, failureRef, exitCodeRef)) {
+      const serialized = serializeAuditError(err);
+      failure = { stage: serialized.stage, message: serialized.message, stack: serialized.stack };
+      failureRef.current = failure;
+      exitCodeRef.current = 1;
+      console.error(err);
     }
 
   } finally {

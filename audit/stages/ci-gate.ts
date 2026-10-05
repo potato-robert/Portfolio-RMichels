@@ -2,7 +2,12 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { AuditAbortedError, throwIfAborted } from '../lib/abort.ts';
-import { stripCursorPlaywrightBrowsersPath } from '../lib/playwright-env.ts';
+import { auditChildEnv } from '../lib/spawn-env.ts';
+import {
+  collectThreeRelatedChunkSizes,
+  totalBytes,
+  type ViteChunkSize,
+} from '../lib/vite-chunks.ts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -13,6 +18,8 @@ export interface CiGateResult {
     durationMs: number;
     outputTail: string;
   }>;
+  viteThreeChunks?: ViteChunkSize[];
+  viteThreeChunksTotalBytes?: number;
   passed: boolean;
 }
 
@@ -35,7 +42,7 @@ function runNpmScript(
     const child: ChildProcess = spawn('npm', ['run', script], {
       cwd: root,
       shell: true,
-      env: stripCursorPlaywrightBrowsersPath(),
+      env: auditChildEnv(),
     });
 
     const onAbort = () => {
@@ -93,8 +100,18 @@ export async function runCiGate(options?: {
     });
   }
 
+  const viteThreeChunks = collectThreeRelatedChunkSizes(path.join(root, 'dist'));
+  const viteThreeChunksTotalBytes = totalBytes(viteThreeChunks);
+  if (viteThreeChunks.length > 0) {
+    onProgress?.(
+      `CI gate: Three-related Vite chunks (${viteThreeChunks.length} files, ${Math.round(viteThreeChunksTotalBytes / 1024)} KiB)`,
+    );
+  }
+
   return {
     commands,
+    viteThreeChunks,
+    viteThreeChunksTotalBytes,
     passed: commands.every((c) => c.exitCode === 0),
   };
 }

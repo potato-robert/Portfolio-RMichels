@@ -5,7 +5,8 @@ FROM mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-noble
 WORKDIR /audit
 COPY package.json ./
 RUN npm install --omit=dev
-COPY run-interaction.mjs ./
+COPY run-interaction.mjs scenario-runner.mjs ./
+COPY lib ./lib
 
 ENV AUDIT_BASE_URL=http://host.docker.internal:4321
 

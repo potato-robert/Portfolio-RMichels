@@ -21,10 +21,33 @@
     return sorted[Math.max(0, idx)];
   }
 
+  const durationMs = measuredMs > 0 ? measuredMs : 1;
+  const frameCount = perf.frameTimes.length;
+  const effectiveFps = (frameCount / durationMs) * 1000;
+  const framesOver16ms = perf.frameTimes.filter(function (t) {
+    return t > 16.67;
+  }).length;
+  const droppedFramePct =
+    frameCount > 0 ? Math.round((framesOver16ms / frameCount) * 1000) / 10 : 0;
+
+  const scriptCounts = {};
+  for (const url of perf.loafScripts) {
+    scriptCounts[url] = (scriptCounts[url] || 0) + 1;
+  }
+  const loafAttribution = Object.entries(scriptCounts)
+    .sort(function (a, b) {
+      return b[1] - a[1];
+    })
+    .slice(0, 5)
+    .map(function (pair) {
+      return { sourceURL: pair[0], count: pair[1] };
+    });
+
   return {
-    frameCount: perf.frameTimes.length,
+    frameCount: frameCount,
     p50: pct(50),
     p95: pct(95),
+    p99: pct(99),
     max: sorted.at(-1) ?? 0,
     framesOver50ms: perf.frameTimes.filter(function (t) {
       return t > 50;
@@ -37,6 +60,9 @@
     }).length,
     longTasks: perf.longTasks,
     longAnimationFrames: perf.longAnimationFrames,
-    durationMs: measuredMs,
+    durationMs: durationMs,
+    effectiveFps: Math.round(effectiveFps * 10) / 10,
+    droppedFramePct: droppedFramePct,
+    loafAttribution: loafAttribution,
   };
 }

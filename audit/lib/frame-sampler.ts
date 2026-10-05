@@ -8,10 +8,16 @@ const stopFrameSamplingInPage = loadBrowserEvaluateFn<(measuredMs: number) => Fr
   'frame-sampler-stop.browser.js',
 );
 
+export interface LoafAttribution {
+  sourceURL: string;
+  count: number;
+}
+
 export interface FrameSampleMetrics {
   frameCount: number;
   p50: number;
   p95: number;
+  p99: number;
   max: number;
   framesOver50ms: number;
   framesOver100ms: number;
@@ -19,6 +25,9 @@ export interface FrameSampleMetrics {
   longTasks: number;
   longAnimationFrames: number;
   durationMs: number;
+  effectiveFps: number;
+  droppedFramePct: number;
+  loafAttribution: LoafAttribution[];
 }
 
 declare global {
@@ -28,6 +37,7 @@ declare global {
       sampling: boolean;
       longTasks: number;
       longAnimationFrames: number;
+      loafScripts: string[];
       observer?: PerformanceObserver;
       loafObserver?: PerformanceObserver;
       rafId?: number;
@@ -48,10 +58,15 @@ export function summarizeFrameTimes(
   durationMs: number,
 ): FrameSampleMetrics {
   const sorted = [...frameTimes].sort((a, b) => a - b);
+  const frameCount = frameTimes.length;
+  const effectiveFps = durationMs > 0 ? (frameCount / durationMs) * 1000 : 0;
+  const framesOver16ms = frameTimes.filter((t) => t > 16.67).length;
+  const droppedFramePct = frameCount > 0 ? (framesOver16ms / frameCount) * 100 : 0;
   return {
-    frameCount: frameTimes.length,
+    frameCount,
     p50: percentile(sorted, 50),
     p95: percentile(sorted, 95),
+    p99: percentile(sorted, 99),
     max: sorted.at(-1) ?? 0,
     framesOver50ms: frameTimes.filter((t) => t > 50).length,
     framesOver100ms: frameTimes.filter((t) => t > 100).length,
@@ -59,6 +74,9 @@ export function summarizeFrameTimes(
     longTasks,
     longAnimationFrames,
     durationMs,
+    effectiveFps: Math.round(effectiveFps * 10) / 10,
+    droppedFramePct: Math.round(droppedFramePct * 10) / 10,
+    loafAttribution: [],
   };
 }
 

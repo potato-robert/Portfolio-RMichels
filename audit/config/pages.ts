@@ -132,6 +132,8 @@ function tagPage(pagePath: string, slug: string | undefined): PageTag[] {
 export function loadPageInventory(options: {
   target: 'local' | 'prod';
   pageFilter?: string[];
+  /** When true, audit every built route (legacy full-site matrix). */
+  allPages?: boolean;
 }): { pages: AuditPage[]; sitemapPaths: Set<string> } {
   if (!fs.existsSync(dist)) {
     throw new Error('dist/ missing — run `npm run build` before audit (local target).');
@@ -185,7 +187,48 @@ export function loadPageInventory(options: {
     };
   }
 
-  return { pages, sitemapPaths };
+  const auditPages = options.allPages ? pages : pagesForDefaultAudit(pages);
+
+  return { pages: auditPages, sitemapPaths };
+}
+
+/** DE case study sampled in the default audit set (DE routes mirror EN). */
+export const DEFAULT_DE_SAMPLE_PROJECT_PATH = '/de/clirioScanViews';
+
+/** EN webgl-heavy case study included in the default set (mockup + scroll perf coverage). */
+export const DEFAULT_EN_SAMPLE_PROJECT_PATH = '/clirioScanViews';
+
+const DEFAULT_CORE_PATHS = new Set([
+  '/',
+  '/about',
+  '/projects',
+  '/de',
+  '/de/about',
+  '/de/projects',
+]);
+
+function isDeCaseStudyPath(pagePath: string): boolean {
+  return pagePath.startsWith('/de/') && !DEFAULT_CORE_PATHS.has(pagePath);
+}
+
+/**
+ * Default audit scope: all `main`-tagged EN routes, core DE shell routes, one DE case study,
+ * and one EN webgl-heavy case study. Omit with `--all-pages` or override with `--pages`.
+ */
+export function pagesForDefaultAudit(pages: AuditPage[]): AuditPage[] {
+  return pages.filter((p) => {
+    if (p.tags.includes('development')) return false;
+
+    if (isDeCaseStudyPath(p.path)) {
+      return p.path === DEFAULT_DE_SAMPLE_PROJECT_PATH;
+    }
+
+    if (p.tags.includes('main')) return true;
+
+    if (p.path === DEFAULT_EN_SAMPLE_PROJECT_PATH) return true;
+
+    return false;
+  });
 }
 
 export function pagesForInteraction(pages: AuditPage[]): AuditPage[] {

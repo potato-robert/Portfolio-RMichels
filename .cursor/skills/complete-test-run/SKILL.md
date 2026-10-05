@@ -19,9 +19,9 @@ After pre-flight, start the audit command in a **new external terminal** (repo r
 
 | OS | Launch (adjust path if needed) |
 |----|--------------------------------|
-| **Windows (PowerShell)** | `Start-Process powershell -WorkingDirectory 'c:\xampp\htdocs' -ArgumentList '-NoExit','-Command','Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue; Copy-Item -Recurse -Force assets public/assets; npm run audit'` |
-| **macOS** | `osascript -e 'tell application "Terminal" to do script "cd \"'"$(pwd)"'\" && cp -r assets public/assets && npm run audit"'` |
-| **Linux** | Prefer the user’s default terminal, e.g. `gnome-terminal -- bash -lc 'cd ... && cp -r assets public/assets && npm run audit; exec bash'` |
+| **Windows (PowerShell)** | `Start-Process powershell -WorkingDirectory 'c:\xampp\htdocs' -ArgumentList '-NoExit','-Command','Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue; npm run rm-assets; npm run audit'` |
+| **macOS** | `osascript -e 'tell application "Terminal" to do script "cd \"'"$(pwd)"'\" && npm run rm-assets && npm run audit"'` |
+| **Linux** | Prefer the user’s default terminal, e.g. `gnome-terminal -- bash -lc 'cd ... && npm run rm-assets && npm run audit; exec bash'` |
 
 For **quick** one-liners (`test:fast`, `test:content` only), the integrated terminal is fine. Full `npm run audit` and `npm run test:complete` always use an external window.
 
@@ -31,9 +31,7 @@ The agent may run **pre-flight only** in the integrated shell (`node -v`, asset 
 
 1. **Node** ≥ 22.12.0 (`node -v`). If wrong, tell the user to switch Node and run `npm ci`.
 2. **Dependencies** — if `node_modules` is missing or stale: `npm ci`.
-3. **Assets** — before any build, ensure `public/assets` exists (CI copies from `assets/`):
-   - Linux/macOS: `cp -r assets public/assets`
-   - Windows (PowerShell): `Copy-Item -Recurse -Force assets public/assets`
+3. **Assets** — before any build, run `npm run rm-assets` (Astro `rm-assets` integration generates gitignored `public/assets/` from tracked `assets/` masters).
 4. **Playwright** — full audit needs **chromium + webkit** on the host (iPad/iPhone interaction profiles); CI/E2E only install chromium. Preflight auto-downloads any missing browsers before smoke launch. If install still fails, run `npm run playwright:install` once, then retry the audit.
 5. **Docker Desktop** — required for **full** audit (CPU/RAM-limited profiles). If Docker is not running, tell the user before starting; do not substitute a partial audit unless they ask for quick/CI-only.
 
@@ -50,6 +48,7 @@ This is `--level full` with all stages:
 | Stage | What it runs |
 |-------|----------------|
 | **ci-gate** | `npm run test:all` then `npm run test:perf` (check, unit, content, build, verify, E2E, scroll `@perf`) |
+| **docker-smoke** | One Docker container probe on `/` (local + interaction stage); fails before Lighthouse |
 | **lighthouse** | Mobile + desktop presets, all pages, medians → `perf-data` snapshot |
 | **seo** | Static SEO rules (report-only) + link crawl |
 | **interaction** | Emulated device matrix (host + Docker profiles) |
@@ -57,7 +56,7 @@ This is `--level full` with all stages:
 - **Build** is produced by the CI gate inside the audit; still run asset sync in pre-flight first.
 - Stale Astro preview lock: `npx astro preview stop`, then retry.
 - **Clean stop:** in the external audit window, press **`q`** to write an `aborted` snapshot (press **`q`** again to force quit without snapshot). Closing the window usually skips the snapshot.
-- After success: mention `npm run audit:compare` and `npm run audit:report`; latest artifacts under `.perf-data/runs/`. Details: [docs/AUDIT.md](../../../docs/AUDIT.md).
+- After success: mention `npm run audit:compare` and `npm run audit:report`; latest artifacts under `.perf-data/runs/`. Only a **complete successful full** audit updates **`perf-data`** (`dev` + slim `snapshot/latest/`; local `raw/` stays uncommitted). Details: [docs/AUDIT.md](../../../docs/AUDIT.md).
 
 ## Faster variants (user narrows scope)
 

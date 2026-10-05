@@ -4,13 +4,14 @@ import { generateRunReportHtml } from '../report.ts';
 import type { AuditProfile } from '../config/profiles.ts';
 import {
   appendHistory,
-  commitRun,
   writeManifest,
   writeSummary,
   type AuditManifest,
 } from './snapshot.ts';
 import { fingerprintKey, getHostFingerprint, readPackageVersion } from './host.ts';
 import type { PreflightResult } from './preflight.ts';
+import { publishLatestCompleteSnapshot } from './perf-data-publish.ts';
+import { shouldPublishCompleteSnapshot } from './snapshot-substance.ts';
 
 export interface AuditFailure {
   stage: string;
@@ -112,8 +113,25 @@ export function finalizeAuditRun(params: {
     failureStage: failure?.stage,
   });
 
-  const fp = fingerprintKey(host).replace(/\|/g, '_');
-  commitRun(worktree, `audit: ${git.sha.slice(0, 7)} ${opts.level} ${fp} ${status}`);
+  if (
+    shouldPublishCompleteSnapshot({
+      status,
+      level: opts.level,
+      stages: opts.stages,
+      summary,
+    })
+  ) {
+    const fp = fingerprintKey(host).replace(/\|/g, '_');
+    const msg = `audit: ${git.sha.slice(0, 7)} full ${fp} snapshot`;
+    publishLatestCompleteSnapshot(worktree, runDir, msg);
+    console.log(`perf-data: published slim snapshot/latest (local raw stays in ${runDir})`);
+  } else if (status === 'success') {
+    console.warn(
+      `Skipping perf-data publish (quick or incomplete stage set). Local run: ${runDir}`,
+    );
+  } else {
+    console.warn(`Skipping perf-data publish (status ${status}). Local run: ${runDir}`);
+  }
 
   if (exitCode === 0) {
     console.log(`Audit complete: ${runDir}`);

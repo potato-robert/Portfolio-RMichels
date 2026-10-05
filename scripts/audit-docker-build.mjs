@@ -16,6 +16,20 @@ if (!pwVersion) {
 }
 
 const dockerDir = path.join(root, 'audit', 'docker');
+const dockerLib = path.join(dockerDir, 'lib');
+const auditLib = path.join(root, 'audit', 'lib');
+const browserScripts = [
+  'frame-sampler-start.browser.js',
+  'frame-sampler-stop.browser.js',
+  'interaction-scroll-step.browser.js',
+  'interaction-read-perf-tier.browser.js',
+];
+
+fs.mkdirSync(dockerLib, { recursive: true });
+for (const name of browserScripts) {
+  fs.copyFileSync(path.join(auditLib, name), path.join(dockerLib, name));
+}
+
 const dockerPackage = path.join(dockerDir, 'package.json');
 const pkg = JSON.parse(fs.readFileSync(dockerPackage, 'utf8'));
 if (pkg.dependencies.playwright !== pwVersion) {

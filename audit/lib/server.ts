@@ -2,6 +2,7 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { setTimeout as delay } from 'node:timers/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { auditChildEnv } from './spawn-env.ts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const DEFAULT_PORT = 4321;
@@ -39,6 +40,7 @@ export async function ensurePreviewServer(port = DEFAULT_PORT): Promise<PreviewS
       cwd: root,
       shell: true,
       stdio: 'ignore',
+      env: auditChildEnv(),
     },
   );
 

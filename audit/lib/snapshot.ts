@@ -3,6 +3,7 @@ import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import type { HostFingerprint } from './host.ts';
+import { ensurePerfDataLocalExclude } from './perf-data-publish.ts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const worktreePath = path.join(root, '.perf-data');
@@ -56,13 +57,33 @@ function listedWorktreePaths(porcelain: string): string[] {
     .map((line) => path.resolve(line.slice('worktree '.length).trim()));
 }
 
+function pathsEqual(a: string, b: string): boolean {
+  const na = path.resolve(a);
+  const nb = path.resolve(b);
+  if (process.platform === 'win32') {
+    return na.toLowerCase() === nb.toLowerCase();
+  }
+  return na === nb;
+}
+
+/** True when `.perf-data` is already a linked worktree (`.git` file with gitdir). */
+function isExistingPerfDataWorktree(): boolean {
+  const gitFile = path.join(worktreePath, '.git');
+  if (!fs.existsSync(gitFile) || !fs.statSync(gitFile).isFile()) return false;
+  return fs.readFileSync(gitFile, 'utf8').trimStart().startsWith('gitdir:');
+}
+
 export function ensurePerfDataWorktree(): string {
   const porcelain = git('git worktree list --porcelain');
   const resolvedWorktree = path.resolve(worktreePath);
-  if (listedWorktreePaths(porcelain).some((p) => path.resolve(p) === resolvedWorktree)) {
+  const alreadyLinked =
+    isExistingPerfDataWorktree() ||
+    listedWorktreePaths(porcelain).some((p) => pathsEqual(p, resolvedWorktree));
+  if (alreadyLinked) {
     if (!fs.existsSync(worktreePath)) {
       fs.mkdirSync(worktreePath, { recursive: true });
     }
+    ensurePerfDataLocalExclude(worktreePath);
     return worktreePath;
   }
 
@@ -70,21 +91,13 @@ export function ensurePerfDataWorktree(): string {
   fs.mkdirSync(worktreePath, { recursive: true });
 
   if (!hasBranch) {
-    // Git for Windows does not support `worktree add --orphan`; create an empty-tree root commit.
-    const emptyTree = execSync('git hash-object -t tree -w --stdin', {
-      cwd: root,
-      input: '',
-      encoding: 'utf8',
-    }).trim();
-    const commit = execSync(`git commit-tree -m "audit: init perf-data branch" ${emptyTree}`, {
-      cwd: root,
-      encoding: 'utf8',
-    }).trim();
-    execSync(`git branch perf-data ${commit}`, { cwd: root });
+    const devRef = execSync('git rev-parse dev', { cwd: root, encoding: 'utf8' }).trim();
+    execSync(`git branch perf-data ${devRef}`, { cwd: root });
   }
 
   execSync(`git worktree add "${worktreePath}" perf-data`, { cwd: root, stdio: 'inherit' });
 
+  ensurePerfDataLocalExclude(worktreePath);
   return worktreePath;
 }
 
@@ -114,13 +127,6 @@ export function writeSummary(runDir: string, summary: AuditSummary): void {
 export function appendHistory(worktree: string, entry: Record<string, unknown>): void {
   const historyPath = path.join(worktree, 'history.jsonl');
   fs.appendFileSync(historyPath, `${JSON.stringify(entry)}\n`);
-}
-
-export function commitRun(worktree: string, message: string): void {
-  execSync('git add -A', { cwd: worktree });
-  const status = execSync('git status --porcelain', { cwd: worktree, encoding: 'utf8' });
-  if (!status.trim()) return;
-  execSync(`git commit -m "${message.replace(/"/g, '\\"')}"`, { cwd: worktree, stdio: 'inherit' });
 }
 
 export function listRuns(worktree = worktreePath): string[] {
