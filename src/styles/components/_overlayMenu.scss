@@ -35,28 +35,23 @@
       transition: 1s;
 
       &:hover {
-        * {
-          text-decoration-thickness: from-font;
-          text-decoration: underline !important;
-        }
-        .curPage {
-          text-decoration-thickness: from-font;
-          text-decoration: underline !important;
-        }
-      }
-
-      .curPage {
-        font-weight: bold;
-        font-style: italic;
+        text-decoration-thickness: from-font;
+        text-decoration: underline !important;
       }
     }
 
-    > a {
-      font-weight: _font(weight-light);
+    li.curPage a {
+      font-weight: bold;
+      font-style: italic;
+    }
 
-      &:not(:first-of-type) {
-        margin-top: 1rem;
-      }
+    > li > a {
+      font-weight: _font(weight-light);
+      display: block;
+    }
+
+    > li + li:not(.overlayMenuSpacer) {
+      margin-top: 1rem;
     }
 
     > ul {

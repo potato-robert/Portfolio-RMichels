@@ -1,3 +1,5 @@
+import { setAnimationLoopPaused } from '../lib/webgl/animationLoop';
+
 export function initMenu() {
   const menuToggle = document.getElementById('MenuToggle');
   const overlayMenu = document.getElementById('OverlayMenu');
@@ -7,8 +9,14 @@ export function initMenu() {
   if (!menuToggle || !overlayMenu || !mainGrid || !contentToBlur || !menuContent) return;
 
   overlayMenu.classList.add('hidden');
+  overlayMenu.setAttribute('aria-hidden', 'true');
   menuToggle.setAttribute('aria-expanded', 'false');
   let tmpDisable = false;
+
+  const setWebGLPaused = (paused: boolean) => {
+    // Full-screen overlay covers the canvas; pause the shared loop while open.
+    setAnimationLoopPaused(paused);
+  };
 
   const toggle = () => {
     tmpDisable = true;
@@ -18,6 +26,8 @@ export function initMenu() {
     contentToBlur.classList.toggle('blur');
     mainGrid.classList.toggle('noClick');
     menuToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    overlayMenu.setAttribute('aria-hidden', opening ? 'false' : 'true');
+    setWebGLPaused(opening);
     if (!opening) menuToggle.focus();
     setTimeout(() => {
       tmpDisable = false;

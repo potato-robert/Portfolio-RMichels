@@ -26,7 +26,7 @@ order: 8
   <section class="sectionMedia">
     <div class="mediaColumn">
       <figure>
-        <img src="/assets/img/portfolio/erDiagram.png" alt="Historisches ER-Diagramm der Portfolio-Datenbank (LAMP-Stack vor Astro).">
+        <img src="/assets/img/portfolio/erDiagram.webp" alt="Historisches ER-Diagramm der Portfolio-Datenbank (LAMP-Stack vor Astro).">
         <figcaption class="center">Historisches ER-Diagramm der Portfolio-Datenbank (LAMP-Stack vor Astro).</figcaption>
       </figure>
     </div>
@@ -38,7 +38,7 @@ order: 8
   <section class="sectionMedia">
     <div class="mediaColumn">
       <figure>
-        <img src="/assets/img/portfolio/modelProzess.jpg" alt="Screenshot from Blender, where I cleaned up the photogrammetry capture of myself, which was created with RealityCapture.">
+        <img src="/assets/img/portfolio/modelProcess.webp" alt="Screenshot from Blender, where I cleaned up the photogrammetry capture of myself, which was created with RealityCapture.">
         <figcaption class="center">Screenshot from Blender, where I cleaned up the photogrammetry capture of myself, which was created with RealityCapture.</figcaption>
       </figure>
     </div>

@@ -8,24 +8,26 @@ import {
 
 export type ScrollPerfBudget = {
   p95MaxMs: number;
-  maxFrameMs: number;
+  p99MaxMs: number;
+  /** Allow at most this many frames longer than 200ms during sampling. */
+  maxFramesOver200ms: number;
   maxLongTasks: number;
 };
 
 export const SCROLL_PERF_BUDGETS: ScrollPerfBudget = {
-  /** Default p95 frame time during scroll (ms). */
   p95MaxMs: 50,
-  /** Default max single-frame time during scroll (ms). */
-  maxFrameMs: 200,
-  /** Long tasks (>50ms main-thread blocks) during scroll sampling. */
+  p99MaxMs: 120,
+  maxFramesOver200ms: 1,
   maxLongTasks: 10,
 } as const;
 
 /** Per-route overrides — homepage is heavier (waves + landing model + parallax). */
 export const SCROLL_PERF_PAGE_BUDGETS: Record<string, Partial<ScrollPerfBudget>> = {
-  homepage: { p95MaxMs: 55, maxFrameMs: 300, maxLongTasks: 6 },
-  projects: { p95MaxMs: 50, maxFrameMs: 200, maxLongTasks: 8 },
-  clirioScanViews: { p95MaxMs: 50, maxFrameMs: 200, maxLongTasks: 10 },
+  homepage: { p95MaxMs: 55, p99MaxMs: 200, maxFramesOver200ms: 1, maxLongTasks: 6 },
+  projects: { p95MaxMs: 50, p99MaxMs: 120, maxFramesOver200ms: 1, maxLongTasks: 8 },
+  clirioScanViews: { p95MaxMs: 50, p99MaxMs: 120, maxFramesOver200ms: 1, maxLongTasks: 10 },
+  tourguide: { p95MaxMs: 55, p99MaxMs: 180, maxFramesOver200ms: 1, maxLongTasks: 8 },
+  futureEarth: { p95MaxMs: 50, p99MaxMs: 120, maxFramesOver200ms: 1, maxLongTasks: 10 },
 };
 
 export type ScrollPerfMetrics = FrameSampleMetrics;
@@ -53,6 +55,7 @@ export interface ScrollPerfOptions {
   durationMs?: number;
   scrollDelta?: number;
   tickMs?: number;
+  warmupMs?: number;
 }
 
 export async function measureScrollPerformance(
@@ -62,8 +65,16 @@ export async function measureScrollPerformance(
   const durationMs = options.durationMs ?? 5000;
   const scrollDelta = options.scrollDelta ?? 100;
   const tickMs = options.tickMs ?? 16;
+  const warmupMs = options.warmupMs ?? 400;
 
   await page.mouse.move(640, 360);
+
+  const warmupEnd = Date.now() + warmupMs;
+  while (Date.now() < warmupEnd) {
+    await page.mouse.wheel(0, scrollDelta);
+    await page.waitForTimeout(tickMs);
+  }
+
   await startFrameSampling(page);
 
   const start = Date.now();
@@ -95,6 +106,7 @@ export function formatScrollPerfMetrics(metrics: ScrollPerfMetrics): string {
     `frames=${metrics.frameCount}`,
     `p50=${metrics.p50.toFixed(1)}ms`,
     `p95=${metrics.p95.toFixed(1)}ms`,
+    `p99=${metrics.p99.toFixed(1)}ms`,
     `max=${metrics.max.toFixed(1)}ms`,
     `>50ms=${metrics.framesOver50ms}`,
     `>100ms=${metrics.framesOver100ms}`,

@@ -9,6 +9,7 @@ describe('transformExternalEmbeds', () => {
     expect(out).toContain('data-external-embed');
     expect(out).toContain('data-provider="youtube"');
     expect(out).toContain('youtube-nocookie.com');
+    expect(out).toContain('data-iframe-title="YouTube (Google)"');
     expect(out).not.toContain('<iframe');
   });
 

@@ -2,12 +2,14 @@ import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import type { Locale } from './i18n';
 import { transformExternalEmbeds } from './external-embeds';
 import { remarkGistEmbed } from '../plugins/remark-gist-embed';
+import { rehypeResponsiveMedia } from '../plugins/rehype-responsive-media';
 
 let processorPromise: ReturnType<typeof createMarkdownProcessor> | null = null;
 
 async function getProcessor() {
   processorPromise ??= createMarkdownProcessor({
     remarkPlugins: [remarkGistEmbed],
+    rehypePlugins: [rehypeResponsiveMedia],
     gfm: true,
     smartypants: true,
   });

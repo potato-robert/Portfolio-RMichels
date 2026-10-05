@@ -50,7 +50,7 @@ Loaded via `PageBootCore.ts` (BaseLayout), `ProjectPageBoot.ts` (ProjectLayout),
 | HomeWebGL | Home |
 | ProjectFilter | Home (client), Projects (eager script) |
 | ProjectLightbox, ThreeMockup, ProjectToc | Case studies (`ProjectPageBoot`) |
-| Lqip | Footer (case study tiles) |
+| ResponsiveImage | Project tiles, heroes, markdown `<img>` via rehype |
 | ThreeMockup | Projects with mockup markup |
 | WebGLBackground | Home, About, Projects, case studies |
 | Menu | All BaseLayout pages |
@@ -75,14 +75,9 @@ Markdown body = case study HTML sections (former `#projContent`).
 
 ## Assets (local dev)
 
-Large binaries live in tracked `assets/` at repo root. For local dev and CI, copy or junction into `public/assets/`:
+Large binaries live in tracked `assets/` at repo root (Git LFS). The **`rm-assets`** Astro integration (`src/integrations/rm-assets/`) generates gitignored `public/assets/` on dev/build: AVIF/WebP srcsets, mozjpeg masters, placeholders, GIF→video, GLB compression. Run `npm run rm-assets` explicitly before content validation; CI caches `node_modules/.cache/rm-assets`.
 
-```bash
-cp -r assets public/assets   # CI / Linux
-# Windows: mklink /J public\assets assets
-```
-
-Validation checks both `public/assets/` and `assets/`.
+`scripts/validate-content.mjs` checks masters under `assets/` and manifest entries; `npm run test:verify` checks built HTML dimensions and srcset URLs in `dist/`.
 
 ## Deploy
 

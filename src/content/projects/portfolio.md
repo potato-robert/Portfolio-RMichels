@@ -26,7 +26,7 @@ order: 8
   <section class="sectionMedia">
     <div class="mediaColumn">
       <figure>
-        <img src="/assets/img/portfolio/erDiagram.png" alt="Historical ER diagram of the portfolio database (pre-Astro LAMP stack).">
+        <img src="/assets/img/portfolio/erDiagram.webp" alt="Historical ER diagram of the portfolio database (pre-Astro LAMP stack).">
         <figcaption class="center">Historical ER diagram of the portfolio database (pre-Astro LAMP stack).</figcaption>
       </figure>
     </div>
@@ -38,7 +38,7 @@ order: 8
   <section class="sectionMedia">
     <div class="mediaColumn">
       <figure>
-        <img src="/assets/img/portfolio/modelProcess.jpg" alt="Screenshot from Blender, where I cleaned up the photogrammetry capture of myself, which was created with RealityCapture.">
+        <img src="/assets/img/portfolio/modelProcess.webp" alt="Screenshot from Blender, where I cleaned up the photogrammetry capture of myself, which was created with RealityCapture.">
         <figcaption class="center">Screenshot from Blender, where I cleaned up the photogrammetry capture of myself, which was created with RealityCapture.</figcaption>
       </figure>
     </div>

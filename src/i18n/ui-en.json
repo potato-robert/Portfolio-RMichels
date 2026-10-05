@@ -57,5 +57,16 @@
   "glossary_op": "Orthotics & Prosthetics — limb support and replacement devices",
   "glossary_gis": "Geographic Information System — mapping and spatial data",
   "glossary_cnc": "Computer Numerical Control — automated machine tools for cutting and shaping materials",
-  "project_toc": "On this page"
+  "project_toc": "On this page",
+  "skip_to_content": "Skip to content",
+  "site_nav": "Site",
+  "menu": "Menu",
+  "nav_home": "Home",
+  "nav_about": "About",
+  "email_contact": "Email Robert Michels",
+  "social_linkedin": "LinkedIn",
+  "social_github": "GitHub",
+  "social_google_play": "Google Play",
+  "social_itch_io": "itch.io",
+  "scroll_to_project_info": "Scroll to project info"
 }

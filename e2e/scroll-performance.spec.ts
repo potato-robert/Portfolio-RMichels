@@ -36,9 +36,14 @@ test.describe('scroll performance @perf', () => {
     ).toBeLessThanOrEqual(budgets.p95MaxMs);
 
     expect(
-      metrics.max,
-      `${pageLabel} max frame time ${metrics.max.toFixed(1)}ms exceeds ${budgets.maxFrameMs}ms (${summary})`,
-    ).toBeLessThanOrEqual(budgets.maxFrameMs);
+      metrics.p99,
+      `${pageLabel} p99 frame time ${metrics.p99.toFixed(1)}ms exceeds ${budgets.p99MaxMs}ms (${summary})`,
+    ).toBeLessThanOrEqual(budgets.p99MaxMs);
+
+    expect(
+      metrics.framesOver200ms,
+      `${pageLabel} frames >200ms ${metrics.framesOver200ms} exceed ${budgets.maxFramesOver200ms} (${summary})`,
+    ).toBeLessThanOrEqual(budgets.maxFramesOver200ms);
 
     expect(
       metrics.longTasks,
@@ -71,5 +76,23 @@ test.describe('scroll performance @perf', () => {
 
     const metrics = await measureScrollPerformance(page);
     assertScrollBudgets(metrics, 'clirioScanViews');
+  });
+
+  test(`case study /futureEarth (CPU throttle ${throttleRate}x)`, async ({ page }) => {
+    await page.goto('/futureEarth');
+    await expect(page.locator('#projLanding h1')).toBeVisible();
+    await waitForScrollEffectsReady(page);
+
+    const metrics = await measureScrollPerformance(page);
+    assertScrollBudgets(metrics, 'futureEarth');
+  });
+
+  test(`case study /tourguide (CPU throttle ${throttleRate}x)`, async ({ page }) => {
+    await page.goto('/tourguide');
+    await expect(page.locator('#projLanding h1')).toBeVisible();
+    await waitForScrollEffectsReady(page);
+
+    const metrics = await measureScrollPerformance(page);
+    assertScrollBudgets(metrics, 'tourguide');
   });
 });

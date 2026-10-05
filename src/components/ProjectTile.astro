@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../lib/i18n';
 import { t } from '../lib/i18n';
+import ResponsiveImage from './ResponsiveImage.astro';
 
 interface Props {
   slug: string;
@@ -16,24 +17,23 @@ const { slug, name, type, inDevelopment = false, roles = [], locale, href } = As
 const prefix = locale === 'de' ? '/de' : '';
 const finalHref = href ?? `${prefix}${inDevelopment ? `/development/${slug}` : `/${slug}`}`;
 const roleString = roles.join(',');
+const tileSrc = `/assets/img/${slug}.jpg`;
 ---
 
-<div class="projRow projRow--visible" data-js={roleString || undefined}>
+<article class="projRow projRow--visible" data-js={roleString || undefined}>
   <div class:list={['projPanel', inDevelopment && 'inDevelopment']}>
-    <a href={finalHref} title={name}>
-      <img
-        src={`/assets/img/lqip/${slug}.jpg`}
-        width="800"
-        height="600"
-        loading="lazy"
+    <a href={finalHref} title={name} aria-label={`${name} — ${type}`}>
+      <ResponsiveImage
+        src={tileSrc}
         alt={name}
+        layout="tile"
         class:list={inDevelopment ? ['inDevelopment'] : undefined}
       />
       {inDevelopment && <div class="inDevelopmentText">{t('in_development', locale)}</div>}
       <div class="projJScontainer">
         <h2 class="projLabel">{name}</h2>
-        <h3 class="projMeta">{type}</h3>
+        <p class="projMeta">{type}</p>
       </div>
     </a>
   </div>
-</div>
+</article>

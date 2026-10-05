@@ -30,22 +30,22 @@ order: 5
   <section class="sectionMedia">
     <div class="mediaGrid">
       <figure>
-        <img src="/assets/img/futureearth/lqip/3.jpg" alt="future Earth – 3">
+        <img src="/assets/img/futureEarth/lqip/3.jpg" alt="future Earth – 3">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/4.jpg" alt="future Earth – 4">
+        <img src="/assets/img/futureEarth/lqip/4.jpg" alt="future Earth – 4">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/5.jpg" alt="future Earth – 5">
+        <img src="/assets/img/futureEarth/lqip/5.jpg" alt="future Earth – 5">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/6.jpg" alt="future Earth – 6">
+        <img src="/assets/img/futureEarth/lqip/6.jpg" alt="future Earth – 6">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/7.jpg" alt="future Earth – 7">
+        <img src="/assets/img/futureEarth/lqip/7.jpg" alt="future Earth – 7">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/8.jpg" alt="future Earth – 8">
+        <img src="/assets/img/futureEarth/lqip/8.jpg" alt="future Earth – 8">
       </figure>
     </div>
   </section>
@@ -67,22 +67,22 @@ order: 5
   <section class="sectionMedia">
     <div class="mediaGrid">
       <figure>
-        <img src="/assets/img/futureearth/lqip/9.jpg" alt="future Earth – 9">
+        <img src="/assets/img/futureEarth/lqip/9.jpg" alt="future Earth – 9">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/10.jpg" alt="future Earth – 10">
+        <img src="/assets/img/futureEarth/lqip/10.jpg" alt="future Earth – 10">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/11.jpg" alt="future Earth – 11">
+        <img src="/assets/img/futureEarth/lqip/11.jpg" alt="future Earth – 11">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/12.jpg" alt="future Earth – 12">
+        <img src="/assets/img/futureEarth/lqip/12.jpg" alt="future Earth – 12">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/13.jpg" alt="future Earth – 13">
+        <img src="/assets/img/futureEarth/lqip/13.jpg" alt="future Earth – 13">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/14.jpg" alt="future Earth – 14">
+        <img src="/assets/img/futureEarth/lqip/14.jpg" alt="future Earth – 14">
       </figure>
     </div>
   </section>
@@ -96,34 +96,34 @@ order: 5
   <section class="sectionMedia">
     <div class="mediaGrid">
       <figure>
-        <img src="/assets/img/futureearth/lqip/15.jpg" alt="future Earth – 15">
+        <img src="/assets/img/futureEarth/lqip/15.jpg" alt="future Earth – 15">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/16.jpg" alt="future Earth – 16">
+        <img src="/assets/img/futureEarth/lqip/16.jpg" alt="future Earth – 16">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/17.jpg" alt="future Earth – 17">
+        <img src="/assets/img/futureEarth/lqip/17.jpg" alt="future Earth – 17">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/18.jpg" alt="future Earth – 18">
+        <img src="/assets/img/futureEarth/lqip/18.jpg" alt="future Earth – 18">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/19.jpg" alt="future Earth – 19">
+        <img src="/assets/img/futureEarth/lqip/19.jpg" alt="future Earth – 19">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/20.jpg" alt="future Earth – 20">
+        <img src="/assets/img/futureEarth/lqip/20.jpg" alt="future Earth – 20">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/hud1.jpg" alt="future Earth – hud1">
+        <img src="/assets/img/futureEarth/lqip/hud1.jpg" alt="future Earth – hud1">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/hud2.jpg" alt="future Earth – hud2">
+        <img src="/assets/img/futureEarth/lqip/hud2.jpg" alt="future Earth – hud2">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/hud3.jpg" alt="future Earth – hud3">
+        <img src="/assets/img/futureEarth/lqip/hud3.jpg" alt="future Earth – hud3">
       </figure>
       <figure>
-        <img src="/assets/img/futureearth/lqip/hud4.jpg" alt="future Earth – hud4">
+        <img src="/assets/img/futureEarth/lqip/hud4.jpg" alt="future Earth – hud4">
       </figure>
     </div>
   </section>

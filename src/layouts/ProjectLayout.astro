@@ -5,6 +5,7 @@ import ProjectMeta from '../components/ProjectMeta.astro';
 import type { CollectionEntry } from 'astro:content';
 import type { Locale } from '../lib/i18n';
 import { getLocalized, getProjectSlug } from '../lib/projects';
+import { projectMetaDescription } from '../lib/seo-meta';
 
 interface Props {
   project: CollectionEntry<'projects'> | CollectionEntry<'projects-de'>;
@@ -13,11 +14,23 @@ interface Props {
 
 const { project, locale } = Astro.props;
 const p = project.data;
-const title = `${getLocalized(p.name, locale)} | Robert Michels Portfolio`;
-const description = `${getLocalized(p.name, locale)} (${getLocalized(p.projectType, locale)}) | Robert Michels Portfolio | I'm Robert Michels, a designer and developer from Vancouver.`;
+const name = getLocalized(p.name, locale);
+const projectType = getLocalized(p.projectType, locale);
+const titleSuffix =
+  locale === 'de' ? 'Portfolio von Robert Michels' : 'Robert Michels Portfolio';
+const devLabel = p.inDevelopment ? (locale === 'de' ? ' (In Arbeit)' : ' (In Development)') : '';
+const title = `${name}${devLabel} | ${titleSuffix}`;
+const description = projectMetaDescription(
+  name,
+  projectType,
+  getLocalized(p.description, locale),
+  locale,
+);
 const slug = getProjectSlug(project);
 const basePath = p.inDevelopment ? `/development/${slug}` : `/${slug}`;
 const canonicalPath = locale === 'de' ? `/de${basePath}` : basePath;
+const pageUrl = `https://rmichels.com${canonicalPath === '/' ? '' : canonicalPath}`;
+const ogImage = `https://rmichels.com/assets/img/${slug}.jpg`;
 ---
 
 <BaseLayout
@@ -26,7 +39,14 @@ const canonicalPath = locale === 'de' ? `/de${basePath}` : basePath;
   locale={locale}
   pageType="project"
   canonicalPath={canonicalPath}
-  ogImage={`https://rmichels.com/assets/img/${slug}.jpg`}
+  ogImage={ogImage}
+  creativeWork={{
+    name,
+    description,
+    image: ogImage,
+    url: pageUrl,
+    inLanguage: locale === 'de' ? 'de' : 'en',
+  }}
 >
   <ProjectLanding project={project} locale={locale} />
   <ProjectMeta project={project} locale={locale} />
@@ -40,6 +60,9 @@ const canonicalPath = locale === 'de' ? `/de${basePath}` : basePath;
       data-mockup-phone={p.threeMockup === 'phone' ? true : undefined}
       data-mockup-hololens={p.threeMockup === 'hololens' ? true : undefined}
       style="display:none"
+      aria-hidden="true"
+      role="presentation"
+      tabindex="-1"
     />
   )}
   <script>

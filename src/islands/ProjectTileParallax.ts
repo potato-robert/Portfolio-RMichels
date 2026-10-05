@@ -24,61 +24,69 @@ const PARALLAX_SELECTORS = [
   '.projRow:not(.projRow--hidden) .projLabel',
 ] as const;
 
-function isWideLayout() {
-  return window.innerWidth >= 1200 && window.matchMedia('(orientation: landscape)').matches;
-}
+const WIDE_LAYOUT_MQ = '(min-width: 1200px) and (orientation: landscape)';
 
 export function initProjectTileParallax() {
   let scrollEndTimer: ReturnType<typeof setTimeout> | null = null;
+  let wideLayout = window.matchMedia(WIDE_LAYOUT_MQ).matches;
+  let activeElements: HTMLElement[] = [];
+  let inactiveBySelector = new Map<string, HTMLElement[]>();
 
-  const getElements = () => {
-    if (isWideLayout()) {
-      return getVisibleElements('.projRow:not(.projRow--hidden) .projLabel');
+  const refreshElementLists = () => {
+    wideLayout = window.matchMedia(WIDE_LAYOUT_MQ).matches;
+    activeElements = wideLayout
+      ? getVisibleElements('.projRow:not(.projRow--hidden) .projLabel')
+      : getVisibleElements('.projRow:not(.projRow--hidden) .projJScontainer');
+
+    inactiveBySelector = new Map();
+    for (const selector of PARALLAX_SELECTORS) {
+      inactiveBySelector.set(selector, getVisibleElements(selector));
     }
-    return getVisibleElements('.projRow:not(.projRow--hidden) .projJScontainer');
   };
 
-  const resetInactiveParallaxStyles = (active: HTMLElement[]) => {
-    const activeSet = new Set(active);
+  refreshElementLists();
 
-    PARALLAX_SELECTORS.forEach((selector) => {
-      getVisibleElements(selector).forEach((el) => {
+  const resetInactiveParallaxStyles = () => {
+    const activeSet = new Set(activeElements);
+
+    for (const elements of inactiveBySelector.values()) {
+      for (const el of elements) {
         if (!activeSet.has(el)) {
           el.style.transform = '';
           el.style.willChange = '';
         }
-      });
-    });
+      }
+    }
   };
 
   const setWillChange = (active: boolean) => {
     const prop = active ? 'transform' : '';
-    getElements().forEach((el) => {
+    for (const el of activeElements) {
       el.style.willChange = prop;
-    });
+    }
   };
 
   const update = () => {
-    const active = getElements();
-    resetInactiveParallaxStyles(active);
+    resetInactiveParallaxStyles();
 
     const buffer = 50;
     let min = -80;
     let max = 100;
-    if (!isWideLayout()) {
+    if (!wideLayout) {
       min = -40;
       max = 0;
     }
 
-    active.forEach((curElement) => {
-      const yPos = offset(curElement);
-      const bottomVal = clamp(
-        mapVal(yPos, 0, window.innerHeight, max, min),
-        min - buffer,
-        max + buffer,
-      );
-      curElement.style.transform = `translateY(${-bottomVal}px)`;
-    });
+    const viewportHeight = window.innerHeight;
+    const reads: { el: HTMLElement; yPos: number }[] = activeElements.map((el) => ({
+      el,
+      yPos: offset(el),
+    }));
+
+    for (const { el, yPos } of reads) {
+      const bottomVal = clamp(mapVal(yPos, 0, viewportHeight, max, min), min - buffer, max + buffer);
+      el.style.transform = `translateY(${-bottomVal}px)`;
+    }
   };
 
   const scheduleScrollEnd = () => {
@@ -92,6 +100,11 @@ export function initProjectTileParallax() {
     scheduleScrollEnd();
   };
 
+  const onLayoutChange = () => {
+    refreshElementLists();
+    onScroll();
+  };
+
   const hookLenis = () => {
     const lenis = getScrollLenis();
     if (lenis) {
@@ -102,7 +115,8 @@ export function initProjectTileParallax() {
     requestAnimationFrame(hookLenis);
   };
 
-  window.addEventListener('resize', onScroll, { passive: true });
+  window.matchMedia(WIDE_LAYOUT_MQ).addEventListener('change', onLayoutChange);
+  window.addEventListener('resize', onLayoutChange, { passive: true });
   hookLenis();
 }
 

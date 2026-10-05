@@ -77,7 +77,7 @@ const locale = 'en';
 ## Case Study Pattern
 
 1. Add `src/content/projects/{slug}.md` with frontmatter (`slug`, `name`, `projectType`, `roles`, etc.) and markdown body
-2. Add hero `public/assets/img/{slug}.jpg` and gallery under `public/assets/img/{slug}/lqip/`
+2. Add hero `assets/img/{slug}.jpg` and gallery masters under `assets/img/{slug}/` (rm-assets generates `public/assets/` on build)
 3. Astro generates `/slug` and `/de/slug` via `src/pages/[slug].astro`
 
 ## i18n
@@ -142,7 +142,7 @@ npm run test:content && npm run build && npm run test:verify
 
 ## Local audit (not CI)
 
-Thorough load, SEO, and interaction audits: `npm run audit` / `npm run audit:quick`. Snapshots live on the `perf-data` branch worktree at `.perf-data/`. See **`docs/AUDIT.md`**.
+Thorough load, SEO, and interaction audits: `npm run audit` / `npm run audit:quick`. Local runs under `.perf-data/runs/`; branch `perf-data` (worktree) holds only the latest full-success slim snapshot. See **`docs/AUDIT.md`**.
 
 ## Deploy
 

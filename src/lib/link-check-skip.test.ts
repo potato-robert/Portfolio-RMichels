@@ -3,9 +3,6 @@ import { shouldSkipLinkCheckUrl } from '../../audit/config/link-check-skip.ts';
 
 describe('link check skip URLs', () => {
   it('skips known local audit exceptions', () => {
-    expect(
-      shouldSkipLinkCheckUrl('http://127.0.0.1:4321/assets/img/portfolio/modelProzess.jpg'),
-    ).toBe(true);
     expect(shouldSkipLinkCheckUrl('https://github.com/potato-robert/tourguide_app')).toBe(true);
     expect(shouldSkipLinkCheckUrl('https://www.linkedin.com/in/example/')).toBe(true);
   });

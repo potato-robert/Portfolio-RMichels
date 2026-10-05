@@ -25,11 +25,11 @@ order: 7
   <section class="sectionMedia">
     <div class="mediaSquare">
       <figure>
-        <img src="/assets/img/harbingersofdeath/lqip/screen-home.jpg" alt="Harbingers of Death – Startseite">
+        <img src="/assets/img/harbingersOfDeath/lqip/screen-home.jpg" alt="Harbingers of Death – Startseite">
         <figcaption class="center">Startseite</figcaption>
       </figure>
       <figure>
-        <img src="/assets/img/harbingersofdeath/lqip/screen-omen.jpg" alt="Harbingers of Death – Omen-Inhaltsseite">
+        <img src="/assets/img/harbingersOfDeath/lqip/screen-omen.jpg" alt="Harbingers of Death – Omen-Inhaltsseite">
         <figcaption class="center">Omen-Inhaltseinheit</figcaption>
       </figure>
     </div>
@@ -43,11 +43,11 @@ order: 7
   <section class="sectionMedia">
     <div class="mediaSquare">
       <figure>
-        <img src="/assets/img/harbingersofdeath/lqip/animated-form.jpg" lqip-gif alt="Animiertes Formular mit schwebenden Labels (ARIA-freundlich)">
+        <img src="/assets/img/harbingersOfDeath/lqip/animated-form.jpg" lqip-gif alt="Animiertes Formular mit schwebenden Labels (ARIA-freundlich)">
         <figcaption class="center">Formular-Styling (ARIA-freundlich)</figcaption>
       </figure>
       <figure>
-        <img src="/assets/img/harbingersofdeath/lqip/screen-member-home.jpg" alt="Harbingers of Death – Mitglieder-Startseite">
+        <img src="/assets/img/harbingersOfDeath/lqip/screen-member-home.jpg" alt="Harbingers of Death – Mitglieder-Startseite">
         <figcaption class="center">Mitglieder-Startseite</figcaption>
       </figure>
     </div>
@@ -73,7 +73,7 @@ order: 7
   <section class="sectionMedia">
     <div class="mediaColumn">
       <figure>
-        <img src="/assets/img/harbingersofdeath/lqip/db.jpg" alt="ER-Diagramm der Harbingers-of-Death-Datenbank">
+        <img src="/assets/img/harbingersOfDeath/lqip/db.jpg" alt="ER-Diagramm der Harbingers-of-Death-Datenbank">
         <figcaption class="center">ER-Diagramm unserer Datenbank.</figcaption>
       </figure>
     </div>

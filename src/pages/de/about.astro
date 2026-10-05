@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AboutContact from '../../components/AboutContact.astro';
 import AboutMain from '../../components/AboutMain.astro';
 import AboutSkills from '../../components/AboutSkills.astro';
+import ResponsiveImage from '../../components/ResponsiveImage.astro';
 import { t } from '../../lib/i18n';
 
 const locale = 'de' as const;
@@ -10,21 +11,21 @@ const locale = 'de' as const;
 
 <BaseLayout
   title="Über mich | Robert Michels Portfolio"
-  description="Wer ist Robert Michels? Softwareentwickler und Designer aus Vancouver."
+  description="Wer ist Robert Michels? Softwareentwickler und Mediendesigner aus Vancouver — Skills, Werdegang und Kontakt auf rmichels.com."
   locale={locale}
   pageType="about"
   canonicalPath="/de/about"
 >
   <section class="sectionText about">
     <div>
-      <img src="/assets/img/portrait.jpg" alt="Robert Michels" />
+      <ResponsiveImage src="/assets/img/portrait.webp" alt="Robert Michels" layout="portrait" />
     </div>
     <AboutMain locale={locale} />
     <div class="aboutAside">
       <h2>{t('skills', locale)}</h2>
       <AboutSkills locale={locale} />
       <h2 class="aboutSayHi-heading">{t('say_hi_heading', locale)}</h2>
-      <AboutContact />
+      <AboutContact locale={locale} />
     </div>
   </section>
 </BaseLayout>

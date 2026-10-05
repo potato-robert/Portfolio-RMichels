@@ -21,18 +21,76 @@ const PROJECTS_DE = path.join(root, 'src/content/projects-de');
 const ROLES_TS = path.join(root, 'src/lib/roles.ts');
 const UI_EN = path.join(root, 'src/i18n/ui-en.json');
 const UI_DE = path.join(root, 'src/i18n/ui-de.json');
-/** Prefer public/assets (runtime); fall back to tracked assets/ when junction is absent (CI). */
-function resolveAssetDir(...parts) {
-  for (const base of ['public/assets', 'assets']) {
-    const dir = path.join(root, base, ...parts);
-    if (fs.existsSync(dir)) return dir;
-  }
-  return path.join(root, 'public/assets', ...parts);
+/** Tracked masters (Git LFS); rm-assets generates public/assets at build time. */
+function resolveSourceAssetDir(...parts) {
+  return path.join(root, 'assets', ...parts);
 }
 
-const IMG_DIR = resolveAssetDir('img');
-const LQIP_DIR = resolveAssetDir('img', 'lqip');
-const MODELS_DIR = resolveAssetDir('models');
+const IMG_DIR = resolveSourceAssetDir('img');
+const MODELS_DIR = resolveSourceAssetDir('models');
+const MANIFEST_PATH = path.join(root, 'node_modules', '.cache', 'rm-assets', 'manifest.json');
+const MAX_MASTER_BYTES = 8 * 1024 * 1024;
+
+function resolveCanonicalAssetUrl(url) {
+  let normalized = url.split('?')[0].split('#')[0];
+  if (!normalized.startsWith('/assets/')) return normalized;
+  return normalized.replace('/lqip/', '/');
+}
+
+/** @param {string} ref */
+function manifestLookupKeys(ref) {
+  const keys = new Set([ref]);
+  const canonical = resolveCanonicalAssetUrl(ref);
+  keys.add(canonical);
+  keys.add(canonical.replace(/\.(jpe?g|png|webp)$/i, '.gif'));
+  keys.add(canonical.replace(/\.gif$/i, '.jpg'));
+  return keys;
+}
+
+/** @param {{ entries?: Record<string, unknown> }} manifest @param {string} ref */
+function manifestHasEntry(manifest, ref) {
+  for (const key of manifestLookupKeys(ref)) {
+    if (manifest.entries?.[key]) return true;
+  }
+  return false;
+}
+
+function loadManifest() {
+  if (!fs.existsSync(MANIFEST_PATH)) {
+    fail('_manifest', 'manifest', `missing ${MANIFEST_PATH} — run npm run rm-assets first`);
+    return { entries: {} };
+  }
+  return JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+}
+
+/**
+ * @param {string} src
+ * @param {string} tag
+ */
+function resolveContentAssetRef(src, tag) {
+  let url = resolveCanonicalAssetUrl(src);
+  if (/lqip-gif/i.test(tag)) url = url.replace(/\.(jpe?g|png|webp)$/i, '.gif');
+  if (/lqip-webp/i.test(tag)) url = url.replace(/\.(jpe?g|png|gif)$/i, '.webp');
+  return url;
+}
+// keep in sync with src/integrations/rm-assets/resolve-url.ts
+
+/** @param {string} content */
+function extractAssetRefs(content) {
+  /** @type {Set<string>} */
+  const refs = new Set();
+  const imgRe = /<img\b[^>]*>/gi;
+  for (const tag of content.matchAll(imgRe)) {
+    const srcMatch = tag[0].match(/\ssrc=["']([^"']+)["']/i);
+    if (!srcMatch) continue;
+    refs.add(resolveContentAssetRef(srcMatch[1], tag[0]));
+  }
+  const re = /\/assets\/[A-Za-z0-9_./-]+\.(?:jpg|jpeg|png|webp|gif|mp4|webm|glb)/gi;
+  for (const match of content.matchAll(re)) {
+    refs.add(resolveCanonicalAssetUrl(match[0]));
+  }
+  return refs;
+}
 
 const THREE_MOCKUP_ASSETS = {
   phone: 'phone.glb',
@@ -232,6 +290,49 @@ function checkEnDeParity() {
   }
 }
 
+function checkManifestReferences(manifest, projectsBySlug) {
+  for (const [slug, meta] of projectsBySlug) {
+    if (meta.draft) continue;
+    for (const filePath of [path.join(PROJECTS_EN, `${slug}.md`), path.join(PROJECTS_DE, `${slug}.md`)]) {
+      if (!fs.existsSync(filePath)) continue;
+      const content = fs.readFileSync(filePath, 'utf8');
+      for (const ref of extractAssetRefs(content)) {
+        if (!manifestHasEntry(manifest, ref)) {
+          fail(slug, 'body', `asset not in rm-assets manifest: ${ref}`);
+        }
+      }
+    }
+  }
+}
+
+function warnLargeMasters() {
+  /** @param {string} dir */
+  function walk(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const name of fs.readdirSync(dir)) {
+      const full = path.join(dir, name);
+      const st = fs.statSync(full);
+      if (st.isDirectory()) {
+        if (name === 'lqip' || name === '_rm-gen') continue;
+        walk(full);
+        continue;
+      }
+      if (!/\.(jpe?g|png|webp|gif)$/i.test(name)) continue;
+      if (st.size > MAX_MASTER_BYTES) {
+        const rel = path.relative(path.join(root, 'assets'), full).replace(/\\/g, '/');
+        console.log(
+          JSON.stringify({
+            slug: '_assets',
+            field: rel,
+            error: `warning: master exceeds 8MB (${Math.round(st.size / (1024 * 1024))}MB)`,
+          }),
+        );
+      }
+    }
+  }
+  walk(path.join(root, 'assets', 'img'));
+}
+
 function checkProjects() {
   const roleSlugs = loadRoleSlugs();
   const enFiles = listMarkdownBasenames(PROJECTS_EN).map((name) => path.join(PROJECTS_EN, name));
@@ -282,20 +383,7 @@ function checkProjects() {
     if (!draft) {
       const heroName = `${project.slug}.jpg`;
       if (!fileExistsExact(IMG_DIR, heroName)) {
-        fail(
-          project.slug,
-          'heroImage',
-          `missing file: public/assets/img/${heroName} (also checked assets/img/)`,
-        );
-      }
-
-      const lqipName = `${project.slug}.jpg`;
-      if (!fileExistsExact(LQIP_DIR, lqipName)) {
-        fail(
-          project.slug,
-          'lqipImage',
-          `missing file: public/assets/img/lqip/${lqipName} (also checked assets/img/lqip/)`,
-        );
+        fail(project.slug, 'heroImage', `missing master: assets/img/${heroName}`);
       }
     }
 
@@ -304,7 +392,7 @@ function checkProjects() {
       if (!assetName) {
         fail(project.slug, 'threeMockup', `unknown threeMockup value "${threeMockup}"`);
       } else if (!fileExistsExact(MODELS_DIR, assetName)) {
-        fail(project.slug, 'threeMockup', `missing model: public/assets/models/${assetName} (also checked assets/models/)`);
+        fail(project.slug, 'threeMockup', `missing model: assets/models/${assetName}`);
       }
     }
 
@@ -351,6 +439,9 @@ function checkUiKeyParity() {
 function main() {
   checkEnDeParity();
   const projectsBySlug = checkProjects();
+  const manifest = loadManifest();
+  checkManifestReferences(manifest, projectsBySlug);
+  warnLargeMasters();
   checkInDevelopmentRouting(projectsBySlug);
   checkUiKeyParity();
 

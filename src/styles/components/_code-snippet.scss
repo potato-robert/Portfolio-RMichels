@@ -15,17 +15,25 @@
 
 	&-body {
 		overflow-x: auto;
-		background-color: #293134;
+		background-color: #24292e;
 
 		pre {
 			margin: 0;
 			padding: 1rem;
-			background: transparent !important;
 			font-family: map-get($font, family-alt);
 			font-size: 0.85rem;
 			line-height: 1.5;
 			tab-size: 4;
 			outline: none;
+
+			// Shiki github-dark tokens below 4.5:1 on #24292e — nudge for WCAG AA.
+			span[style*='color:#6A737D'] {
+				color: #8b949e !important;
+			}
+
+			span[style*='color:#F97583'] {
+				color: #ff7b72 !important;
+			}
 		}
 
 		code {

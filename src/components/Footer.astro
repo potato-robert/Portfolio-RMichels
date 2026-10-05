@@ -23,16 +23,65 @@ const year = new Date().getFullYear();
   {showContact && (
     <div>
       <ul class="icons">
-        <div class="emailContainer">
-          <a href="mailto: hi@rmichels.com" target="_blank" title="E-Mail | Right-click to copy to clipboard" id="emailLink">
-            <li><Icon name="envelope" size="2x" id="email" /></li>
+        <li class="emailContainer">
+          <a
+            href="mailto: hi@rmichels.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="E-Mail | Right-click to copy to clipboard"
+            aria-label={t('email_contact', locale)}
+            id="emailLink"
+          >
+            <Icon name="envelope" size="2x" id="email" />
           </a>
-        </div>
-        <small class="js-emaillink">hi@rmichels.com</small>
-        <a href="https://linkedin.com/in/robert-michels" target="_blank" rel="noopener noreferrer" title="LinkedIn"><li><Icon name="linkedin-in" size="2x" /></li></a>
-        <a href="https://github.com/potato-robert" target="_blank" rel="noopener noreferrer" title="GitHub"><li><Icon name="github" size="2x" /></li></a>
-        <a href="https://play.google.com/store/apps/developer?id=Studio+RM" target="_blank" rel="noopener noreferrer" title="Google Play"><li><Icon name="google-play" size="2x" /></li></a>
-        <a href="https://rmichels.itch.io/" target="_blank" rel="noopener noreferrer"><li><Icon name="itch-io" size="2x" /></li></a>
+        </li>
+        <li class="emailAddress">
+          <small class="js-emaillink">hi@rmichels.com</small>
+        </li>
+        <li>
+          <a
+            href="https://linkedin.com/in/robert-michels"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="LinkedIn"
+            aria-label={t('social_linkedin', locale)}
+          >
+            <Icon name="linkedin-in" size="2x" />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/potato-robert"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="GitHub"
+            aria-label={t('social_github', locale)}
+          >
+            <Icon name="github" size="2x" />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://play.google.com/store/apps/developer?id=Studio+RM"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Google Play"
+            aria-label={t('social_google_play', locale)}
+          >
+            <Icon name="google-play" size="2x" />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://rmichels.itch.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            title={t('social_itch_io', locale)}
+            aria-label={t('social_itch_io', locale)}
+          >
+            <Icon name="itch-io" size="2x" />
+          </a>
+        </li>
       </ul>
     </div>
   )}
@@ -58,9 +107,6 @@ const year = new Date().getFullYear();
 
 <div id="copyConfirm" class="hidden"><small>{t('copied', locale)}</small></div>
 
-<script>
-  import '../islands/Lqip.ts';
-</script>
 <script>
   import '../islands/EmailCopy.ts';
 </script>

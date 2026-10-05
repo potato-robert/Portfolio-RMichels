@@ -47,6 +47,15 @@
 	
 			p {
 				width: 100%;
+				margin: 0.35rem 0 0;
+				font-size: 0.8125rem;
+				font-weight: normal;
+				color: map-get($colour, white_alt);
+
+				a {
+					font-weight: map-get($font, weight-medium);
+					color: #7dd3f0;
+				}
 			}
 		}
 	}
@@ -54,6 +63,22 @@
 
 main {
     .sectionMedia{
+		// Case-study figures only — homepage tiles size via _projPanel.scss
+		figure .responsivePicture,
+		.mediaRow .responsivePicture,
+		.mediaSquare .responsivePicture,
+		.mediaGrid .responsivePicture,
+		.mediaColumn .responsivePicture {
+			display: block;
+			max-width: 100%;
+
+			img {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+		}
+
         img {
 			display: block;
 		}
@@ -131,16 +156,34 @@ main {
 						flex-grow: 1 !important;
 						flex-basis: 0 !important;
 					}
+					> picture,
 					> img {
+						display: block;
 						width: 100%;
 						height: 100%;
+					}
+					> picture > img {
+						width: 100%;
+						height: 100%;
+						object-fit: contain;
 					}
 				}
 			}
 
 			&-equalHeight {
 				align-items: stretch;
+				picture,
 				img {
+					object-fit: cover;
+				}
+				picture {
+					display: block;
+					width: 100%;
+					height: 100%;
+				}
+				picture > img {
+					width: 100%;
+					height: 100%;
 					object-fit: cover;
 				}
 			}

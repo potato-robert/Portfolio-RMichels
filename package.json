@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "node scripts/astro-dev.mjs",
+    "rm-assets": "tsx scripts/run-rm-assets.mjs",
+    "pretest:content": "npm run rm-assets",
+    "prebuild": "npm run rm-assets",
     "build": "astro build",
     "check": "astro check",
     "preview": "astro preview",
@@ -23,6 +26,8 @@
     "audit:quick": "tsx --import ./audit/lib/playwright-env-preload.mjs audit/cli.ts --level quick --skip-ci-gate",
     "audit:compare": "tsx audit/compare.ts",
     "audit:report": "tsx audit/report.ts",
+    "audit:prune-perf-data": "tsx audit/scripts/prune-perf-data.ts",
+    "audit:reset-perf-data": "tsx audit/scripts/reset-perf-data-branch.ts",
     "audit:docker:build": "node scripts/audit-docker-build.mjs",
     "audit:interaction:smoke": "tsx --import ./audit/lib/playwright-env-preload.mjs audit/cli.ts --level full --skip-ci-gate --stages interaction --pages /,/projects"
   },
@@ -39,15 +44,22 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@gltf-transform/core": "^4.5.1",
+    "@gltf-transform/functions": "^4.5.1",
     "@playwright/test": "^1.50.0",
     "chrome-launcher": "^1.1.2",
+    "ffmpeg-static": "^5.3.0",
     "happy-dom": "^20.14.5",
+    "hastscript": "^9.0.1",
     "js-yaml": "^5.4.2",
     "lighthouse": "^12.3.0",
     "linkinator": "^6.1.2",
+    "meshoptimizer": "^1.3.0",
     "node-html-parser": "^7.0.1",
     "sass": "^1.77.0",
+    "sharp": "^0.35.5",
     "tsx": "^4.19.3",
+    "unist-util-visit": "^5.1.0",
     "vitest": "^4.1.11",
     "web-vitals": "^4.2.4",
     "zod": "^4.6.5"

@@ -49,20 +49,20 @@ order: 3
     <figure ignorecarousel>
       <div class="mediaRow mediaRow-equalWidth mediaRow-equalHeight">
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_1.jpg" alt="tourguide – Screenshot 1"> 
+          <img src="/assets/img/tourguide/Screenshot_1.webp" alt="tourguide – Screenshot 1"> 
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_2.jpg" alt="tourguide – Screenshot 2">
+          <img src="/assets/img/tourguide/Screenshot_2.webp" alt="tourguide – Screenshot 2">
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_3.jpg" alt="tourguide – Screenshot 3"> 
+          <img src="/assets/img/tourguide/Screenshot_3.webp" alt="tourguide – Screenshot 3"> 
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_4.jpg" alt="tourguide – Screenshot 4">
+          <img src="/assets/img/tourguide/Screenshot_4.webp" alt="tourguide – Screenshot 4">
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_5.jpg" alt="tourguide – Screenshot 5"> 
+          <img src="/assets/img/tourguide/Screenshot_5.webp" alt="tourguide – Screenshot 5"> 
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_6.jpg" alt="tourguide – Screenshot 6">
+          <img src="/assets/img/tourguide/Screenshot_6.webp" alt="tourguide – Screenshot 6">
         </figure>

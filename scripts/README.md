@@ -4,6 +4,7 @@
 |--------|---------|
 | `validate-content.mjs` | Pre-build validation (`npm run test:content`) — assets, i18n keys, EN/DE parity |
 | `verify-build.mjs` | Post-build route checks (`npm run test:verify`) |
+| `run-rm-assets.mjs` | Build-time asset pipeline (`npm run rm-assets`) — also runs via `pretest:content` / Astro integration |
 | *(removed)* | Scroll profiling → `npm run audit -- --stages interaction` (see `docs/AUDIT.md`) |
 | `export-db-to-content.mjs` | **Deprecated** — see below |
 
