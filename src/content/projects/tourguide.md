@@ -25,10 +25,12 @@ threeMockup: "phone"
 order: 3
 ---
 
-<section class="sectionText">
-    <h2>Overview</h2>
-    <p>I had my eye on the Flutter framework, and this seemed like the perfect opportunity to learn the Dart language and how to build a crossplatform app with Flutter.</p>
-    <p>Tourguide is in beta on <a href="https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp" title="Tourguide on Google Play (Beta)" target="_blank">Google Play</a> and as a <a href="https://tourguide-firebase.web.app" title="Tourguide Web App (Beta)" target="_blank">web app</a>.</p>
+<section class="sectionText mockup">
+    <div>
+      <h2>Overview</h2>
+      <p>I had my eye on the Flutter framework, and this seemed like the perfect opportunity to learn the Dart language and how to build a crossplatform app with Flutter.</p>
+      <p>Tourguide is in beta on <a href="https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp" title="Tourguide on Google Play (Beta)" target="_blank">Google Play</a> and as a <a href="https://tourguide-firebase.web.app" title="Tourguide Web App (Beta)" target="_blank">web app</a>.</p>
+    </div>
   </section>
   <video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" loop muted playsinline poster="/assets/video/frame.jpg"></video>
   <section class="sectionText">

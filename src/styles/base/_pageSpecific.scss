@@ -198,6 +198,21 @@ section#Projects{
 					align-self: start;
 				}
 
+				.responsivePicture {
+					display: block;
+					width: 100%;
+					max-width: 100%;
+					line-height: 0;
+					overflow: hidden;
+				}
+
+				img {
+					display: block;
+					width: 100%;
+					height: auto;
+					vertical-align: top;
+				}
+
 				&:before {
 					position: absolute;
 					top: 4%;
@@ -207,6 +222,7 @@ section#Projects{
 					border: 4px solid white;
 					box-sizing: border-box;
 					content: '';
+					pointer-events: none;
 				}
 			}
 		}

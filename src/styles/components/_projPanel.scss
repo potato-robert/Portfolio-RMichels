@@ -191,12 +191,12 @@
 
     &.inDevelopment {
       h2,
-      h3 {
+      .projTypeLabel {
         color: #888 !important;
       }
     }
 
-    h3 {
+    .projTypeLabel {
       margin: 0;
       margin-top: 0.5rem;
       margin-left: 3rem;

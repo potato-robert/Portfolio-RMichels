@@ -45,6 +45,14 @@
 	z-index: -10;
 	display: block;
 
+	&:is(canvas):not(.mockupCanvas--active) {
+		display: none !important;
+		height: 0 !important;
+		min-height: 0 !important;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
 	width: 100vw;
 	height: 80vh;
 
@@ -116,6 +124,17 @@
 	
 			@include xxl {
 				height: 65rem;
+			}
+
+			&:not(.mockupCanvas--active) {
+				height: 0 !important;
+				min-height: 0 !important;
+				left: 0;
+			}
+
+			&.mockupCanvas--active {
+				position: relative;
+				left: 0;
 			}
 		}
 	}

@@ -55,8 +55,17 @@ export function renderResponsivePicture(options: ResponsiveImageOptions): string
   const sizes = SIZES[layout];
   const placeholderStyle = `background-color:${entry.dominantColor};background-image:url(${entry.placeholder});background-size:cover;background-position:center;`;
   const isTile = layout === 'tile';
+  const isPortrait = layout === 'portrait';
   const pictureClass = isTile ? 'responsivePicture responsivePicture--tile' : 'responsivePicture';
-  const pictureStyle = isTile ? placeholderStyle : '';
+  const portraitReserveStyle =
+    isPortrait && entry.width > 0 && entry.height > 0
+      ? `width:100%;aspect-ratio:${entry.width}/${entry.height};`
+      : '';
+  const pictureStyle = isTile
+    ? placeholderStyle
+    : isPortrait
+      ? `${portraitReserveStyle}${placeholderStyle}`
+      : '';
   const pictureStyleAttr = pictureStyle ? ` style="${pictureStyle}"` : '';
 
   const imgAttrs = attrsToString({
