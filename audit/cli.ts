@@ -16,7 +16,12 @@ import { runSeoStage } from './stages/seo.ts';
 
 import { runInteractionStage } from './stages/interaction.ts';
 
-import { ensurePreviewServer, needsPreviewServer, prodBaseUrl } from './lib/server.ts';
+import {
+  ensurePreviewServer,
+  isPreviewReachable,
+  needsPreviewServer,
+  prodBaseUrl,
+} from './lib/server.ts';
 
 import { createRunDir, getGitState } from './lib/snapshot.ts';
 
@@ -410,14 +415,15 @@ export async function runAudit(argv: string[]): Promise<number> {
 
 
 
-    if (opts.target === 'local' && needsPreviewServer(opts.stages)) {
-
+    // Playwright in ci-gate starts/stops its own preview; only pre-start when ci-gate is skipped.
+    if (
+      opts.target === 'local' &&
+      needsPreviewServer(opts.stages) &&
+      (opts.skipCiGate || !opts.stages.has('ci-gate'))
+    ) {
       const preview = await ensurePreviewServer();
-
       if (preview) previewStop = preview.stop;
-
       baseUrl = preview?.baseUrl ?? baseUrl;
-
     }
 
 
@@ -492,7 +498,16 @@ export async function runAudit(argv: string[]): Promise<number> {
 
     }
 
-
+    if (opts.target === 'local' && needsPreviewServer(opts.stages)) {
+      if (!(await isPreviewReachable())) {
+        previewStop?.();
+        const preview = await ensurePreviewServer();
+        if (preview) {
+          previewStop = preview.stop;
+          baseUrl = preview.baseUrl;
+        }
+      }
+    }
 
     if (shouldRunDockerSmoke({ target: opts.target, stages: opts.stages, profiles: profileList })) {
 

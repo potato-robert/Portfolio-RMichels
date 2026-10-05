@@ -12,7 +12,7 @@ export interface PreviewServer {
   stop: () => void;
 }
 
-async function probePreview(port: number): Promise<boolean> {
+export async function isPreviewReachable(port = DEFAULT_PORT): Promise<boolean> {
   for (const host of ['127.0.0.1', 'localhost']) {
     try {
       const res = await fetch(`http://${host}:${port}`, { signal: AbortSignal.timeout(2000) });
@@ -31,11 +31,11 @@ export function needsPreviewServer(stages: Set<string>): boolean {
 export async function ensurePreviewServer(port = DEFAULT_PORT): Promise<PreviewServer | null> {
   const baseUrl = `http://127.0.0.1:${port}`;
 
-  if (await probePreview(port)) return null;
+  if (await isPreviewReachable(port)) return null;
 
   const child: ChildProcess = spawn(
     'npm',
-    ['run', 'preview', '--', '--port', String(port), '--host', '127.0.0.1', '--force'],
+    ['run', 'preview', '--', '--port', String(port), '--host', '0.0.0.0', '--force'],
     {
       cwd: root,
       shell: true,
@@ -45,7 +45,7 @@ export async function ensurePreviewServer(port = DEFAULT_PORT): Promise<PreviewS
   );
 
   for (let i = 0; i < 90; i++) {
-    if (await probePreview(port)) {
+    if (await isPreviewReachable(port)) {
       return {
         baseUrl,
         stop: () => {
