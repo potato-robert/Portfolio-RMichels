@@ -137,7 +137,8 @@ This folder is the slim **git snapshot** for the latest successful full audit.
 
 | Path | Contents |
 |------|----------|
-| \`summary.json\` | Full aggregated audit summary (same as local run) |
+| \`summary.json\` | Full aggregated audit summary (includes \`logSummary\` text) |
+| \`summary.txt\` | Same human-readable summary as \`logSummary\` (easy to read in git diffs) |
 | \`stages/*.json\` | Per-stage JSON for review and diffs |
 | \`lighthouse/median-lhr/*.json\` | One trimmed Lighthouse report per page × preset (median run) |
 | \`interaction/by-profile/*.json\` | Interaction matrix grouped by profile |
@@ -166,8 +167,14 @@ export function buildCommittedSnapshot(runDir: string, destDir: string): { files
   fs.writeFileSync(path.join(destDir, 'README.md'), SNAPSHOT_README);
 
   writeJson(path.join(destDir, 'summary.json'), summary);
+  const summaryTxt = path.join(runDir, 'summary.txt');
+  if (fs.existsSync(summaryTxt)) {
+    fs.copyFileSync(summaryTxt, path.join(destDir, 'summary.txt'));
+  } else if (typeof summary.logSummary === 'string') {
+    fs.writeFileSync(path.join(destDir, 'summary.txt'), summary.logSummary, 'utf8');
+  }
 
-  let filesWritten = 5;
+  let filesWritten = 6;
 
   for (const [fileSlug, summaryKey] of STAGE_FILES) {
     const chunk = summary[summaryKey];

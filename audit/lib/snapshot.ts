@@ -37,6 +37,8 @@ export interface AuditSummary {
   lighthouse?: unknown;
   seo?: unknown;
   interaction?: unknown;
+  /** Plain-text run summary (also written to summary.txt). */
+  logSummary?: string;
 }
 
 function git(cmd: string): string {

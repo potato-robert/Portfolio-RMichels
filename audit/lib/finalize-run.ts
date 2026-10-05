@@ -12,6 +12,7 @@ import { fingerprintKey, getHostFingerprint, readPackageVersion } from './host.t
 import type { PreflightResult } from './preflight.ts';
 import { publishLatestCompleteSnapshot } from './perf-data-publish.ts';
 import { shouldPublishCompleteSnapshot } from './snapshot-substance.ts';
+import { formatAuditRunLogSummary } from './run-log-summary.ts';
 
 export interface AuditFailure {
   stage: string;
@@ -95,6 +96,10 @@ export function finalizeAuditRun(params: {
   };
 
   writeManifest(runDir, manifest);
+
+  const logSummary = formatAuditRunLogSummary(manifest, summary);
+  summary.logSummary = logSummary;
+  fs.writeFileSync(path.join(runDir, 'summary.txt'), logSummary, 'utf8');
   writeSummary(runDir, summary);
 
   const reportHtml = generateRunReportHtml(manifest, summary);
@@ -132,6 +137,9 @@ export function finalizeAuditRun(params: {
   } else {
     console.warn(`Skipping perf-data publish (status ${status}). Local run: ${runDir}`);
   }
+
+  console.log('');
+  console.log(logSummary);
 
   if (exitCode === 0) {
     console.log(`Audit complete: ${runDir}`);

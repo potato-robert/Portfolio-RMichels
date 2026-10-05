@@ -86,7 +86,7 @@ Docker interaction probes load the same URLs as host Playwright (`?perf=1` and o
 
 ## Snapshots
 
-Each run creates **local-only** folders under `.perf-data/runs/<timestamp>_<sha>_<level>_<label>/` with `manifest.json`, `summary.json`, `report.html`, and `raw/` (gzipped Lighthouse JSON when Lighthouse ran). That tree is **gitignored** inside the `.perf-data` worktree (`runs/`, `history.jsonl`, `index.html`). Failed or aborted runs still write those files locally; one line per finalized run is appended to **`history.jsonl`** (also local-only).
+Each run creates **local-only** folders under `.perf-data/runs/<timestamp>_<sha>_<level>_<label>/` with `manifest.json`, `summary.json`, `summary.txt`, `report.html`, and `raw/` (gzipped Lighthouse JSON when Lighthouse ran). When the run finalizes, the terminal prints the same human-readable block stored in **`summary.txt`** and the **`logSummary`** field inside **`summary.json`** (Lighthouse score averages, web vitals, interaction scroll/load metrics, SEO counts, CI gate status). Committed **`snapshot/latest/`** includes the same `summary.json` / `summary.txt` pair after a full successful audit. That tree is **gitignored** inside the `.perf-data` worktree (`runs/`, `history.jsonl`, `index.html`). Failed or aborted runs still write those files locally; one line per finalized run is appended to **`history.jsonl`** (also local-only).
 
 The **`perf-data` branch** is reset to the current **`dev` tip**, then receives **one commit** that only adds or updates **`snapshot/latest/`** (same tree as `dev` plus slim snapshot files — no “delete entire repo” diff). Local `runs/` and Lighthouse `raw/` stay in the worktree via **`.git/info/exclude`**, not committed.
 
