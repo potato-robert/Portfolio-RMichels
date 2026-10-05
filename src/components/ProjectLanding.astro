@@ -1,9 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { Locale } from '../lib/i18n';
-import { heroLqipExists } from '../lib/assets';
+import { getImageEntry } from '../lib/rm-assets';
 import { getLocalized, getProjectSlug } from '../lib/projects';
+import { t } from '../lib/i18n';
 import Icon from './Icon.astro';
+import ResponsiveImage from './ResponsiveImage.astro';
 
 interface Props {
   project: CollectionEntry<'projects'> | CollectionEntry<'projects-de'>;
@@ -14,14 +16,16 @@ const { project, locale } = Astro.props;
 const p = project.data;
 const slug = getProjectSlug(project);
 const links = p.links ?? [];
-const hasHeroLqip = heroLqipExists(slug);
 const heroSrc = `/assets/img/${slug}.jpg`;
 const heroName = getLocalized(p.name, locale);
+const heroEntry = getImageEntry(heroSrc);
 ---
 
 <div class="projectDownArrowWrapper">
   <div class="downArrow downArrow-project" id="downArrow">
-    <a href="#projMeta"><Icon name="chevron-down" class="icon-chevron-down" /></a>
+    <a href="#projMeta" aria-label={t('scroll_to_project_info', locale)}>
+      <Icon name="chevron-down" class="icon-chevron-down" />
+    </a>
   </div>
 </div>
 <div id="projLanding">
@@ -39,27 +43,23 @@ const heroName = getLocalized(p.name, locale);
       </div>
     </div>
     <div class="col-50">
-      {hasHeroLqip && (
-        <img
-          src={`/assets/img/lqip/${slug}.jpg`}
-          class:list={['imgBG', p.heroAltLayout && 'alt']}
+      {heroEntry && (
+        <ResponsiveImage
+          src={heroSrc}
           alt=""
-          aria-hidden="true"
-          lqip-ignore
-          width="800"
-          height="600"
-          decoding="async"
+          layout="hero"
+          class:list={['imgBG', p.heroAltLayout && 'alt']}
+          loading="eager"
+          imgAttrs={{ 'aria-hidden': 'true' }}
         />
       )}
-      <img
+      <ResponsiveImage
         src={heroSrc}
         alt={heroName}
+        layout="hero"
         class="heroImg"
         fetchpriority="high"
         loading="eager"
-        decoding="async"
-        width="800"
-        height="600"
       />
     </div>
   </div>

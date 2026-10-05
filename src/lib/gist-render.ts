@@ -22,7 +22,7 @@ async function renderGistFile(
   const highlighted = normalizeShikiHtml(
     await codeToHtml(content, {
       lang: language,
-      theme: 'monokai',
+      theme: 'github-dark',
     }),
   );
 

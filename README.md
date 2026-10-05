@@ -16,5 +16,5 @@ My personal portfolio website which serves as an online presence for my software
     - Refactored, the original implementation used the LAMP-stack
 - **Local dev:** `npm install` then `npm run dev` (http://localhost:4321)
 - **Build:** `npm run build` → output in `dist/`
-- **Assets:** `cp -r assets public/assets` before build (CI does this automatically)
+- **Assets:** `npm run rm-assets` before build (also runs via `pretest:content` / Astro integration; CI caches `node_modules/.cache/rm-assets`)
 - Hosted with Hostinger via GitHub Actions SFTP deploy (see [docs/DEPLOY.md](docs/DEPLOY.md))

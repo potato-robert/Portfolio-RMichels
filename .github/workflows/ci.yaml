@@ -22,8 +22,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Sync assets to public/
-        run: cp -r assets public/assets
+      - name: Cache rm-assets
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/rm-assets
+          key: rm-assets-${{ runner.os }}-${{ hashFiles('assets/**', 'src/integrations/rm-assets/**') }}
+          restore-keys: |
+            rm-assets-${{ runner.os }}-
 
       - name: Astro check
         run: npm run check

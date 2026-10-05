@@ -2,12 +2,15 @@
 import '../styles/main.scss';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StructuredData from '../components/StructuredData.astro';
 import { UMAMI_SCRIPT_URL, UMAMI_WEBSITE_ID } from '../lib/analytics';
+import type { CreativeWorkInput } from '../lib/structured-data';
 import {
   type Locale,
   getLocaleFromUrl,
   getAlternateUrl,
   alternateLocale,
+  t,
 } from '../lib/i18n';
 
 export interface Props {
@@ -17,6 +20,7 @@ export interface Props {
   pageType?: 'home' | 'about' | 'projects' | 'project' | 'privacy' | 'default';
   ogImage?: string;
   canonicalPath?: string;
+  creativeWork?: CreativeWorkInput;
 }
 
 const {
@@ -26,6 +30,7 @@ const {
   pageType = 'default',
   ogImage = 'https://rmichels.com/assets/img/portfolio.jpg',
   canonicalPath,
+  creativeWork,
 } = Astro.props;
 
 const locale = localeProp ?? getLocaleFromUrl(Astro.url);
@@ -38,6 +43,9 @@ const altUrl = `${site}${altPath === '/' ? '' : altPath}`;
 const enUrl = locale === 'en' ? canonical : `${site}${getAlternateUrl(path, 'en')}`;
 const deUrl = locale === 'de' ? canonical : `${site}${getAlternateUrl(path, 'de')}`;
 const htmlLang = locale === 'de' ? 'de' : 'en';
+const ogLocale = locale === 'de' ? 'de_DE' : 'en_US';
+const ogLocaleAlternate = locale === 'de' ? 'en_US' : 'de_DE';
+const ogType = pageType === 'project' ? 'article' : 'website';
 const showHomeIcon = pageType === 'project' || pageType === 'about';
 ---
 
@@ -72,7 +80,22 @@ const showHomeIcon = pageType === 'project' || pageType === 'about';
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlternate} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="canonical" href={canonical} />
+    <StructuredData
+      pageType={pageType}
+      siteUrl={site}
+      pageUrl={canonical}
+      locale={locale}
+      creativeWork={creativeWork}
+    />
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="de" href={deUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
@@ -87,10 +110,11 @@ const showHomeIcon = pageType === 'project' || pageType === 'about';
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body data-page-type={pageType}>
-    <a class="skip-link" href="#Content">Skip to content</a>
+    <a class="skip-link" href="#Content">{t('skip_to_content', locale)}</a>
     <script>
-      import { getDevicePerformanceTier } from '../lib/device-capability';
-      document.body.dataset.perfTier = getDevicePerformanceTier();
+      import { syncPerfTierToDocument } from '../lib/device-capability';
+      syncPerfTierToDocument();
+      document.addEventListener('DOMContentLoaded', syncPerfTierToDocument);
     </script>
     <div>
       <div id="MainGrid">

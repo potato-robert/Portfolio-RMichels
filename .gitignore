@@ -20,6 +20,7 @@ composer.phar
 .astro/
 playwright-report/
 test-results/
+.perf-data/
 .phpunit.cache/
 
 # Astro dev: mirror of repo-root assets/ (do not duplicate in git)

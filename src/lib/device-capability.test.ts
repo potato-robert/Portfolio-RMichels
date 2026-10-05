@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+  getAuditTierOverride,
   getDevicePerformanceTier,
   getWebGLPixelRatio,
   getWebGLRendererString,
@@ -7,6 +8,7 @@ import {
   isLowPoweredDevice,
   isRetinaDisplay,
   resetWebGLRendererCache,
+  syncPerfTierToDocument,
 } from './device-capability';
 
 function mockNavigator(partial: Partial<Navigator & { deviceMemory?: number }>) {
@@ -70,6 +72,32 @@ describe('isLowPoweredDevice', () => {
     });
     mockWindow({});
     expect(isLowPoweredDevice()).toBe(false);
+  });
+});
+
+describe('getAuditTierOverride', () => {
+  it('returns null without perf=1', () => {
+    vi.stubGlobal('window', { location: { search: '?auditTier=minimal' } });
+    expect(getAuditTierOverride()).toBeNull();
+  });
+
+  it('returns tier when perf=1 and auditTier is valid', () => {
+    vi.stubGlobal('window', { location: { search: '?perf=1&auditTier=reduced' } });
+    expect(getAuditTierOverride()).toBe('reduced');
+  });
+
+  it('forces tier in getDevicePerformanceTier', () => {
+    mockNavigator({
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      hardwareConcurrency: 16,
+      deviceMemory: 32,
+    });
+    vi.stubGlobal('window', {
+      devicePixelRatio: 1,
+      location: { search: '?perf=1&auditTier=minimal' },
+      matchMedia: () => ({ matches: false }),
+    });
+    expect(getDevicePerformanceTier()).toBe('minimal');
   });
 });
 
@@ -141,6 +169,21 @@ describe('isRetinaDisplay', () => {
   it('returns false for standard DPI', () => {
     mockWindow({ devicePixelRatio: 1 });
     expect(isRetinaDisplay()).toBe(false);
+  });
+});
+
+describe('syncPerfTierToDocument', () => {
+  it('writes tier to body dataset', () => {
+    mockNavigator({
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      hardwareConcurrency: 4,
+    });
+    mockWindow({});
+    vi.stubGlobal('document', {
+      body: { dataset: {} as DOMStringMap },
+    });
+    expect(syncPerfTierToDocument()).toBe('minimal');
+    expect(document.body.dataset.perfTier).toBe('minimal');
   });
 });
 

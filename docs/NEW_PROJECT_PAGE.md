@@ -44,7 +44,7 @@ Body markdown converted from case study sections.
 | Frontmatter | `slug: yourSlug` must **match the filename** (`npm run test:content` fails on mismatch) |
 | Public URL | `/yourSlug` and `/de/yourSlug` — Astro generates routes from the **collection entry id** (filename), not from a field in [`content.config.ts`](src/content.config.ts) |
 | Runtime code | [`getProjectSlug()`](src/lib/projects.ts) returns `project.id` with `.md` stripped — same value as the filename slug |
-| Hero / gallery assets | `public/assets/img/{slug}.jpg` and `public/assets/img/{slug}/lqip/*` use the same string |
+| Hero / gallery assets | Masters in `assets/img/{slug}.jpg` and `assets/img/{slug}/*` (legacy markdown may still reference `/lqip/` paths; rm-assets resolves them to masters) |
 
 `slug` is **not** in the Zod schema in `config.ts` (Astro content layer); it is still required in frontmatter and validated by `scripts/validate-content.mjs` / `scripts/content-schema.mjs`.
 
@@ -107,7 +107,7 @@ Use `<p></p>` for vertical spacing inside a section if needed (see `futureEarth.
 
 Always wrap gallery images in `<figure><img …><figcaption>…</figcaption></figure>`. Clicking any figure opens the page-wide PhotoSwipe lightbox. Add `ignorecarousel` on outer `<figure>` when the wrapper should not be a slide itself (e.g. layout containers with nested figures).
 
-Gallery paths: `/assets/img/{slug}/lqip/*` (LQIP island swaps to full-res on load).
+Gallery paths: prefer `/assets/img/{slug}/photo.jpg` in new content; existing `/assets/img/{slug}/lqip/*` URLs still work (rehype emits responsive `<picture>` with `data-full-src` for PhotoSwipe).
 
 ### Video and iframe embeds
 
@@ -145,11 +145,10 @@ At build time, `remark-gist-embed` fetches the gist and renders styled `.code-sn
 
 | Asset | Path |
 |-------|------|
-| Hero | `public/assets/img/{slug}.jpg` |
-| Tile LQIP | `public/assets/img/lqip/{slug}.jpg` |
-| Gallery | `public/assets/img/{slug}/lqip/*.jpg` |
+| Hero master | `assets/img/{slug}.jpg` |
+| Gallery masters | `assets/img/{slug}/*.jpg` (or `.png`) |
 
-Gallery images in markdown use `![gallery](/assets/img/{slug}/lqip/1.jpg)` or HTML figures (ProjectLightbox binds click handlers automatically).
+Drop files into `assets/` only; run `npm run rm-assets` or `npm run build` to generate `public/assets/`. Gallery images in markdown use HTML `<figure><img src="/assets/...">` (ProjectLightbox binds click handlers automatically).
 
 ## 3. Roles
 

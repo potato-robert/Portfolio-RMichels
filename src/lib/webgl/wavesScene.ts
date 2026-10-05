@@ -5,6 +5,7 @@ import {
   particleWavesFragmentShader,
   particleWavesVertexShader,
 } from '../particle-waves-shaders';
+import { advanceWaveCount } from './wave-formula';
 
 const SEPARATION = 160;
 
@@ -47,25 +48,36 @@ export function createWavesScene(grid?: ParticleGrid): WavesScene {
 
   const numParticles = amountX * amountY;
   const positions = new Float32Array(numParticles * 3);
-  const scales = new Float32Array(numParticles);
+  const gridIndices = new Float32Array(numParticles * 2);
 
   let i = 0;
+  let gi = 0;
   for (let ix = 0; ix < amountX; ix++) {
     for (let iy = 0; iy < amountY; iy++) {
       positions[i] = ix * SEPARATION - (amountX * SEPARATION) / 2;
       positions[i + 1] = 0;
       positions[i + 2] = iy * SEPARATION - (amountY * SEPARATION) / 2;
-      scales[i / 3] = 1;
+      gridIndices[gi] = ix;
+      gridIndices[gi + 1] = iy;
       i += 3;
+      gi += 2;
     }
   }
 
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
+  geometry.setAttribute('gridIndex', new THREE.BufferAttribute(gridIndices, 2));
+  geometry.setAttribute(
+    'scale',
+    new THREE.BufferAttribute(new Float32Array(numParticles).fill(1), 1),
+  );
 
   const material = new THREE.ShaderMaterial({
-    uniforms: { color: { value: new THREE.Color(0x666666) } },
+    uniforms: {
+      color: { value: new THREE.Color(0x666666) },
+      uCount: { value: 0 },
+      uWaveAnimate: { value: 1 },
+    },
     vertexShader: particleWavesVertexShader,
     fragmentShader: particleWavesFragmentShader,
   });
@@ -88,31 +100,18 @@ export function updateWavesCamera(
   waves.material.uniforms.color.value.setRGB(newCol, newCol, newCol);
 }
 
-export function animateWavesParticles(waves: WavesScene, active = true): void {
+export function animateWavesParticles(waves: WavesScene, deltaMs: number, active = true): void {
   if (!active) return;
-
-  const positionsAttr = waves.particles.geometry.getAttribute('position') as THREE.BufferAttribute;
-  const scalesAttr = waves.particles.geometry.getAttribute('scale') as THREE.BufferAttribute;
-  let idx = 0;
-  let scaleIdx = 0;
-
-  for (let ix = 0; ix < waves.amountX; ix++) {
-    for (let iy = 0; iy < waves.amountY; iy++) {
-      positionsAttr.array[idx + 1] =
-        Math.sin((ix + waves.count) * 0.3) * 200 + Math.sin((iy + waves.count) * 0.5) * 100;
-      scalesAttr.array[scaleIdx] =
-        (Math.sin((ix + waves.count) * 0.3) + 1) * 8 + (Math.sin((iy + waves.count) * 0.5) + 1) * 1;
-      idx += 3;
-      scaleIdx++;
-    }
-  }
-
-  positionsAttr.needsUpdate = true;
-  scalesAttr.needsUpdate = true;
-  waves.count += 0.02;
+  waves.count = advanceWaveCount(waves.count, deltaMs);
+  waves.material.uniforms.uCount.value = waves.count;
 }
 
 export function resizeWavesCamera(waves: WavesScene): void {
   waves.camera.aspect = window.innerWidth / window.innerHeight;
   waves.camera.updateProjectionMatrix();
+}
+
+export function disposeWavesScene(waves: WavesScene): void {
+  waves.particles.geometry.dispose();
+  waves.material.dispose();
 }

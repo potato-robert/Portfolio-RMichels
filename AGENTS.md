@@ -77,7 +77,7 @@ const locale = 'en';
 ## Case Study Pattern
 
 1. Add `src/content/projects/{slug}.md` with frontmatter (`slug`, `name`, `projectType`, `roles`, etc.) and markdown body
-2. Add hero `public/assets/img/{slug}.jpg` and gallery under `public/assets/img/{slug}/lqip/`
+2. Add hero `assets/img/{slug}.jpg` and gallery masters under `assets/img/{slug}/` (rm-assets generates `public/assets/` on build)
 3. Astro generates `/slug` and `/de/slug` via `src/pages/[slug].astro`
 
 ## i18n
@@ -136,7 +136,13 @@ npm run test:content && npm run build && npm run test:verify
 
 **Single-command alias:** `npm run test:fast && npm run build && npm run test:verify` covers the common agent loop without E2E.
 
+**Complete local run:** default is full audit — `npm run audit` (CI gate, Lighthouse, SEO, interaction, `perf-data` snapshot). CI-only shortcut: `npm run test:complete`. Agent workflow: `.cursor/skills/complete-test-run/SKILL.md`.
+
 **Failure diagnostics:** Vitest reports file:line; `validate-content.mjs` emits `{ slug, field, error }` JSON lines; Playwright captures screenshots on failure in `playwright-report/`.
+
+## Local audit (not CI)
+
+Thorough load, SEO, and interaction audits: `npm run audit` / `npm run audit:quick`. Local runs under `.perf-data/runs/`; branch `perf-data` (worktree) holds only the latest full-success slim snapshot. See **`docs/AUDIT.md`**.
 
 ## Deploy
 
@@ -155,7 +161,7 @@ Work is tracked on the **Portfolio SCRUM** board via MCP (`project-0-htdocs-trel
 | Commits | Footer `Refs: Trello #127`; after each commit, **comment** on each linked card with full SHA + subject |
 | Descriptions | Agents edit **only** under `## Agent Notes`; never change text above that heading |
 
-Skills: `.cursor/skills/trello-workflow/SKILL.md`, `.cursor/skills/commit-messages/SKILL.md`. Rule: `.cursor/rules/trello-workflow.mdc`.
+Skills: `.cursor/skills/trello-workflow/SKILL.md`, `.cursor/skills/commit-messages/SKILL.md`, `.cursor/skills/complete-test-run/SKILL.md`. Rule: `.cursor/rules/trello-workflow.mdc`.
 
 ## Never Edit or Commit
 
@@ -166,3 +172,4 @@ Same as before: `nopublicaccess/`, `database/`, `.cursor/mcp.json`, `_RawAssets/
 - `docs/ARCHITECTURE.md` — Astro request/build flow
 - `docs/DEPLOY.md` — Hostinger SFTP secrets and hPanel SSH key setup
 - `docs/NEW_PROJECT_PAGE.md` — add a project via markdown
+- `docs/AUDIT.md` — local `npm run audit` framework

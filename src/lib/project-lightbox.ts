@@ -1,5 +1,3 @@
-import { getFullResSrc } from './lqip';
-
 export const CAROUSEL_FIGURE_SELECTOR = '#projContent figure:not([ignorecarousel])';
 
 export interface SlideData {
@@ -21,7 +19,14 @@ export function collectCarouselFigures(root: ParentNode = document): HTMLElement
 }
 
 export function resolveSlideSrc(img: HTMLImageElement): string {
-  return getFullResSrc(img) ?? img.currentSrc ?? img.src;
+  const full = img.getAttribute('data-full-src');
+  if (full) return full;
+  const video = img.closest('video');
+  if (video) {
+    const fromVideo = video.getAttribute('data-full-src');
+    if (fromVideo) return fromVideo;
+  }
+  return img.currentSrc || img.src;
 }
 
 export function resolveSlideDimensions(img: HTMLImageElement): { width: number; height: number } {

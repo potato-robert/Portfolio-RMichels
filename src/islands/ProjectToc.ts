@@ -59,6 +59,8 @@ export function initProjectToc() {
   let resizeTimer: ReturnType<typeof setTimeout> | null = null;
   let scrollUnsubscribe: (() => void) | null = null;
   let rafId: number | null = null;
+  let scrollActivityTimer: ReturnType<typeof setTimeout> | null = null;
+  let scrollTrackingActive = false;
   let lastScrollY = -1;
   let enabled = false;
   let activeId: string | null = null;
@@ -199,23 +201,52 @@ export function initProjectToc() {
     sectionObserver = null;
   };
 
-  const detachScroll = () => {
-    scrollUnsubscribe?.();
-    scrollUnsubscribe = null;
+  const stopScrollTracking = () => {
+    scrollTrackingActive = false;
     if (rafId != null) {
       cancelAnimationFrame(rafId);
       rafId = null;
     }
+    if (scrollActivityTimer) {
+      clearTimeout(scrollActivityTimer);
+      scrollActivityTimer = null;
+    }
     lastScrollY = -1;
   };
 
+  const detachScroll = () => {
+    scrollUnsubscribe?.();
+    scrollUnsubscribe = null;
+    stopScrollTracking();
+  };
+
   const trackScroll = () => {
+    if (!scrollTrackingActive) {
+      rafId = null;
+      return;
+    }
     const y = getScrollY();
     if (y !== lastScrollY) {
       lastScrollY = y;
       updateScrollPosition();
     }
     rafId = requestAnimationFrame(trackScroll);
+  };
+
+  const bumpScrollActivity = () => {
+    scrollTrackingActive = true;
+    if (scrollActivityTimer) clearTimeout(scrollActivityTimer);
+    scrollActivityTimer = setTimeout(() => {
+      scrollTrackingActive = false;
+      if (rafId != null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }, 150);
+
+    if (rafId == null) {
+      rafId = requestAnimationFrame(trackScroll);
+    }
   };
 
   const updateHorizontalPosition = () => {
@@ -270,6 +301,7 @@ export function initProjectToc() {
   const attachScroll = () => {
     detachScroll();
     const onScroll = () => {
+      bumpScrollActivity();
       updateScrollPosition();
       handlePendingScrollMotion();
     };
@@ -283,7 +315,6 @@ export function initProjectToc() {
     }
 
     onScroll();
-    rafId = requestAnimationFrame(trackScroll);
   };
 
   const startObserver = () => {

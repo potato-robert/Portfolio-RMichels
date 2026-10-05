@@ -57,5 +57,16 @@
   "glossary_op": "Orthotics & Prosthetics — Orthesen und Prothesen",
   "glossary_gis": "Geographic Information System — Karten und Geodaten",
   "glossary_cnc": "Computer Numerical Control — computergesteuerte Werkzeugmaschinen",
-  "project_toc": "Auf dieser Seite"
+  "project_toc": "Auf dieser Seite",
+  "skip_to_content": "Zum Inhalt springen",
+  "site_nav": "Website",
+  "menu": "Menü",
+  "nav_home": "Startseite",
+  "nav_about": "Über Mich",
+  "email_contact": "E-Mail an Robert Michels",
+  "social_linkedin": "LinkedIn",
+  "social_github": "GitHub",
+  "social_google_play": "Google Play",
+  "social_itch_io": "itch.io",
+  "scroll_to_project_info": "Zum Projektinfo scrollen"
 }

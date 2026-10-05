@@ -1,17 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectTile from '../components/ProjectTile.astro';
+import ResponsiveImage from '../components/ResponsiveImage.astro';
 import Icon from '../components/Icon.astro';
 import { getAllProjects, projectToTileData } from '../lib/projects';
 import { t } from '../lib/i18n';
+import { clampMetaDescription } from '../lib/seo-meta';
 
 const locale = 'en' as const;
 const params = Astro.url.searchParams;
 const greeting = params.get('greeting');
 const allProjects = await getAllProjects();
 const textRotateItems = t('text_rotate', locale).split('", "').map((s) => s.replace(/^"|"$/g, ''));
-const title = 'Portfolio | Robert Michels';
-const description = "I'm Robert Michels, a designer and developer from Vancouver. I design and program games, websites, and apps. | Robert Michels Portfolio";
+const title = 'Robert Michels | Designer & Developer Portfolio';
+const description = clampMetaDescription(
+  'Robert Michels — designer and developer in Vancouver. Portfolio of games, websites, and apps.',
+  160,
+  70,
+);
 ---
 
 <BaseLayout
@@ -23,18 +29,20 @@ const description = "I'm Robert Michels, a designer and developer from Vancouver
 >
   <div class="downArrowWrapper">
     <div class="downArrow" id="downArrow">
-      <a href="#MyWork" title="View Projects"><Icon name="chevron-down" class="icon-chevron-down" /></a>
+      <a href="#MyWork" title={t('view_projects', locale)} aria-label={t('view_projects', locale)}>
+        <Icon name="chevron-down" class="icon-chevron-down" />
+      </a>
     </div>
   </div>
-  <div id="threeModel" style="visibility: hidden; display: none;"></div>
+  <div id="threeModel" style="visibility: hidden; display: none;" aria-hidden="true"></div>
   <div class="landingModelImageWrapper">
-    <img
+    <ResponsiveImage
       src="/assets/img/landingModel.webp"
-      id="landingModelImage"
+      layout="landingModel"
       alt=""
-      width={960}
-      height={880}
       fetchpriority="high"
+      loading="eager"
+      imgAttrs={{ id: 'landingModelImage', 'aria-hidden': 'true' }}
     />
     <div id="spinner" class="landingSpinner" style="display: none;">
       <div class="fancySpinner"></div>
@@ -43,6 +51,11 @@ const description = "I'm Robert Michels, a designer and developer from Vancouver
   <div id="landingArea">
     <div class="row">
       <div class="col-50" id="landingText">
+        <h1 class="visually-hidden">
+          {greeting
+            ? `${t('hi_greeting', locale)}${greeting}, I'm Robert Michels`
+            : "Hi, I'm Robert Michels — Portfolio"}
+        </h1>
         <p>
           {greeting ? (
             <>
@@ -76,8 +89,8 @@ const description = "I'm Robert Michels, a designer and developer from Vancouver
       );
     })}
     <div class="seeMoreBtn">
-      <a href="/projects" title="See More">
-        <span>{t('see_more', locale)}</span>
+      <a href="/projects" aria-label={t('all_projects', locale)}>
+        <span>{t('all_projects', locale)}</span>
         <div class="liquid"></div>
       </a>
     </div>

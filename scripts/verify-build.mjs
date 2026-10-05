@@ -152,7 +152,7 @@ if (!hasSitemap) {
 const lfsCheckedAssets = [
   'assets/img/portrait.jpg',
   'assets/img/portfolio.jpg',
-  'assets/img/lqip/futureEarth.jpg',
+  'assets/img/futureEarth.jpg',
 ];
 for (const assetPath of lfsCheckedAssets) {
   assertNotLfsPointer(assetPath);
@@ -216,6 +216,45 @@ function checkNoRawThirdPartyEmbeds(relPath) {
 
 for (const relPath of collectHtmlFiles(dist)) {
   checkNoRawThirdPartyEmbeds(relPath);
+}
+
+function checkResponsiveImages(relPath) {
+  const full = path.join(dist, ...relPath.split('/'));
+  const html = fs.readFileSync(full, 'utf8');
+
+  const imgTagRe = /<img\b[^>]*>/gi;
+  for (const tag of html.matchAll(imgTagRe)) {
+    const fragment = tag[0];
+    if (/lqip-ignore/i.test(fragment)) continue;
+    if (/lqip-gif/i.test(fragment) || /lqip-webp/i.test(fragment)) {
+      errors.push(`${relPath}: legacy lqip img not transformed: ${fragment.slice(0, 80)}…`);
+      continue;
+    }
+    if (!/\ssrc=["']\/assets\//i.test(fragment)) continue;
+    if (!/\swidth=["'][0-9]+["']/i.test(fragment)) {
+      errors.push(`${relPath}: img missing width (${fragment.slice(0, 80)}…)`);
+    }
+    if (!/\sheight=["'][0-9]+["']/i.test(fragment)) {
+      errors.push(`${relPath}: img missing height (${fragment.slice(0, 80)}…)`);
+    }
+  }
+
+  const srcsetRe = /srcset=["']([^"']+)["']/gi;
+  for (const match of html.matchAll(srcsetRe)) {
+    const parts = match[1].split(',').map((p) => p.trim().split(/\s+/)[0]);
+    for (const url of parts) {
+      if (!url.startsWith('/assets/')) continue;
+      const assetPath = url.replace(/^\//, '');
+      const file = path.join(dist, assetPath);
+      if (!fs.existsSync(file)) {
+        errors.push(`${relPath}: srcset URL missing in dist: ${url}`);
+      }
+    }
+  }
+}
+
+for (const relPath of collectHtmlFiles(dist)) {
+  checkResponsiveImages(relPath);
 }
 
 if (errors.length > 0) {

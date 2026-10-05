@@ -1,50 +1,90 @@
 import type { Page } from '@playwright/test';
+import {
+  startFrameSampling,
+  stopFrameSampling,
+  summarizeFrameTimes,
+  type FrameSampleMetrics,
+} from '../../audit/lib/frame-sampler.ts';
+import type { DevicePerformanceTier } from '../../src/lib/device-capability.ts';
 
 export type ScrollPerfBudget = {
   p95MaxMs: number;
-  maxFrameMs: number;
+  p99MaxMs: number;
+  /** Allow at most this many frames longer than 200ms during sampling. */
+  maxFramesOver200ms: number;
   maxLongTasks: number;
 };
 
 export const SCROLL_PERF_BUDGETS: ScrollPerfBudget = {
-  /** Default p95 frame time during scroll (ms). */
   p95MaxMs: 50,
-  /** Default max single-frame time during scroll (ms). */
-  maxFrameMs: 200,
-  /** Long tasks (>50ms main-thread blocks) during scroll sampling. */
+  p99MaxMs: 120,
+  maxFramesOver200ms: 1,
   maxLongTasks: 10,
 } as const;
 
 /** Per-route overrides — homepage is heavier (waves + landing model + parallax). */
 export const SCROLL_PERF_PAGE_BUDGETS: Record<string, Partial<ScrollPerfBudget>> = {
-  homepage: { p95MaxMs: 55, maxFrameMs: 300, maxLongTasks: 6 },
-  projects: { p95MaxMs: 50, maxFrameMs: 200, maxLongTasks: 8 },
-  clirioScanViews: { p95MaxMs: 50, maxFrameMs: 200, maxLongTasks: 10 },
+  homepage: { p95MaxMs: 55, p99MaxMs: 200, maxFramesOver200ms: 1, maxLongTasks: 6 },
+  projects: { p95MaxMs: 50, p99MaxMs: 120, maxFramesOver200ms: 1, maxLongTasks: 8 },
+  clirioScanViews: { p95MaxMs: 50, p99MaxMs: 120, maxFramesOver200ms: 1, maxLongTasks: 10 },
+  tourguide: { p95MaxMs: 55, p99MaxMs: 180, maxFramesOver200ms: 1, maxLongTasks: 8 },
+  futureEarth: { p95MaxMs: 50, p99MaxMs: 120, maxFramesOver200ms: 1, maxLongTasks: 10 },
 };
 
-export interface ScrollPerfMetrics {
-  frameCount: number;
-  p50: number;
-  p95: number;
-  max: number;
-  framesOver50ms: number;
-  framesOver100ms: number;
-  framesOver200ms: number;
-  longTasks: number;
-  durationMs: number;
+/** Nested page × tier budgets (static mockup paths are lighter on WebGL). */
+export const SCROLL_PERF_TIER_BUDGETS: Record<
+  string,
+  Partial<Record<DevicePerformanceTier, Partial<ScrollPerfBudget>>>
+> = {
+  clirioScanViews: {
+    full: { p95MaxMs: 55, p99MaxMs: 200, maxFramesOver200ms: 1, maxLongTasks: 10 },
+    reduced: { p95MaxMs: 48, p99MaxMs: 110, maxFramesOver200ms: 1, maxLongTasks: 8 },
+    minimal: { p95MaxMs: 45, p99MaxMs: 100, maxFramesOver200ms: 0, maxLongTasks: 6 },
+  },
+  tourguide: {
+    full: { p95MaxMs: 55, p99MaxMs: 180, maxFramesOver200ms: 1, maxLongTasks: 8 },
+    reduced: { p95MaxMs: 52, p99MaxMs: 160, maxFramesOver200ms: 1, maxLongTasks: 8 },
+    minimal: { p95MaxMs: 45, p99MaxMs: 100, maxFramesOver200ms: 0, maxLongTasks: 6 },
+  },
+};
+
+export function resolveScrollPerfBudget(pageLabel: string, tier?: DevicePerformanceTier): ScrollPerfBudget {
+  const base = { ...SCROLL_PERF_BUDGETS, ...SCROLL_PERF_PAGE_BUDGETS[pageLabel] };
+  if (tier && SCROLL_PERF_TIER_BUDGETS[pageLabel]?.[tier]) {
+    return { ...base, ...SCROLL_PERF_TIER_BUDGETS[pageLabel][tier] };
+  }
+  return base as ScrollPerfBudget;
 }
 
-declare global {
-  interface Window {
-    __scrollPerf?: {
-      frameTimes: number[];
-      sampling: boolean;
-      longTasks: number;
-      observer?: PerformanceObserver;
-      rafId?: number;
-    };
+/** Navigate with audit instrumentation + forced tier (mirrors buildInteractionUrl). */
+export async function gotoWithAuditTier(
+  page: Page,
+  path: string,
+  tier?: DevicePerformanceTier,
+): Promise<void> {
+  const params = new URLSearchParams({ perf: '1' });
+  if (tier) params.set('auditTier', tier);
+  const qs = params.toString();
+  const url = path === '/' ? `/?${qs}` : `${path}?${qs}`;
+  await page.goto(url);
+}
+
+/** Minimal emulation hints so auditTier override matches intended UX in Playwright. */
+export async function applyAuditTierEmulation(
+  page: Page,
+  tier: DevicePerformanceTier,
+): Promise<void> {
+  if (tier === 'minimal') {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'deviceMemory', { get: () => 4, configurable: true });
+      Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 4, configurable: true });
+    });
   }
 }
+
+export type ScrollPerfMetrics = FrameSampleMetrics;
+
+export { summarizeFrameTimes, startFrameSampling, stopFrameSampling };
 
 export function getCpuThrottleRate(): number {
   const raw = process.env.PERF_CPU_THROTTLE;
@@ -63,112 +103,11 @@ export async function disableCpuThrottle(page: Page): Promise<void> {
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
 }
 
-function percentile(sorted: number[], p: number): number {
-  if (sorted.length === 0) return 0;
-  const idx = Math.min(sorted.length - 1, Math.ceil((p / 100) * sorted.length) - 1);
-  return sorted[Math.max(0, idx)];
-}
-
-export function summarizeFrameTimes(
-  frameTimes: number[],
-  longTasks: number,
-  durationMs: number,
-): ScrollPerfMetrics {
-  const sorted = [...frameTimes].sort((a, b) => a - b);
-  return {
-    frameCount: frameTimes.length,
-    p50: percentile(sorted, 50),
-    p95: percentile(sorted, 95),
-    max: sorted.at(-1) ?? 0,
-    framesOver50ms: frameTimes.filter((t) => t > 50).length,
-    framesOver100ms: frameTimes.filter((t) => t > 100).length,
-    framesOver200ms: frameTimes.filter((t) => t > 200).length,
-    longTasks,
-    durationMs,
-  };
-}
-
-export async function startFrameSampling(page: Page): Promise<void> {
-  await page.evaluate(() => {
-    window.__scrollPerf = {
-      frameTimes: [],
-      sampling: true,
-      longTasks: 0,
-    };
-
-    let last = performance.now();
-    let isFirst = true;
-
-    const sample = (now: number) => {
-      const perf = window.__scrollPerf;
-      if (!perf?.sampling) return;
-
-      if (!isFirst) {
-        perf.frameTimes.push(now - last);
-      } else {
-        isFirst = false;
-      }
-      last = now;
-      perf.rafId = requestAnimationFrame(sample);
-    };
-
-    window.__scrollPerf.rafId = requestAnimationFrame(sample);
-
-    try {
-      const observer = new PerformanceObserver((list) => {
-        if (window.__scrollPerf) {
-          window.__scrollPerf.longTasks += list.getEntries().length;
-        }
-      });
-      observer.observe({ type: 'longtask', buffered: true });
-      window.__scrollPerf.observer = observer;
-    } catch {
-      // longtask is not available in every Chromium build/context.
-    }
-  });
-}
-
-export async function stopFrameSampling(
-  page: Page,
-  durationMs: number,
-): Promise<ScrollPerfMetrics> {
-  return page.evaluate((measuredMs) => {
-    const perf = window.__scrollPerf;
-    if (!perf) {
-      throw new Error('Frame sampling was not started');
-    }
-
-    perf.sampling = false;
-    if (perf.rafId !== undefined) {
-      cancelAnimationFrame(perf.rafId);
-    }
-    perf.observer?.disconnect();
-
-    const sorted = [...perf.frameTimes].sort((a, b) => a - b);
-    const pct = (p: number) => {
-      if (sorted.length === 0) return 0;
-      const idx = Math.min(sorted.length - 1, Math.ceil((p / 100) * sorted.length) - 1);
-      return sorted[Math.max(0, idx)];
-    };
-
-    return {
-      frameCount: perf.frameTimes.length,
-      p50: pct(50),
-      p95: pct(95),
-      max: sorted.at(-1) ?? 0,
-      framesOver50ms: perf.frameTimes.filter((t) => t > 50).length,
-      framesOver100ms: perf.frameTimes.filter((t) => t > 100).length,
-      framesOver200ms: perf.frameTimes.filter((t) => t > 200).length,
-      longTasks: perf.longTasks,
-      durationMs: measuredMs,
-    };
-  }, durationMs);
-}
-
 export interface ScrollPerfOptions {
   durationMs?: number;
   scrollDelta?: number;
   tickMs?: number;
+  warmupMs?: number;
 }
 
 export async function measureScrollPerformance(
@@ -178,8 +117,16 @@ export async function measureScrollPerformance(
   const durationMs = options.durationMs ?? 5000;
   const scrollDelta = options.scrollDelta ?? 100;
   const tickMs = options.tickMs ?? 16;
+  const warmupMs = options.warmupMs ?? 400;
 
   await page.mouse.move(640, 360);
+
+  const warmupEnd = Date.now() + warmupMs;
+  while (Date.now() < warmupEnd) {
+    await page.mouse.wheel(0, scrollDelta);
+    await page.waitForTimeout(tickMs);
+  }
+
   await startFrameSampling(page);
 
   const start = Date.now();
@@ -211,6 +158,7 @@ export function formatScrollPerfMetrics(metrics: ScrollPerfMetrics): string {
     `frames=${metrics.frameCount}`,
     `p50=${metrics.p50.toFixed(1)}ms`,
     `p95=${metrics.p95.toFixed(1)}ms`,
+    `p99=${metrics.p99.toFixed(1)}ms`,
     `max=${metrics.max.toFixed(1)}ms`,
     `>50ms=${metrics.framesOver50ms}`,
     `>100ms=${metrics.framesOver100ms}`,

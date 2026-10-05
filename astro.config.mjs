@@ -1,6 +1,15 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
+import rmAssetsIntegration from './src/integrations/rm-assets/index.ts';
+import { rehypeResponsiveMedia } from './src/plugins/rehype-responsive-media.ts';
+
+const configDir = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot =
+  path.basename(configDir) === '.perf-data' ? path.resolve(configDir, '..') : configDir;
+const viteFsAllow = [configDir, repoRoot, path.join(repoRoot, 'node_modules')];
 
 export default defineConfig({
   site: 'https://rmichels.com',
@@ -10,6 +19,7 @@ export default defineConfig({
     processor: unified({
       gfm: true,
       smartypants: true,
+      rehypePlugins: [rehypeResponsiveMedia],
     }),
   },
   build: {
@@ -23,6 +33,7 @@ export default defineConfig({
     },
   },
   integrations: [
+    rmAssetsIntegration(),
     sitemap({
       i18n: {
         defaultLocale: 'en',
@@ -34,6 +45,15 @@ export default defineConfig({
     }),
   ],
   vite: {
+    server: {
+      fs: {
+        allow: viteFsAllow,
+      },
+    },
+    // Docker audit profiles reach preview via host.docker.internal (Host header check).
+    preview: {
+      allowedHosts: ['host.docker.internal'],
+    },
     css: {
       preprocessorOptions: {
         scss: {

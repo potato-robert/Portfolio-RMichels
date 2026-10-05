@@ -13,6 +13,9 @@ function iframeFromPlaceholder(el: HTMLElement): HTMLIFrameElement {
     iframe.setAttribute(key, attr.value);
   }
   iframe.loading = 'lazy';
+  if (!iframe.getAttribute('title')?.trim()) {
+    iframe.title = el.dataset.provider ?? 'Embedded content';
+  }
   return iframe;
 }
 

@@ -1,0 +1,46 @@
+---
+import { getImageEntry } from '../lib/rm-assets';
+import type { ResponsiveLayout } from '../lib/responsive-image-html';
+import { renderResponsivePicture } from '../lib/responsive-image-html';
+
+interface Props {
+  src: string;
+  alt: string;
+  layout?: ResponsiveLayout;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'sync' | 'auto';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  /** Passed through to the inner img (e.g. aria-hidden). */
+  imgAttrs?: Record<string, string | boolean | undefined>;
+}
+
+const {
+  src,
+  alt,
+  layout = 'default',
+  class: className,
+  loading = 'lazy',
+  decoding = 'async',
+  fetchpriority,
+  imgAttrs = {},
+} = Astro.props;
+
+const entry = getImageEntry(src);
+if (!entry) {
+  throw new Error(`ResponsiveImage: no manifest entry for ${src}`);
+}
+
+const html = renderResponsivePicture({
+  entry,
+  alt,
+  layout,
+  className,
+  loading,
+  decoding,
+  fetchpriority,
+  extraAttrs: imgAttrs,
+});
+---
+
+<Fragment set:html={html} />

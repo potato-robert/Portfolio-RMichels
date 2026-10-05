@@ -24,7 +24,7 @@ order: 12
   </section>
   <div class="auto-resizable-iframe">
     <div>
-      <iframe src="https://www.youtube.com/embed/3MXKiZ-IckA?start=15" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      <iframe title="Pavilions project video" src="https://www.youtube.com/embed/3MXKiZ-IckA?start=15" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
     </div>
   </div>
   <section class="sectionText">
@@ -39,19 +39,19 @@ order: 12
     <div class="sketchfab-embed-wrapper">
       <iframe title="Pavilion 2" src="https://sketchfab.com/models/8ce32155bef54f559eb023e085b21d33/embed">
       </iframe>
-      <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
-            <a href="https://sketchfab.com/3d-models/pavilion-2-8ce32155bef54f559eb023e085b21d33" target="_blank" style="font-weight: bold; color: #1CAAD9;">Pavilion 2</a>
-            by <a href="https://sketchfab.com/rmichels" target="_blank" style="font-weight: bold; color: #1CAAD9;">rmichels</a>
-            on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campaign=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
+      <p>
+            <a href="https://sketchfab.com/3d-models/pavilion-2-8ce32155bef54f559eb023e085b21d33" target="_blank" rel="noopener noreferrer">Pavilion 2</a>
+            by <a href="https://sketchfab.com/rmichels" target="_blank" rel="noopener noreferrer">rmichels</a>
+            on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campaign=share-popup" target="_blank" rel="noopener noreferrer">Sketchfab</a>
         </p>
     </div>
     <div class="sketchfab-embed-wrapper">
       <iframe title="Pavilion 3" src="https://sketchfab.com/models/97df40a59e4845a1821a65b434bd2035/embed">
       </iframe>
-      <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
-          <a href="https://sketchfab.com/3d-models/pavilion-3-97df40a59e4845a1821a65b434bd2035" target="_blank" style="font-weight: bold; color: #1CAAD9;">Pavilion 3</a>
-          by <a href="https://sketchfab.com/rmichels" target="_blank" style="font-weight: bold; color: #1CAAD9;">rmichels</a>
-          on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campaign=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
+      <p>
+          <a href="https://sketchfab.com/3d-models/pavilion-3-97df40a59e4845a1821a65b434bd2035" target="_blank" rel="noopener noreferrer">Pavilion 3</a>
+          by <a href="https://sketchfab.com/rmichels" target="_blank" rel="noopener noreferrer">rmichels</a>
+          on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campaign=share-popup" target="_blank" rel="noopener noreferrer">Sketchfab</a>
       </p>
     </div>
   </div>

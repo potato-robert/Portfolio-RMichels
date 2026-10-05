@@ -82,11 +82,12 @@ describe('resolveCaption', () => {
 });
 
 describe('resolveSlideSrc', () => {
-  it('resolves full-res from lqip path', () => {
+  it('prefers data-full-src for lightbox', () => {
     setupDom(`<div id="projContent"></div>`);
     const img = document.createElement('img');
-    img.src = '/assets/img/foo/lqip/bar.jpg';
-    expect(resolveSlideSrc(img)).toContain('/assets/img/foo/bar.jpg');
+    img.src = '/assets/img/foo/bar-800.webp';
+    img.setAttribute('data-full-src', '/assets/img/foo/bar.jpg');
+    expect(resolveSlideSrc(img)).toBe('/assets/img/foo/bar.jpg');
   });
 });
 
@@ -95,14 +96,14 @@ describe('buildSlideData', () => {
     setupDom(`
       <div id="projContent">
         <figure>
-          <img src="/assets/img/test/lqip/one.jpg" alt="One" width="800" height="600">
+          <img src="/assets/img/test/one.jpg" data-full-src="/assets/img/test/one.jpg" alt="One" width="800" height="600">
           <figcaption>Caption one</figcaption>
         </figure>
       </div>
     `);
     const slides = buildSlideData();
     expect(slides).toHaveLength(1);
-    expect(slides[0].src).toContain('/assets/img/test/one.jpg');
+    expect(slides[0].src).toBe('/assets/img/test/one.jpg');
     expect(slides[0].caption).toBe('Caption one');
     expect(slides[0].width).toBe(800);
     expect(slides[0].height).toBe(600);

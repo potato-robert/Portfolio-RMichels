@@ -1,4 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import { applyPlaywrightEnvForAudit } from './audit/lib/playwright-env.ts';
+
+applyPlaywrightEnvForAudit();
 
 const blockedHosts = [
   'googletagmanager.com',

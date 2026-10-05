@@ -1,0 +1,23 @@
+---
+import {
+  buildJsonLdGraph,
+  type CreativeWorkInput,
+  type StructuredDataPageType,
+} from '../lib/structured-data';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  pageType: StructuredDataPageType;
+  siteUrl: string;
+  pageUrl: string;
+  locale: Locale;
+  creativeWork?: CreativeWorkInput;
+}
+
+const { pageType, siteUrl, pageUrl, locale, creativeWork } = Astro.props;
+
+const graph = buildJsonLdGraph({ pageType, siteUrl, pageUrl, locale, creativeWork });
+const json = JSON.stringify(graph);
+---
+
+<script is:inline type="application/ld+json" set:html={json} />

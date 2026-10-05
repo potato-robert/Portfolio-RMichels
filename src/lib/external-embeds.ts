@@ -160,7 +160,8 @@ function buildPlaceholder(
   const strings = embedStrings(locale);
   const choicesHref = getPrivacySettingsPath(locale);
 
-  const passthrough = { ...attrs, src };
+  const iframeTitle = attrs.title?.trim() || displayName;
+  const passthrough = { ...attrs, src, title: iframeTitle };
   const dataAttrs = Object.entries(passthrough)
     .map(([key, value]) => `data-iframe-${key}="${escapeAttr(value)}"`)
     .join(' ');
@@ -169,7 +170,7 @@ function buildPlaceholder(
   const style = attrs.style ? ` style="${escapeAttr(attrs.style)}"` : '';
   const width = attrs.width ? ` width="${escapeAttr(attrs.width)}"` : '';
   const height = attrs.height ? ` height="${escapeAttr(attrs.height)}"` : '';
-  const title = attrs.title ? escapeAttr(attrs.title) : displayName;
+  const title = escapeAttr(iframeTitle);
 
   return `<div class="external-embed-placeholder${className}"${style}${width}${height} data-external-embed data-provider="${provider.id}" ${dataAttrs} role="group" aria-label="${escapeAttr(title)}">
   <div class="external-embed-placeholder__stage">

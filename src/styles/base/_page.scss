@@ -1,4 +1,16 @@
 //_____________________________________________ Core Styling
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
 .skip-link {
 	position: absolute;
 	left: -9999px;
@@ -106,9 +118,29 @@ main {
 	.mockup  {
 		.mockupFallback {
 			display: block;
+			flex: 1 1 50%;
+			align-self: stretch;
 			width: 100%;
+			max-width: 35rem;
 			height: auto;
 			object-fit: contain;
+			object-position: center;
+		}
+
+		&.mockup--phoneSkip:not(.hololens) {
+			@include md {
+				display: block;
+
+				div {
+					max-width: none;
+				}
+			}
+		}
+
+		&.mockup--staticFallback.hololens:not(:has(canvas.mockupCanvas--active)) {
+			padding-bottom: 4rem;
+			// Negative hololens margins extend the section box over the next gallery; do not steal clicks.
+			pointer-events: none;
 		}
 
 		&.hololens{
@@ -131,7 +163,7 @@ main {
 				margin-right: 0;
 				margin-top: 5rem;
 				display: flex;
-				align-items: stretch;
+				align-items: flex-start;
 				justify-content: space-between;
 				gap: 4rem;
 	
@@ -139,7 +171,12 @@ main {
 					max-width: 50rem;
 					flex: 1 1 50%;
 				}
-				canvas {
+				canvas.mockupCanvas--active {
+					flex: 1 1 50%;
+					align-self: stretch;
+					min-height: 0;
+				}
+				.mockupFallback {
 					flex: 1 1 50%;
 				}
 				h2 {
@@ -150,16 +187,10 @@ main {
 				div {
 					flex: 1 1 60%;
 				}
-				canvas {
-					flex: 0.5 1 40%;
-				}
 			}
 			@include xxxl {
 				div {
 					flex: 1 1 66.66%;
-				}
-				canvas {
-					flex: 0.2 1 33.33%;
 				}
 			}
 		}

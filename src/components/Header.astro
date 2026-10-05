@@ -1,5 +1,5 @@
 ---
-import { t, type Locale, localizedPath } from '../lib/i18n';
+import { t, type Locale } from '../lib/i18n';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -17,17 +17,17 @@ const altLabel = locale === 'en' ? t('deutsch', locale) : t('english', locale);
 ---
 
 <header>
-  <nav>
+  <nav aria-label={t('site_nav', locale)}>
     <ul>
       {pageType === 'project' || pageType === 'about' ? (
         <li class="homeIcon">
-          <a title="Home" href={homeHref} data-home-link>
+          <a title={t('nav_home', locale)} href={homeHref} data-home-link aria-label={t('nav_home', locale)}>
             <Icon name="house" class="icon-header" />
           </a>
         </li>
       ) : (
         <li class="homeIcon">
-          <a title="About" href={aboutHref}>
+          <a title={t('nav_about', locale)} href={aboutHref} aria-label={t('nav_about', locale)}>
             <Icon name="circle-info" class="icon-header" />
           </a>
         </li>
@@ -37,8 +37,8 @@ const altLabel = locale === 'en' ? t('deutsch', locale) : t('english', locale);
           type="button"
           class="menuCont"
           id="MenuToggle"
-          title="Menu"
-          aria-label="Menu"
+          title={t('menu', locale)}
+          aria-label={t('menu', locale)}
           aria-expanded="false"
           aria-controls="OverlayMenu"
         >
@@ -48,21 +48,27 @@ const altLabel = locale === 'en' ? t('deutsch', locale) : t('english', locale);
         </button>
       </li>
     </ul>
-    <div id="OverlayMenu" class="hidden">
+    <div id="OverlayMenu" class="hidden" role="navigation" aria-label={t('menu', locale)} aria-hidden="true">
       <ul id="MenuContent">
-        <a title="Featured Work" href={homeHref} data-home-link>
-          <li class:list={{ curPage: pageType === 'home' }}>{t('featured_work', locale)}</li>
-        </a>
-        <a href={aboutHref} title="About">
-          <li class:list={{ curPage: pageType === 'about' }}>{t('about', locale)}</li>
-        </a>
-        <a href={projectsHref} title="All Projects">
-          <li class:list={{ curPage: pageType === 'projects' }}>{t('all_projects', locale)}</li>
-        </a>
-        <div class="overlayMenuSpacer"></div>
-        <div class="overlayMenuLanguageSelector">
+        <li class:list={{ curPage: pageType === 'home' }}>
+          <a title={t('featured_work', locale)} href={homeHref} data-home-link>
+            {t('featured_work', locale)}
+          </a>
+        </li>
+        <li class:list={{ curPage: pageType === 'about' }}>
+          <a href={aboutHref} title={t('nav_about', locale)}>
+            {t('about', locale)}
+          </a>
+        </li>
+        <li class:list={{ curPage: pageType === 'projects' }}>
+          <a href={projectsHref} title={t('all_projects', locale)}>
+            {t('all_projects', locale)}
+          </a>
+        </li>
+        <li class="overlayMenuSpacer" aria-hidden="true"></li>
+        <li class="overlayMenuLanguageSelector">
           <a href={altHref} class="lang-toggle">{altLabel}</a>
-        </div>
+        </li>
       </ul>
     </div>
   </nav>

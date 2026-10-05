@@ -25,12 +25,14 @@ threeMockup: "phone"
 order: 3
 ---
 
-<section class="sectionText">
-    <h2>Übersicht</h2>
-    <p>Mein Auge war auf das Flutter-Framework gerichtet, und dies schien mir die perfekte Gelegenheit zu sein, die Sprache Dart zu lernen und zu erfahren, wie man mit Flutter eine plattformübergreifende Anwendung erstellt.</p>
-    <p>Tourguide ist als Beta im <a href="https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp" title="Tourguide im Google Play Store (Beta)" target="_blank">Google Play Store</a> und als <a href="https://tourguide-firebase.web.app" title="Tourguide Web-App (Beta)" target="_blank">Web-App</a> verfügbar.</p>
+<section class="sectionText mockup">
+    <div>
+      <h2>Übersicht</h2>
+      <p>Mein Auge war auf das Flutter-Framework gerichtet, und dies schien mir die perfekte Gelegenheit zu sein, die Sprache Dart zu lernen und zu erfahren, wie man mit Flutter eine plattformübergreifende Anwendung erstellt.</p>
+      <p>Tourguide ist als Beta im <a href="https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp" title="Tourguide im Google Play Store (Beta)" target="_blank">Google Play Store</a> und als <a href="https://tourguide-firebase.web.app" title="Tourguide Web-App (Beta)" target="_blank">Web-App</a> verfügbar.</p>
+    </div>
   </section>
-  <video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" autoplay="true" loop="true" muted="true" poster="/assets/video/frame.jpg"></video>
+  <video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" loop muted playsinline poster="/assets/video/frame.jpg"></video>
   <section class="sectionText">
     <h2>Entwicklung</h2>
     <h3>Web-Verbesserungen, tts, und mehr - 2. Oktober 2024</h3>
@@ -49,20 +51,20 @@ order: 3
     <figure ignorecarousel>
       <div class="mediaRow mediaRow-equalWidth mediaRow-equalHeight">
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_1.jpg" alt="tourguide – Screenshot 1"> 
+          <img src="/assets/img/tourguide/Screenshot_1.webp" alt="tourguide – Screenshot 1"> 
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_2.jpg" alt="tourguide – Screenshot 2">
+          <img src="/assets/img/tourguide/Screenshot_2.webp" alt="tourguide – Screenshot 2">
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_3.jpg" alt="tourguide – Screenshot 3"> 
+          <img src="/assets/img/tourguide/Screenshot_3.webp" alt="tourguide – Screenshot 3"> 
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_4.jpg" alt="tourguide – Screenshot 4">
+          <img src="/assets/img/tourguide/Screenshot_4.webp" alt="tourguide – Screenshot 4">
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_5.jpg" alt="tourguide – Screenshot 5"> 
+          <img src="/assets/img/tourguide/Screenshot_5.webp" alt="tourguide – Screenshot 5"> 
         </figure>
         <figure>
-          <img src="/assets/img/tourguide/Screenshot_6.jpg" alt="tourguide – Screenshot 6">
+          <img src="/assets/img/tourguide/Screenshot_6.webp" alt="tourguide – Screenshot 6">
         </figure>
