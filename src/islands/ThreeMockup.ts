@@ -1,15 +1,11 @@
 import { getDevicePerformanceTier } from '../lib/device-capability';
+import { is3dEnabled } from '../lib/site-3d';
 import {
   createMockupRuntime,
   shouldSkipMockupGlb,
   type MockupType,
 } from '../lib/webgl/mockup/createMockupRuntime';
-
-/** Static fallbacks when WebGL/GLB is skipped (minimal tier) or load fails. */
-const MOCKUP_FALLBACKS: Record<MockupType, string> = {
-  hololens: '/assets/img/clirioScanViews/lqip/bridgeScanView.jpg',
-  phone: '/assets/video/frame.jpg',
-};
+import { showMockupStaticFallback } from '../lib/webgl/mockup/mockupStaticFallback';
 
 function getMockupType(canvas: HTMLCanvasElement): MockupType {
   return canvas.hasAttribute('data-mockup-phone') ? 'phone' : 'hololens';
@@ -35,59 +31,16 @@ function showMockupCanvas(canvas: HTMLCanvasElement) {
   canvas.style.display = 'block';
 }
 
-function disableMockupHeavyMedia() {
-  const video = document.getElementById('video') as HTMLVideoElement | null;
-  if (!video) return;
-  video.pause();
-  video.removeAttribute('src');
-  video.load();
-}
-
-type MockupFallbackReason = 'skip' | 'fail';
-
-function showMockupFallback(
-  canvas: HTMLCanvasElement,
-  mockupType: MockupType,
-  reason: MockupFallbackReason = 'fail',
-) {
-  hideMockupCanvas(canvas);
-  disableMockupHeavyMedia();
-
-  const mockupSection = getMockupSection();
-  if (!mockupSection || mockupSection.querySelector('.mockupFallback')) return;
-
-  if (mockupType === 'phone' && reason === 'skip') {
-    mockupSection.classList.add('mockup--phoneSkip');
-    return;
-  }
-
-  const fallbackSrc = MOCKUP_FALLBACKS[mockupType];
-  const img = document.createElement('img');
-  img.src = fallbackSrc;
-  img.alt = '';
-  img.className = 'mockupFallback';
-  img.loading = 'lazy';
-  img.decoding = 'async';
-  img.addEventListener(
-    'error',
-    () => {
-      img.remove();
-    },
-    { once: true },
-  );
-  img.addEventListener(
-    'load',
-    () => {
-      mockupSection.classList.add('mockup--staticFallback');
-    },
-    { once: true },
-  );
-  mockupSection.appendChild(img);
-}
-
 export function initThreeMockup() {
   const canvas = document.querySelector<HTMLCanvasElement>('#threeModel');
   if (!canvas) return;
+
+  const mockupType = getMockupType(canvas);
+
+  if (!is3dEnabled()) {
+    showMockupStaticFallback(canvas, mockupType, 'skip');
+    return;
+  }
 
   canvas.setAttribute('aria-hidden', 'true');
   canvas.setAttribute('role', 'presentation');
@@ -96,13 +49,12 @@ export function initThreeMockup() {
 
   mountMockupCanvas(canvas);
 
-  const mockupType = getMockupType(canvas);
   const effectiveTier = getDevicePerformanceTier();
   const spinner = document.getElementById('spinner');
 
   if (shouldSkipMockupGlb(effectiveTier, mockupType)) {
     console.warn(`Skipping ${mockupType} GLB on ${effectiveTier} tier; using static fallback.`);
-    showMockupFallback(canvas, mockupType, 'skip');
+    showMockupStaticFallback(canvas, mockupType, 'skip');
     return;
   }
 
@@ -120,7 +72,7 @@ export function initThreeMockup() {
     onModelError: (error) => {
       console.error(`Failed to load ${mockupType} mockup model:`, error);
       if (spinner) spinner.style.display = 'none';
-      showMockupFallback(canvas, mockupType);
+      showMockupStaticFallback(canvas, mockupType);
     },
   });
 
@@ -129,7 +81,7 @@ export function initThreeMockup() {
   canvas.addEventListener('webglcontextlost', (event: Event) => {
     event.preventDefault();
     runtime.dispose();
-    showMockupFallback(canvas, mockupType);
+    showMockupStaticFallback(canvas, mockupType);
   });
 }
 

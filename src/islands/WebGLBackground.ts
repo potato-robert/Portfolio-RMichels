@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { calcDocHeight } from './tools';
 import { getDevicePerformanceTier } from '../lib/device-capability';
+import { is3dEnabled } from '../lib/site-3d';
 import { getScrollLenis } from '../lib/scroll-lenis';
 import { addAnimationCallback, removeAnimationCallback } from '../lib/webgl/animationLoop';
 import { createWebGLRenderer, updateRendererSize } from '../lib/webgl/createRenderer';
@@ -14,6 +15,8 @@ import {
 
 export function initWebGLBackground() {
   if (document.querySelector('.waves')) return;
+
+  if (!is3dEnabled()) return;
 
   const tier = getDevicePerformanceTier();
   if (tier === 'minimal') {
