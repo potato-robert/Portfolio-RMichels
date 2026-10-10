@@ -22,7 +22,6 @@ export interface AuditPage {
 const WEBGL_HEAVY_SLUGS = new Set([
   'tourguide',
   'amae',
-  'clirioScanShare',
   'clirioScanViews',
   'clirioCloud',
 ]);

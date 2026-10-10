@@ -3,14 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectTile from '../components/ProjectTile.astro';
 import ResponsiveImage from '../components/ResponsiveImage.astro';
 import Icon from '../components/Icon.astro';
-import { getAllProjects, projectToTileData } from '../lib/projects';
+import { getHomeProjects, projectToTileData } from '../lib/projects';
 import { t } from '../lib/i18n';
 import { clampMetaDescription } from '../lib/seo-meta';
 
 const locale = 'en' as const;
 const params = Astro.url.searchParams;
 const greeting = params.get('greeting');
-const allProjects = await getAllProjects();
+const allProjects = await getHomeProjects();
 const textRotateItems = t('text_rotate', locale).split('", "').map((s) => s.replace(/^"|"$/g, ''));
 const title = 'Robert Michels | Designer & Developer Portfolio';
 const description = clampMetaDescription(

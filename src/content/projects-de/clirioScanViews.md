@@ -1,8 +1,8 @@
 ---
 slug: "clirioScanViews"
 name:
-  en: "Clirio Scan Views"
-  de: "Clirio Scan Views"
+  en: "Clirio View"
+  de: "Clirio View"
 projectType:
   en: "Unity App Features"
   de: "Unity App Features"
@@ -18,7 +18,7 @@ links:
     url: "https://apps.microsoft.com/store/detail/clirio-view-desktop/9NB14S8DFWFP"
 heroAltLayout: false
 threeMockup: "hololens"
-order: 1
+order: 3
 ---
 
 <section class="sectionText">
@@ -30,11 +30,11 @@ order: 1
     <figure ignorecarousel>
       <div class="mediaRow mediaRow-equalWidth mediaRow-equalHeight">
         <figure>
-        <img src="/assets/img/clirioScanViews/lqip/bridgeMapView.jpg" class="whiteFrame" class="whiteFrame" alt="Auf der Karte Ansicht (Desktop)">
+        <img src="/assets/img/clirioScanViews/lqip/bridgeMapView.jpg" class="whiteFrame" alt="Auf der Karte Ansicht (Desktop)">
           <figcaption>Auf der Karte Ansicht (Desktop)</figcaption>
         </figure>
         <figure>
-          <img src="/assets/img/clirioScanViews/lqip/bridgeScanView.jpg" class="whiteFrame" class="whiteFrame" alt="Scan View (Desktop)">
+          <img src="/assets/img/clirioScanViews/lqip/bridgeScanView.jpg" class="whiteFrame" alt="Scan View (Desktop)">
           <figcaption>Scan View (Desktop)</figcaption>
         </figure>
         <figure>

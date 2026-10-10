@@ -96,6 +96,12 @@ FileETag MTime Size
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Retired case study slugs → merged destinations
+  RewriteRule ^clirioScanShare/?$ /clirioCloud/ [R=301,L]
+  RewriteRule ^de/clirioScanShare/?$ /de/clirioCloud/ [R=301,L]
+  RewriteRule ^qwadra/?$ /canfit/ [R=301,L]
+  RewriteRule ^de/qwadra/?$ /de/canfit/ [R=301,L]
+
   # Add trailing slash for extensionless paths (skip files and existing trailing slashes)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} !/$

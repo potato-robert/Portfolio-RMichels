@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/astro-dev.mjs",
+    "predev": "npm run rm-assets",
     "rm-assets": "tsx scripts/run-rm-assets.mjs",
     "pretest:content": "npm run rm-assets",
     "prebuild": "npm run rm-assets",

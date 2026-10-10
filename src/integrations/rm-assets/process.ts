@@ -105,8 +105,15 @@ async function publishImageCache(
 ) {
   const cachedMaster = fs.readdirSync(cacheDir).find((f) => f.startsWith('master.'));
   if (cachedMaster) {
-    const masterRel = meta.url.replace('/assets/', '').replace(/\//g, path.sep);
-    await copyFile(path.join(cacheDir, cachedMaster), path.join(paths.output, masterRel));
+    const masterExt = path.extname(cachedMaster);
+    const canonicalMasterRel = meta.url.replace('/assets/', '').replace(/\//g, path.sep);
+    const canonicalOut = path.join(paths.output, canonicalMasterRel);
+    await copyFile(path.join(cacheDir, cachedMaster), canonicalOut);
+    const sourceMasterRel = `${relNoExt.replace(/\//g, path.sep)}${masterExt}`;
+    const sourceOut = path.join(paths.output, sourceMasterRel);
+    if (path.normalize(sourceOut) !== path.normalize(canonicalOut)) {
+      await copyFile(path.join(cacheDir, cachedMaster), sourceOut);
+    }
   }
   const genDir = path.join(cacheDir, 'gen');
   const pubGen = genBaseDir(paths.output, relNoExt);

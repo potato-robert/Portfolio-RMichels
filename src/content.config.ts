@@ -17,6 +17,7 @@ const projectSchema = z.object({
   gallery: z.array(z.string()).optional(),
   draft: z.boolean().optional(),
   order: z.number().optional(),
+  hideFromHome: z.boolean().optional(),
 });
 
 const markdownId = {
