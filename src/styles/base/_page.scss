@@ -49,6 +49,17 @@ main, #MainGrid {
 	&.noClick {
 		pointer-events: none;
 	}
+
+	&.menu-open {
+		header {
+			z-index: 1000;
+		}
+
+		main,
+		footer {
+			z-index: 0;
+		}
+	}
 }
 
 figcaption {

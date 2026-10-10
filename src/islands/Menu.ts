@@ -25,6 +25,7 @@ export function initMenu() {
     overlayMenu.classList.toggle('hidden');
     contentToBlur.classList.toggle('blur');
     mainGrid.classList.toggle('noClick');
+    mainGrid.classList.toggle('menu-open');
     menuToggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
     overlayMenu.setAttribute('aria-hidden', opening ? 'false' : 'true');
     setWebGLPaused(opening);
