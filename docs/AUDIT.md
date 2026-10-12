@@ -1,6 +1,6 @@
 # Local performance & quality audit (`npm run audit`)
 
-The audit utility is **local-only** — it is not part of CI deploy gates. It runs after a production build (for local targets). Full runs and Lighthouse `raw/` JSON live under `.perf-data/runs/` (gitignored). The optional **`perf-data` branch** (linked worktree at `.perf-data/`) stays **anchored to `dev`** and stores only the latest successful **full** audit as `snapshot/latest/` (no raw files).
+The audit utility is **local-only** — it is not part of CI deploy gates. It runs after a production build (for local targets). Full runs and Lighthouse `raw/` JSON live under `.perf-data/runs/` (gitignored). The optional **`perf-data` branch** (worktree at `.perf-data/`) receives **`snapshot/latest/`** only when you run **`npm run audit:publish-perf-data`** (merge `dev`, then append a commit); see `.cursor/skills/commit-perf-data-snapshot/SKILL.md`.
 
 ## Commands
 
@@ -12,6 +12,7 @@ The audit utility is **local-only** — it is not part of CI deploy gates. It ru
 | `npm run audit:report` | Writes `.perf-data/index.html` trend dashboard |
 | `npm run audit:docker:build` | Build `portfolio-audit-playwright` image (Playwright version from lockfile) |
 | `npm run audit:interaction:smoke` | Interaction only on `/` and `/projects` (no CI gate; needs `dist/`) |
+| `npm run audit:publish-perf-data [runId]` | Merge `dev` → `perf-data`, append slim `snapshot/latest/` commit from a successful full run |
 
 ### Common flags
 
@@ -31,7 +32,7 @@ npm run audit -- --interaction-full-scenarios          # disable WebKit stabilit
 
 - **`--target local`**: reads built HTML from `dist/` for SEO; starts `astro preview` on `127.0.0.1:4321` only for Lighthouse and interaction (`--force` if a stale Astro lock exists). Requires `dist/` from `npm run build`. SEO canonical checks compare against production URLs (built HTML always canonicalizes to `https://rmichels.com`).
 - **`--target prod`**: hits `https://rmichels.com` and skips in-development routes.
-- **Default page set** (when neither `--pages` nor `--all-pages`): EN `main` routes (`/`, `/about`, `/projects`, `/futureEarth`, `/tourguide`), EN sample `/clirioScanViews`, DE shell (`/de`, `/de/about`, `/de/projects`), and one DE case study (`/de/clirioScanViews`). German case studies otherwise mirror English; auditing every `/de/{slug}` is usually redundant.
+- **Default page set** (when neither `--pages` nor `--all-pages`): EN `main` routes (`/`, `/about`, `/projects`, `/futureEarth`, `/tourguide`), EN sample `/clirioScanViews`, DE shell (`/de`, `/de/about`, `/de/projects`), and one DE case study (`/de/clirioScanViews`). German case studies otherwise mirror English; auditing every `/de/{slug}` is usually redundant. Other published slugs (e.g. `/canfit`) are still covered by `test:content`, `test:verify`, and E2E; add `--pages /canfit` or `--all-pages` for Lighthouse/interaction on those routes.
 
 ## Preflight
 
@@ -88,7 +89,7 @@ Docker interaction probes load the same URLs as host Playwright (`?perf=1` and o
 
 Each run creates **local-only** folders under `.perf-data/runs/<timestamp>_<sha>_<level>_<label>/` with `manifest.json`, `summary.json`, `summary.txt`, `report.html`, and `raw/` (gzipped Lighthouse JSON when Lighthouse ran). When the run finalizes, the terminal prints the same human-readable block stored in **`summary.txt`** and the **`logSummary`** field inside **`summary.json`** (Lighthouse score averages, web vitals, interaction scroll/load metrics, SEO counts, CI gate status). Committed **`snapshot/latest/`** includes the same `summary.json` / `summary.txt` pair after a full successful audit. That tree is **gitignored** inside the `.perf-data` worktree (`runs/`, `history.jsonl`, `index.html`). Failed or aborted runs still write those files locally; one line per finalized run is appended to **`history.jsonl`** (also local-only).
 
-The **`perf-data` branch** is reset to the current **`dev` tip**, then receives **one commit** that only adds or updates **`snapshot/latest/`** (same tree as `dev` plus slim snapshot files — no “delete entire repo” diff). Local `runs/` and Lighthouse `raw/` stay in the worktree via **`.git/info/exclude`**, not committed.
+**Git (`perf-data` branch):** `npm run audit` **does not** commit. When you choose to publish (see `.cursor/skills/commit-perf-data-snapshot/SKILL.md`), **`npm run audit:publish-perf-data`** merges **`dev` into `perf-data`**, then **appends one commit** that adds or updates **`snapshot/latest/`** only. Older snapshot commits stay on the branch (connected history). Local `runs/` and Lighthouse `raw/` stay in the worktree via **`.git/info/exclude`**, not committed.
 
 ## Interaction stability (WebGL)
 

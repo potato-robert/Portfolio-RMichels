@@ -136,13 +136,13 @@ npm run test:content && npm run build && npm run test:verify
 
 **Single-command alias:** `npm run test:fast && npm run build && npm run test:verify` covers the common agent loop without E2E.
 
-**Complete local run:** default is full audit — `npm run audit` (CI gate, Lighthouse, SEO, interaction, `perf-data` snapshot). CI-only shortcut: `npm run test:complete`. Agent workflow: `.cursor/skills/complete-test-run/SKILL.md`.
+**Complete local run:** default is full audit — `npm run audit` (CI gate, Lighthouse, SEO, interaction; local `.perf-data/runs/` only). Optional git snapshot: `npm run audit:publish-perf-data` after user confirms (`.cursor/skills/commit-perf-data-snapshot/SKILL.md`). CI-only shortcut: `npm run test:complete`. Agent workflow: `.cursor/skills/complete-test-run/SKILL.md`.
 
 **Failure diagnostics:** Vitest reports file:line; `validate-content.mjs` emits `{ slug, field, error }` JSON lines; Playwright captures screenshots on failure in `playwright-report/`.
 
 ## Local audit (not CI)
 
-Thorough load, SEO, and interaction audits: `npm run audit` / `npm run audit:quick`. Local runs under `.perf-data/runs/`; branch `perf-data` (worktree) holds only the latest full-success slim snapshot. See **`docs/AUDIT.md`**.
+Thorough load, SEO, and interaction audits: `npm run audit` / `npm run audit:quick`. Local runs under `.perf-data/runs/`; branch `perf-data` (worktree) stores committed `snapshot/latest/` when you publish (append commits, merge `dev` first). See **`docs/AUDIT.md`**.
 
 ## Deploy
 

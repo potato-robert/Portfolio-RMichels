@@ -2,9 +2,9 @@
 name: complete-test-run
 description: >-
   Runs the portfolio repo’s full local validation, defaulting to the full audit
-  (CI gate, Lighthouse, SEO, interaction matrix, perf-data snapshot). Use when
-  the user asks for a complete test run, full tests, run all tests, pre-release
-  validation, test everything, thorough audit, or CI parity plus performance.
+  (CI gate, Lighthouse, SEO, interaction matrix). Use when the user asks for a
+  complete test run, full tests, run all tests, pre-release validation, test
+  everything, thorough audit, or CI parity plus performance.
 ---
 
 # Complete test run
@@ -49,14 +49,25 @@ This is `--level full` with all stages:
 |-------|----------------|
 | **ci-gate** | `npm run test:all` then `npm run test:perf` (check, unit, content, build, verify, E2E, scroll `@perf`) |
 | **docker-smoke** | One Docker container probe on `/` (local + interaction stage); fails before Lighthouse |
-| **lighthouse** | Mobile + desktop presets, all pages, medians → `perf-data` snapshot |
+| **lighthouse** | Mobile + desktop presets, all pages, medians → local `.perf-data/runs/` |
 | **seo** | Static SEO rules (report-only) + link crawl |
 | **interaction** | Emulated device matrix (host + Docker profiles) |
 
 - **Build** is produced by the CI gate inside the audit; still run asset sync in pre-flight first.
 - Stale Astro preview lock: `npx astro preview stop`, then retry.
 - **Clean stop:** in the external audit window, press **`q`** to write an `aborted` snapshot (press **`q`** again to force quit without snapshot). Closing the window usually skips the snapshot.
-- After success: mention `npm run audit:compare` and `npm run audit:report`; latest artifacts under `.perf-data/runs/`. Only a **complete successful full** audit updates **`perf-data`** (`dev` + slim `snapshot/latest/`; local `raw/` stays uncommitted). Details: [docs/AUDIT.md](../../../docs/AUDIT.md).
+- **`npm run audit` does not commit to `perf-data`.** Local artifacts live under `.perf-data/runs/` (human-readable `summary.txt` / `logSummary` in `summary.json`). Details: [docs/AUDIT.md](../../../docs/AUDIT.md).
+
+## After the run — always ask about snapshot commit
+
+When you report results to the user:
+
+1. Summarize exit status and artifacts (see **Reporting** below).
+2. If the run was a **successful full** audit (all stages, exit 0), **ask explicitly** whether they want to **commit the test log snapshot** to the **`perf-data`** branch.
+3. **Only if they say yes**, follow **[commit-perf-data-snapshot/SKILL.md](../commit-perf-data-snapshot/SKILL.md)** (`npm run audit:publish-perf-data`).
+4. If the run failed, was quick-level, or was aborted — do **not** offer snapshot commit unless the user brings it up.
+
+Do not commit or push without confirmation. Link work to Trello only when committing application code on `dev` with their card refs.
 
 ## Faster variants (user narrows scope)
 
@@ -76,10 +87,10 @@ When finished (or stopped on failure), summarize:
 1. Which command(s) ran and exit codes.
 2. First failing stage/command and the **actionable** line (Vitest file:line, validate-content JSON, Playwright test name, audit stage/profile).
 3. Paths: `playwright-report/` for E2E; `.perf-data/runs/<latest>/` for audit (`summary.json`, `report.html`).
-
-Do not commit or push unless the user asked. Link work to Trello only when committing with their card refs.
+4. Mention `npm run audit:compare` and `npm run audit:report` after a successful full run.
 
 ## Related docs
 
+- [commit-perf-data-snapshot/SKILL.md](../commit-perf-data-snapshot/SKILL.md) — manual `perf-data` git commit
 - [AGENTS.md](../../../AGENTS.md) — testing overview
 - [docs/AUDIT.md](../../../docs/AUDIT.md) — audit flags and profiles
