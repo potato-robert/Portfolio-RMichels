@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 /**
- * One-time / manual: reset perf-data branch to dev + slim snapshot from the latest
- * successful full local run (or a given run id).
+ * @deprecated Prefer npm run audit:publish-perf-data (merge dev + append snapshot commit).
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import { getWorktreePath, readManifest } from '../lib/snapshot.ts';
-import { publishLatestCompleteSnapshot } from '../lib/perf-data-publish.ts';
+import { appendPerfDataSnapshotCommit } from '../lib/perf-data-publish.ts';
 import { shouldPublishCompleteSnapshot } from '../lib/snapshot-substance.ts';
 
 const worktree = getWorktreePath();
@@ -50,6 +49,7 @@ if (
   process.exit(1);
 }
 
+console.warn('audit:reset-perf-data is deprecated; use npm run audit:publish-perf-data');
 const msg = `audit: ${manifest.gitSha.slice(0, 7)} full snapshot (${runId})`;
-publishLatestCompleteSnapshot(worktree, runDir, msg);
-console.log(`perf-data branch reset to dev + snapshot/latest from ${runId}`);
+appendPerfDataSnapshotCommit(worktree, runDir, msg);
+console.log(`perf-data: merged dev and appended snapshot/latest from ${runId}`);
