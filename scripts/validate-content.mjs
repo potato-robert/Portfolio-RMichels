@@ -12,6 +12,10 @@ import {
   findHtmlBlankLineIssues,
   splitProjectMarkdown,
 } from './project-markdown-html.mjs';
+import {
+  findMissingHtaccessRedirectRules,
+  RETIRED_SLUG_REDIRECTS,
+} from './retired-slug-redirects.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -417,6 +421,27 @@ function checkInDevelopmentRouting(projectsBySlug) {
   }
 }
 
+function checkRetiredSlugsAndRedirects() {
+  const htaccessPath = path.join(root, 'public', '.htaccess');
+  if (!fs.existsSync(htaccessPath)) {
+    fail('_routing', 'htaccess', 'missing public/.htaccess');
+    return;
+  }
+  const htaccess = fs.readFileSync(htaccessPath, 'utf8');
+  for (const missing of findMissingHtaccessRedirectRules(htaccess)) {
+    fail('_routing', 'htaccess', `missing 301 redirect rule: ${missing}`);
+  }
+
+  for (const { from } of RETIRED_SLUG_REDIRECTS) {
+    for (const dir of [PROJECTS_EN, PROJECTS_DE]) {
+      const md = path.join(dir, `${from}.md`);
+      if (fs.existsSync(md)) {
+        fail(from, 'slug', `retired slug must not have markdown source (${path.relative(root, md)})`);
+      }
+    }
+  }
+}
+
 function checkUiKeyParity() {
   const en = JSON.parse(fs.readFileSync(UI_EN, 'utf8'));
   const de = JSON.parse(fs.readFileSync(UI_DE, 'utf8'));
@@ -443,6 +468,7 @@ function main() {
   checkManifestReferences(manifest, projectsBySlug);
   warnLargeMasters();
   checkInDevelopmentRouting(projectsBySlug);
+  checkRetiredSlugsAndRedirects();
   checkUiKeyParity();
 
   console.log(`\nSummary: ${errors.length} error(s)`);

@@ -4,6 +4,7 @@ import {
   filterByRoles,
   getLocalized,
   getProjectSlug,
+  HOME_FEATURED_SLUG_ORDER,
   projectToTileData,
 } from './projects';
 
@@ -25,6 +26,13 @@ function mockProject(
     },
   } as ProjectEntry;
 }
+
+describe('HOME_FEATURED_SLUG_ORDER', () => {
+  it('lists featured home slugs including canfit after tourguide', () => {
+    expect(HOME_FEATURED_SLUG_ORDER.slice(0, 2)).toEqual(['tourguide', 'canfit']);
+    expect(HOME_FEATURED_SLUG_ORDER).not.toContain('clirioScanShare');
+  });
+});
 
 describe('getProjectSlug', () => {
   it('strips .md extension from project id', () => {
