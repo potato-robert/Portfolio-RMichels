@@ -198,6 +198,17 @@ describe('getWebGLPixelRatio', () => {
     expect(getWebGLPixelRatio()).toBe(2);
   });
 
+  it('applies an optional cap on any tier', () => {
+    mockNavigator({
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      hardwareConcurrency: 8,
+      deviceMemory: 8,
+    });
+    mockWindow({ devicePixelRatio: 3 });
+    expect(getWebGLPixelRatio(1.5, 1.5)).toBe(1.5);
+    expect(getWebGLPixelRatio(1.5, 2)).toBe(2);
+  });
+
   it('caps DPR on reduced-tier retina displays', () => {
     mockNavigator({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',

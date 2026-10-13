@@ -4,7 +4,12 @@ import { is3dEnabled } from '../lib/site-3d';
 import { calcDocHeight } from '../islands/tools';
 import { getScrollLenis } from '../lib/scroll-lenis';
 import { addAnimationCallback, removeAnimationCallback } from '../lib/webgl/animationLoop';
-import { createWebGLRenderer, updateRendererSize } from '../lib/webgl/createRenderer';
+import {
+  LANDING_MAX_PIXEL_RATIO,
+  createWebGLRenderer,
+  getPointScale,
+  updateRendererSize,
+} from '../lib/webgl/createRenderer';
 import {
   animateWavesParticles,
   createWavesScene,
@@ -17,6 +22,7 @@ import {
   loadLandingModel,
   resizeLandingModelCamera,
   setLandingModelMouse,
+  setLandingPointScale,
   updateLandingModelCamera,
 } from '../lib/webgl/landingModelScene';
 import {
@@ -46,7 +52,7 @@ export function initHomeWebGL() {
   container.setAttribute('aria-hidden', 'true');
   document.body.appendChild(container);
 
-  const renderer = createWebGLRenderer();
+  const renderer = createWebGLRenderer({ maxPixelRatio: LANDING_MAX_PIXEL_RATIO });
   const canvas = renderer.domElement;
   canvas.style.visibility = 'hidden';
   canvas.classList.add('wavesCanvas');
@@ -57,6 +63,14 @@ export function initHomeWebGL() {
 
   let waves = createWavesScene();
   let landing = createLandingModelScene();
+
+  // Dots are sized in framebuffer pixels; keep their CSS size stable under the DPR cap.
+  const applyPointScale = () => {
+    const scale = getPointScale(renderer);
+    waves.material.uniforms.uPointScale.value = scale;
+    setLandingPointScale(landing, scale);
+  };
+  applyPointScale();
 
   let docHeight = calcDocHeight();
   let modelLoaded = false;
@@ -82,7 +96,8 @@ export function initHomeWebGL() {
   const onWindowResize = () => {
     if (resizeTimer) clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      updateRendererSize(renderer, window.innerWidth, window.innerHeight);
+      updateRendererSize(renderer, window.innerWidth, window.innerHeight, LANDING_MAX_PIXEL_RATIO);
+      applyPointScale();
       resizeWavesCamera(waves);
       lastLandingWidth = 0;
       lastLandingHeight = 0;
@@ -303,7 +318,8 @@ export function initHomeWebGL() {
     shadersReady = false;
     canvas.style.visibility = 'hidden';
     tmpImage.style.display = '';
-    updateRendererSize(renderer, window.innerWidth, window.innerHeight);
+    updateRendererSize(renderer, window.innerWidth, window.innerHeight, LANDING_MAX_PIXEL_RATIO);
+    applyPointScale();
     resizeWavesCamera(waves);
     updateCamera();
     scheduleLandingModelLoad();

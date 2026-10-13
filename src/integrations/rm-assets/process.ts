@@ -5,16 +5,13 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import sharp, { type Sharp } from 'sharp';
 import { NodeIO } from '@gltf-transform/core';
-import {
-  dedup,
-  meshopt,
-  prune,
-  textureCompress,
-} from '@gltf-transform/functions';
+import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { MeshoptEncoder } from 'meshoptimizer';
+import { glbTransforms } from './glb-pipeline.ts';
 import ffmpegStatic from 'ffmpeg-static';
 import {
-  GLB_COMPRESS_TARGETS,
+  GLB_PIPELINE_VERSION,
+  GLB_PROFILES,
   IMAGE_WIDTHS,
   OPTION_VERSION,
   RASTER_EXT,
@@ -384,7 +381,8 @@ async function processGlb(
   paths: ReturnType<typeof repoPaths>,
 ): Promise<void> {
   const outPath = path.join(paths.output, relFromAssets);
-  if (!GLB_COMPRESS_TARGETS.has(relFromAssets.replace(/\\/g, '/'))) {
+  const profile = GLB_PROFILES.get(relFromAssets.replace(/\\/g, '/'));
+  if (!profile) {
     await copyFile(sourceAbs, outPath);
     return;
   }
@@ -395,18 +393,20 @@ async function processGlb(
   }
 
   const contentHash = hashFile(sourceAbs);
-  const cachePath = path.join(paths.cache, 'glb', `${contentHash}.glb`);
+  const cachePath = path.join(
+    paths.cache,
+    'glb',
+    `${contentHash}-${profile}-v${GLB_PIPELINE_VERSION}.glb`,
+  );
 
   if (!fs.existsSync(cachePath)) {
     await MeshoptEncoder.ready;
-    const io = new NodeIO();
+    // Extensions + encoder must be registered or meshopt/quantize are silently dropped on write.
+    const io = new NodeIO()
+      .registerExtensions(ALL_EXTENSIONS)
+      .registerDependencies({ 'meshopt.encoder': MeshoptEncoder });
     const document = await io.read(sourceAbs);
-    await document.transform(
-      dedup(),
-      prune(),
-      textureCompress({ targetFormat: 'webp', resize: [2048, 2048] }),
-      meshopt({ encoder: MeshoptEncoder, level: 'high' }),
-    );
+    await document.transform(...glbTransforms(profile));
     await ensureDir(path.dirname(cachePath));
     await io.write(cachePath, document);
   }
