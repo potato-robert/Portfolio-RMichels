@@ -11,8 +11,8 @@ company: "Qwadra"
 inDevelopment: false
 roles: ["front-end", "back-end", "cad", "3d-model"]
 description:
-  en: "C++ and MFC development on Canfit, Qwadra's CAD application for custom prosthetic and orthotic design. Contributions include shape modifiers, macros, networking, and desktop UI in a clinical CAD/CAM workflow."
-  de: "C++- und MFC-Entwicklung an Canfit, Qwadras CAD-Anwendung für individuelle Prothesen- und Orthesen-Designs. Schwerpunkte: Formmodifikatoren, Makros, Netzwerkfunktionen und Desktop-UI im klinischen CAD/CAM-Workflow."
+  en: "C++ and MFC development on Canfit, Qwadra's CAD application for custom prosthetic and orthotic design. Contributions to clinical modifier tools, 3D visualizations, macros, networking, and UI."
+  de: "C++- und MFC-Entwicklung an Canfit, Qwadras CAD-Anwendung für individuelle Prothesen- und Orthesen-Designs. Beiträge zu klinischen Modifikator-Werkzeugen, 3D-Visualisierungen, Makros, Netzwerkfunktionen und UI."
 links:
   - label: "Qwadra"
     url: "https://qwadra.com/"
@@ -24,26 +24,19 @@ order: 2
 
 <section class="sectionText">
     <h2>Overview</h2>
-    <p>At <a href="https://qwadra.com/" target="_blank" rel="noopener noreferrer">Qwadra Vancouver</a>, I work as a software developer on <a href="https://qwadra.com/solution/canfit-design-software/" target="_blank" rel="noopener noreferrer">Canfit</a>, Qwadra's computer-aided design (CAD) application for orthotics and prosthetics (O&amp;P). Practitioners use Canfit for repeatable, measurable digital rectification and design of custom devices—starting from a 3D patient or cast scan, manual measurements, or both, then applying intuitive tools and templates to reach anatomically correct modifications.</p>
-    <p>Canfit is built to be easy to learn while staying anatomically correct, and it is compatible with existing CAD/CAM solutions on the market so labs can fit it into the equipment they already use. My day-to-day work is on the long-lived Windows desktop codebase—primarily <strong>C++</strong> with <strong>MFC</strong>—where precision, stability, and clear clinical workflows matter as much as the 3D tools themselves.</p>
+    <p>At <a href="https://qwadra.com/" target="_blank" rel="noopener noreferrer">Qwadra Vancouver</a>, I work as a software developer on <a href="https://qwadra.com/solution/canfit-design-software/" target="_blank" rel="noopener noreferrer">Canfit</a>, Qwadra's computer-aided design (CAD) application for digital orthotics and prosthetics (O&amp;P).</p>
+    <p>Practitioners use Canfit to shape and design custom O&amp;P devices digitally in a precise and efficient way. Canfit accepts 3D patient scans, manual measurements, or both. Its strength is a range of intuitive tools, templates, and macros that support anatomically correct modifications. Completed designs are exported as shape files for 3D printing or CNC manufacturing of devices like prosthetic sockets, ankle braces, and custom shoe insoles.</p>
+    <p>Canfit pioneered CAD/CAM O&amp;P technology, and is the centerpiece of many clinics' digital O&amp;P workflows. Compared with labor-intensive traditional O&amp;P manufacturing, digital workflows are highly customizable, precise, and efficient.</p>
   </section>
-  <!--
   <section class="sectionText">
-    <h2>Development focus</h2>
+    <h2>My Contributions</h2>
     <h3>Shape modifiers and 3D design</h3>
-    <p>Canfit's strength is O&amp;P-specific modification: buildups, reductions, alignment, and other shape changes that would be difficult or impossible in plaster alone. I contribute to <strong>shape modifiers</strong> and related geometry tooling so users can rotate, align, twist, and refine devices with controls that stay faithful to clinical intent. Overlays, reference geometry, and 3D preview support the same workflow Qwadra describes—superimposing X-rays, photos, or reference lines while previewing the device design at any time.</p>
+    <p>A core part of Canfit is O&amp;P-specific modification: buildups, reductions, alignment, and other shape changes that would be difficult or impossible in plaster alone. I contribute to shape modifiers and related tooling so users can rotate, align, twist, and refine devices with controls that stay faithful to clinical intent.</p>
     <h3>Macros and workflow automation</h3>
-    <p>Qwadra positions macros as a way to automate O&amp;P workflows—for example saving buildups, reductions, and trimlines with overlays. I work on <strong>macros</strong> and the surrounding automation so repetitive, well-defined steps stay consistent across patients and sites without sacrificing the flexibility clinicians need.</p>
+    <p>With macros, users automate O&amp;P workflows by recording a sequence of modifications and replaying it later, with optional edits on playback. I work on macros and the surrounding automation so clinicians get predictable, consistent behavior suited to clinical use.</p>
     <h3>Networking</h3>
-    <p>Canfit is used in clinics and central fab environments where files and state need to move between workstations reliably. I develop and extend <strong>networking</strong> features so design data can be shared and synchronized in distributed workflows rather than trapped on a single machine.</p>
-    <h3>User interface</h3>
-    <p>Most of what practitioners touch runs through the desktop <strong>UI</strong>: editors, dialogs, and tool flows that must stay responsive during heavy geometry work. I implement and refine MFC-based interface pieces so complex CAD tasks remain approachable in daily O&amp;P production.</p>
+    <p>I designed and implemented a PHP configuration API that delivers update alerts, dynamic messages, and remote configuration to Canfit. These features help customers stay current and connect with sales and support when needed. I owned development end-to-end.</p>
+    <h3>Learnings</h3>
+    <p>Canfit was my introduction to C++ and a much more mature, complex product than most apps I had worked on before. It was a strong lesson in C++ memory management for keeping performance solid when processing large, complex datasets. I also learned Windows UI development with MFC, deepened my 3D CAD knowledge, and adopted tools such as Subversion.</p>
+    <p>Before this role I had worked at fast-paced startups; Qwadra was my first position at a large, established international medical-technology company. That meant learning processes for reliable, high-quality software: rigorous code review, regulatory constraints, and collaboration across many teams.</p>
   </section>
-  -->
-  <!--
-  <section class="sectionText">
-    <h2>Stack and context</h2>
-    <p>Canfit is a native Windows application. <strong>C++</strong> carries performance-critical geometry and core product logic; <strong>MFC</strong> provides the framework for menus, views, and much of the interactive surface clinicians use every day. That stack reflects a mature CAD product evolved with clinical feedback—not a greenfield web stack—so changes tend to be careful, testable increments inside a large codebase.</p>
-    <p>This role builds on earlier full-stack and 3D product work (for example <a href="/clirioCloud">Clirio Cloud</a>) while pushing deeper into CAD-adjacent tooling and domain-specific UX for medical device design within Qwadra's broader digital O&amp;P offering.</p>
-  </section>
-  -->
