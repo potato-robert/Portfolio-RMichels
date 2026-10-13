@@ -34,7 +34,7 @@ function getTocGutterWidth(): number {
 function getHeadingTargets(): HTMLElement[] {
   return Array.from(
     document.querySelectorAll<HTMLElement>(
-      '#projContent .sectionText > h2[id], #projContent .sectionText > h3[id]',
+      '#projContent .sectionText h2[id], #projContent .sectionText h3[id]',
     ),
   );
 }
@@ -406,6 +406,7 @@ export function initProjectToc() {
       link.dataset.tocBound = 'true';
       link.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const href = link.getAttribute('href');
         if (href) scrollToHash(href);
       });

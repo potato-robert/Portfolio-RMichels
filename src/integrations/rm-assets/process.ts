@@ -442,44 +442,62 @@ export async function processRmAssets(root = process.cwd()): Promise<RmAssetsMan
 
   const entries: Record<string, AssetEntry> = {};
   const relFiles = await walkSources(paths.sources);
+  const total = relFiles.length;
+  let completed = 0;
 
-  const tasks: Array<() => Promise<void>> = [];
-  const gifTasks: Array<() => Promise<void>> = [];
+  const tickProgress = (rel: string) => {
+    completed += 1;
+    if (completed === 1 || completed === total || completed % 25 === 0) {
+      console.log(`rm-assets: ${completed}/${total} — ${rel.replace(/\\/g, '/')}`);
+    }
+  };
+
+  console.log(`rm-assets: processing ${total} source file(s)…`);
+
+  type AssetTask = { rel: string; run: () => Promise<void> };
+  const tasks: AssetTask[] = [];
+  const gifTasks: AssetTask[] = [];
 
   for (const rel of relFiles) {
     const abs = path.join(paths.sources, rel);
     const ext = path.extname(rel).toLowerCase();
 
     if (ext === '.gif') {
-      gifTasks.push(() => processGif(abs, rel, paths, entries));
+      gifTasks.push({ rel, run: () => processGif(abs, rel, paths, entries) });
       continue;
     }
 
     if (ext === '.glb') {
-      tasks.push(async () => {
-        await processGlb(abs, rel, paths);
-        entries[publicUrl(rel.replace(/\\/g, '/'))] = {
-          kind: 'passthrough',
-          url: publicUrl(rel.replace(/\\/g, '/')),
-          sourceRel: rel,
-        };
+      tasks.push({
+        rel,
+        run: async () => {
+          await processGlb(abs, rel, paths);
+          entries[publicUrl(rel.replace(/\\/g, '/'))] = {
+            kind: 'passthrough',
+            url: publicUrl(rel.replace(/\\/g, '/')),
+            sourceRel: rel,
+          };
+        },
       });
       continue;
     }
 
     if (RASTER_EXT.has(ext)) {
-      tasks.push(() => processRasterImage(abs, rel, paths, entries));
+      tasks.push({ rel, run: () => processRasterImage(abs, rel, paths, entries) });
       continue;
     }
 
-    tasks.push(async () => {
-      const out = path.join(paths.output, rel);
-      await copyFile(abs, out);
-      entries[publicUrl(rel.replace(/\\/g, '/'))] = {
-        kind: 'passthrough',
-        url: publicUrl(rel.replace(/\\/g, '/')),
-        sourceRel: rel,
-      };
+    tasks.push({
+      rel,
+      run: async () => {
+        const out = path.join(paths.output, rel);
+        await copyFile(abs, out);
+        entries[publicUrl(rel.replace(/\\/g, '/'))] = {
+          kind: 'passthrough',
+          url: publicUrl(rel.replace(/\\/g, '/')),
+          sourceRel: rel,
+        };
+      },
     });
   }
 
@@ -488,13 +506,16 @@ export async function processRmAssets(root = process.cwd()): Promise<RmAssetsMan
   async function worker() {
     while (index < tasks.length) {
       const i = index++;
-      await tasks[i]();
+      const { rel, run } = tasks[i];
+      await run();
+      tickProgress(rel);
     }
   }
   await Promise.all(Array.from({ length: concurrency }, () => worker()));
 
-  for (const gifTask of gifTasks) {
-    await gifTask();
+  for (const { rel, run } of gifTasks) {
+    await run();
+    tickProgress(rel);
   }
 
   const manifest: RmAssetsManifest = {

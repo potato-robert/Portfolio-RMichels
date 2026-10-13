@@ -84,8 +84,23 @@ export function initHomeWebGL() {
   let disposed = false;
   let lastLandingWidth = 0;
   let lastLandingHeight = 0;
+  let lastPointerClientX: number | undefined;
+  let lastPointerClientY: number | undefined;
 
   const getScrollY = () => getScrollLenis()?.animatedScroll ?? window.scrollY ?? 0;
+
+  const applyLandingModelMouseFromClient = (clientX: number, clientY: number) => {
+    if (!modelLoaded) return;
+    const portraitRect = modelContainer.getBoundingClientRect();
+    if (!shouldScissorRenderPortrait({ modelLoaded, rect: portraitRect })) return;
+    setLandingModelMouse(landing, clientX, clientY);
+  };
+
+  const syncLandingModelPointer = () => {
+    const clientX = lastPointerClientX ?? window.innerWidth / 2;
+    const clientY = lastPointerClientY ?? window.innerHeight / 2;
+    applyLandingModelMouseFromClient(clientX, clientY);
+  };
 
   const updateCamera = (scrollY?: number) => {
     docHeight = calcDocHeight();
@@ -238,7 +253,9 @@ export function initHomeWebGL() {
     modelContainer.style.display = '';
     requestAnimationFrame(() => {
       modelContainer.style.visibility = 'visible';
+      syncLandingModelPointer();
     });
+    syncLandingModelPointer();
     void renderer.compileAsync(landing.scene, landing.camera).then(() => {
       shadersReady = true;
     });
@@ -265,20 +282,19 @@ export function initHomeWebGL() {
     window.addEventListener('load', () => setTimeout(scheduleLandingModelLoad, 200), { once: true });
   }
 
-  const onMouseMove = (event: MouseEvent) => {
-    if (!modelLoaded) return;
-    const portraitRect = modelContainer.getBoundingClientRect();
-    if (!shouldScissorRenderPortrait({ modelLoaded, rect: portraitRect })) return;
-    setLandingModelMouse(landing, event.clientX, event.clientY);
+  const onPointerMove = (event: PointerEvent) => {
+    lastPointerClientX = event.clientX;
+    lastPointerClientY = event.clientY;
+    applyLandingModelMouseFromClient(event.clientX, event.clientY);
   };
 
-  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('pointermove', onPointerMove, { passive: true });
 
   const disposeAll = () => {
     if (disposed) return;
     disposed = true;
     removeAnimationCallback(renderFrame);
-    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('pointermove', onPointerMove);
     window.removeEventListener('resize', onWindowResize);
     if (resizeTimer) clearTimeout(resizeTimer);
     disposeWavesScene(waves);

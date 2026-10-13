@@ -19,6 +19,7 @@ export function initLenis() {
   const lenis = new Lenis({
     smoothWheel: stored,
     autoRaf: true,
+    anchors: true,
   });
 
   setScrollLenis(lenis);
