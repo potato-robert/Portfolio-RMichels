@@ -4,8 +4,8 @@ name:
   en: "Amae"
   de: "Amae"
 projectType:
-  en: "UX / UI"
-  de: "UX / UI"
+  en: "UX / UI Mockup"
+  de: "UX / UI Mockup"
 year: "2019"
 inDevelopment: false
 roles: ["design", "android"]
