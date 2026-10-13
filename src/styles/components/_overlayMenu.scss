@@ -8,6 +8,7 @@
   background-color: rgba(#444, 0.7);
   overflow: hidden;
   user-select: none;
+  pointer-events: auto;
 
   transition: 0.4s;
 
@@ -32,6 +33,7 @@
 
     a {
       color: _colour(white);
+      text-decoration: none;
       transition: 1s;
 
       &:hover {
@@ -79,6 +81,7 @@
     opacity: 0;
     visibility: hidden;
     width: 100%;
+    pointer-events: none;
   }
 
   &:not(.hidden) {

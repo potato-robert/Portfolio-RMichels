@@ -3,13 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectTile from '../../components/ProjectTile.astro';
 import ResponsiveImage from '../../components/ResponsiveImage.astro';
 import Icon from '../../components/Icon.astro';
-import { getAllProjects, projectToTileData } from '../../lib/projects';
+import { getHomeProjects, projectToTileData } from '../../lib/projects';
 import { t } from '../../lib/i18n';
 
 const locale = 'de' as const;
 const params = Astro.url.searchParams;
 const greeting = params.get('greeting');
-const allProjects = await getAllProjects(locale);
+const allProjects = await getHomeProjects(locale);
 const textRotateItems = t('text_rotate', locale).split('", "').map((s) => s.replace(/^"|"$/g, ''));
 const title = 'Robert Michels | Designer- & Entwickler-Portfolio';
 const description =

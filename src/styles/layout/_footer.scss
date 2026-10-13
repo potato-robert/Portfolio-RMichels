@@ -1,4 +1,8 @@
 footer {
+	ul.icons li {
+		z-index: 250;
+	}
+
 	//________________________________________________________ General
 	width: calc(100% + #{_grid(content-margin)} * 2);
 	margin-left: -#{_grid(content-margin)};
@@ -64,6 +68,18 @@ footer {
 			gap: 1rem;
 		}
 
+		.footerPreferences {
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			gap: 0.5rem 1.25rem;
+			margin: 0.75rem 0;
+
+			.ui-checkbox {
+				margin: 0;
+			}
+		}
+
 		.footerLegal {
 			display: flex;
 			flex-direction: row;
@@ -117,10 +133,8 @@ ul.icons {
 	}
 
 	li {
-
 			display: inline-block;
 			vertical-align: middle;
-			z-index: 250;
 
 			.icon {
 				transition: .2s;

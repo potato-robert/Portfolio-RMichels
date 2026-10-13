@@ -3,6 +3,7 @@ attribute float scale;
 attribute vec2 gridIndex;
 uniform float uCount;
 uniform float uWaveAnimate;
+uniform float uPointScale;
 
 void main() {
   vec3 pos = position;
@@ -16,7 +17,7 @@ void main() {
   }
 
   vec4 mvPosition = modelViewMatrix * vec4( pos, 1.0 );
-  gl_PointSize = ptScale * ( 300.0 / - mvPosition.z );
+  gl_PointSize = ptScale * uPointScale * ( 300.0 / - mvPosition.z );
   gl_Position = projectionMatrix * mvPosition;
 }
 `;

@@ -90,10 +90,10 @@ export function materializeCommittedSnapshot(runDir: string, worktree: string): 
 }
 
 /**
- * Move `perf-data` to current `dev`, then one normal commit that only adds/updates
- * `snapshot/latest/` (full repo tree unchanged vs dev; no mass deletions in diffs).
+ * Merge current `dev` into `perf-data`, then append one commit that only adds/updates
+ * `snapshot/latest/`. Prior snapshot commits stay on the branch (connected history).
  */
-export function publishLatestCompleteSnapshot(
+export function appendPerfDataSnapshotCommit(
   worktree: string,
   runDir: string,
   commitMessage: string,
@@ -101,18 +101,44 @@ export function publishLatestCompleteSnapshot(
   ensurePerfDataLocalExclude(worktree);
   untrackLocalPerfDataPaths(worktree);
 
-  const devRef = gitInRoot('git rev-parse dev');
-  gitIn(worktree, `git reset --hard ${devRef}`);
+  const branch = gitIn(worktree, 'git rev-parse --abbrev-ref HEAD');
+  if (branch !== 'perf-data') {
+    throw new Error(
+      `perf-data worktree must be on branch perf-data (got ${branch}). Check git worktree list.`,
+    );
+  }
+
+  if (!gitInRoot('git rev-parse --verify dev')) {
+    throw new Error('Local branch dev not found in main worktree.');
+  }
+
+  try {
+    execSync('git merge dev --no-edit', { cwd: worktree, stdio: 'inherit' });
+  } catch {
+    throw new Error(
+      'Merge dev into perf-data failed. Resolve conflicts in the .perf-data worktree, commit the merge, then re-run publish.',
+    );
+  }
+
   ensurePerfDataLocalExclude(worktree);
 
   materializeCommittedSnapshot(runDir, worktree);
   gitIn(worktree, `git add ${shellQuote(SNAPSHOT_DIR)}`);
   const status = gitIn(worktree, 'git status --porcelain');
   if (!status.trim()) {
-    console.warn('perf-data: snapshot unchanged vs dev; no commit created.');
+    console.warn('perf-data: snapshot unchanged after pack; no snapshot commit created.');
     return;
   }
   execSync(`git commit -m ${shellQuote(commitMessage)}`, { cwd: worktree, stdio: 'inherit' });
+}
+
+/** @deprecated use appendPerfDataSnapshotCommit (reset-based publish removed) */
+export function publishLatestCompleteSnapshot(
+  worktree: string,
+  runDir: string,
+  commitMessage: string,
+): void {
+  appendPerfDataSnapshotCommit(worktree, runDir, commitMessage);
 }
 
 export function auditStagesRecordedInSummary(

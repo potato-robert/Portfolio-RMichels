@@ -4,9 +4,21 @@ export const OPTION_VERSION = 4;
 
 export const IMAGE_WIDTHS = [480, 800, 1200, 1600, 2400] as const;
 
-export const GLB_COMPRESS_TARGETS = new Set([
-  'models/hlAndBridgeCombined.glb',
-  'models/me_v2.glb',
+/** Bump when GLB transform logic changes (invalidates the GLB cache only, not images). */
+export const GLB_PIPELINE_VERSION = 2;
+
+export type GlbProfile = 'generic' | 'flat-shaded-portrait';
+
+/**
+ * GLBs run through glTF-Transform at build time (source in `assets/`, output in `public/assets/`).
+ * - generic: dedup, prune, texture compress, meshopt.
+ * - flat-shaded-portrait: untextured, flat-shaded mesh also rendered as a dot cloud (landing model).
+ *   Strips NORMAL/UV/COLOR (GLTFLoader enables flat shading when NORMAL is absent), welds
+ *   duplicate corners so each dot is one vertex, then meshopt-compresses.
+ */
+export const GLB_PROFILES = new Map<string, GlbProfile>([
+  ['models/hlAndBridgeCombined.glb', 'generic'],
+  ['models/me_v2.glb', 'flat-shaded-portrait'],
 ]);
 
 export const RASTER_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp']);

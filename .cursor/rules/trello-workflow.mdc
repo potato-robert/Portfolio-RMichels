@@ -10,7 +10,7 @@ All agent work on this repo should map to one or more cards on the **Portfolio S
 ## Commits
 
 - **Every commit** must list linked cards in the footer: `Refs: Trello #127` (comma-separated if multiple).
-- **After each successful commit**, add a Trello **comment** on every linked card with the full git SHA and commit subject (see `.cursor/skills/trello-workflow/SKILL.md`).
+- **After each successful commit**, add a Trello **comment** on every linked card with the full git SHA and commit subject (see `.cursor/skills/trello-workflow/SKILL.md`). Agents must call Trello MCP `add_comment` for this step **without asking the user**—it is pre-authorized whenever the user requested the commit and the footer lists the card(s).
 - If card numbers are unknown, **ask the user before committing** — do not commit without Trello refs.
 
 ## Card descriptions

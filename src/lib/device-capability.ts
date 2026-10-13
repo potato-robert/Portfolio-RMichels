@@ -120,20 +120,20 @@ export function isIntelIntegratedGpu(): boolean {
  * WebGL pixel ratio. Full device DPR on capable hardware; capped on reduced-tier
  * retina displays to reduce GPU fill cost.
  */
-export function getWebGLPixelRatio(maxRetinaReduced = 1.5): number {
+export function getWebGLPixelRatio(maxRetinaReduced = 1.5, maxAny = Infinity): number {
   const dpr = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
   const tier = getDevicePerformanceTier();
 
   if (tier === 'reduced' && dpr > 1) {
-    return Math.min(dpr, maxRetinaReduced);
+    return Math.min(dpr, maxRetinaReduced, maxAny);
   }
 
   // Legacy path: isLowPoweredDevice covers minimal tier (WebGL skipped anyway)
   if (isLowPoweredDevice() && dpr > 1) {
-    return Math.min(dpr, maxRetinaReduced);
+    return Math.min(dpr, maxRetinaReduced, maxAny);
   }
 
-  return dpr;
+  return Math.min(dpr, maxAny);
 }
 
 /** Reset cached GPU sniff (for tests). */

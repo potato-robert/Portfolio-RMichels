@@ -1,8 +1,14 @@
 import './ProjectLightbox.ts';
 import './ProjectToc.ts';
+import { is3dEnabled } from '../lib/site-3d';
+import { initProjectMockupStaticFallback } from '../lib/webgl/mockup/mockupStaticFallback';
 
 function scheduleThreeMockup() {
   if (!document.querySelector('#threeModel')) return;
+  if (!is3dEnabled()) {
+    initProjectMockupStaticFallback();
+    return;
+  }
   void import('./ThreeMockup.ts');
 }
 

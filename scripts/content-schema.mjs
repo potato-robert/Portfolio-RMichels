@@ -20,6 +20,7 @@ export const projectSchema = z.object({
   gallery: z.array(z.string()).optional(),
   draft: z.boolean().optional(),
   order: z.number().optional(),
+  hideFromHome: z.boolean().optional(),
 });
 
 /** Fields that must match between EN and DE files for the same slug. */
@@ -34,6 +35,7 @@ export const PARITY_FIELDS = [
   'threeMockup',
   'draft',
   'order',
+  'hideFromHome',
   'name',
   'projectType',
   'description',

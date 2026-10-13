@@ -5,6 +5,16 @@ export type ProjectEntry =
   | CollectionEntry<'projects'>
   | CollectionEntry<'projects-de'>;
 
+/** Featured home tile order (also guides `order` frontmatter for these slugs). */
+export const HOME_FEATURED_SLUG_ORDER = [
+  'tourguide',
+  'canfit',
+  'clirioScanViews',
+  'clirioCloud',
+  'futureEarth',
+  'amae',
+] as const;
+
 /** Public URL slug (camelCase, no .md suffix). */
 export function getProjectSlug(project: ProjectEntry): string {
   return project.id.replace(/\.md$/i, '');
@@ -26,6 +36,11 @@ export async function getAllProjects(locale: Locale = 'en'): Promise<ProjectEntr
 
 export async function getProjects(locale: Locale = 'en'): Promise<ProjectEntry[]> {
   return getAllProjects(locale);
+}
+
+export async function getHomeProjects(locale: Locale = 'en'): Promise<ProjectEntry[]> {
+  const projects = await getAllProjects(locale);
+  return projects.filter((p) => !p.data.hideFromHome);
 }
 
 export function filterByRoles(projects: ProjectEntry[], filters: string[]): ProjectEntry[] {

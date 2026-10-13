@@ -22,7 +22,7 @@ links:
   - label: "Github Repository"
     url: "https://github.com/potato-robert/tourguide_app"
 threeMockup: "phone"
-order: 3
+order: 1
 ---
 
 <section class="sectionText mockup">

@@ -7,5 +7,6 @@ test.describe('homepage', () => {
     await expect(page).toHaveTitle(/Robert Michels \| Designer & Developer Portfolio/);
     await expect(page.locator('#landingArea')).toBeVisible();
     await expect(page.locator('#MyWork .projRow')).not.toHaveCount(0);
+    await expect(page.locator('#MyWork a[href="/canfit"]')).toBeVisible();
   });
 });

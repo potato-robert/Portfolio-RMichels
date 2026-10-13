@@ -77,6 +77,7 @@ export function createWavesScene(grid?: ParticleGrid): WavesScene {
       color: { value: new THREE.Color(0x666666) },
       uCount: { value: 0 },
       uWaveAnimate: { value: 1 },
+      uPointScale: { value: 1 },
     },
     vertexShader: particleWavesVertexShader,
     fragmentShader: particleWavesFragmentShader,

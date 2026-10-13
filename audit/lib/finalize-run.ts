@@ -10,7 +10,6 @@ import {
 } from './snapshot.ts';
 import { fingerprintKey, getHostFingerprint, readPackageVersion } from './host.ts';
 import type { PreflightResult } from './preflight.ts';
-import { publishLatestCompleteSnapshot } from './perf-data-publish.ts';
 import { shouldPublishCompleteSnapshot } from './snapshot-substance.ts';
 import { formatAuditRunLogSummary } from './run-log-summary.ts';
 
@@ -126,16 +125,18 @@ export function finalizeAuditRun(params: {
       summary,
     })
   ) {
-    const fp = fingerprintKey(host).replace(/\|/g, '_');
-    const msg = `audit: ${git.sha.slice(0, 7)} full ${fp} snapshot`;
-    publishLatestCompleteSnapshot(worktree, runDir, msg);
-    console.log(`perf-data: published slim snapshot/latest (local raw stays in ${runDir})`);
+    console.log(
+      `perf-data: run eligible for snapshot commit (local artifacts in ${runDir}).`,
+    );
+    console.log(
+      'perf-data: git commit is manual — npm run audit:publish-perf-data (see .cursor/skills/commit-perf-data-snapshot/SKILL.md).',
+    );
   } else if (status === 'success') {
     console.warn(
-      `Skipping perf-data publish (quick or incomplete stage set). Local run: ${runDir}`,
+      `Run not eligible for perf-data snapshot commit (quick or incomplete stages). Local run: ${runDir}`,
     );
   } else {
-    console.warn(`Skipping perf-data publish (status ${status}). Local run: ${runDir}`);
+    console.warn(`No perf-data snapshot commit (status ${status}). Local run: ${runDir}`);
   }
 
   console.log('');

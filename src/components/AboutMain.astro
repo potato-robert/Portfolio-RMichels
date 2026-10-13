@@ -21,7 +21,9 @@ const { locale } = Astro.props;
         <strong>{t('about_exp_qwadra_role', locale)}</strong>
         <span class="aboutHistory-dates">{t('about_exp_qwadra_dates', locale)}</span>
       </div>
-      <div class="aboutHistory-org">{t('about_exp_qwadra_org', locale)}</div>
+      <div class="aboutHistory-org">
+        <a href="https://qwadra.com/" target="_blank" rel="noopener noreferrer">{t('about_exp_qwadra_org', locale)}</a>
+      </div>
       <p set:html={parseGlossaryText(t('about_exp_qwadra_desc', locale), locale)} />
     </li>
     <li>
@@ -29,7 +31,9 @@ const { locale } = Astro.props;
         <strong>{t('about_exp_clirio_role', locale)}</strong>
         <span class="aboutHistory-dates">{t('about_exp_clirio_dates', locale)}</span>
       </div>
-      <div class="aboutHistory-org">{t('about_exp_clirio_org', locale)}</div>
+      <div class="aboutHistory-org">
+        <a href="https://clir.io/" target="_blank" rel="noopener noreferrer">{t('about_exp_clirio_org', locale)}</a>
+      </div>
       <p set:html={parseGlossaryText(t('about_exp_clirio_desc', locale), locale)} />
     </li>
   </ul>
@@ -38,9 +42,12 @@ const { locale } = Astro.props;
   <ul class="aboutHistory aboutHistory--education">
     <li>
       <div class="aboutHistory-entryHead">
-        <strong set:html={parseGlossaryText(t('about_edu_degree', locale), locale)} />
+        <strong>{t('about_edu_degree', locale)}</strong>
       </div>
-      <div class="aboutHistory-org">{t('about_edu_school', locale)}</div>
+      <div class="aboutHistory-org">
+        <a href="https://www.sfu.ca/siat.html" target="_blank" rel="noopener noreferrer">{t('about_edu_siat', locale)}</a>{t('about_edu_org_at', locale)}<a href="https://www.sfu.ca/" target="_blank" rel="noopener noreferrer">{t('about_edu_sfu', locale)}</a>
+      </div>
+      <p set:html={parseGlossaryText(t('about_edu_desc', locale), locale)} />
     </li>
   </ul>
 </div>

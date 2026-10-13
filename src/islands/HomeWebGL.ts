@@ -1,9 +1,15 @@
 // @ts-nocheck
 import { getDevicePerformanceTier } from '../lib/device-capability';
+import { is3dEnabled } from '../lib/site-3d';
 import { calcDocHeight } from '../islands/tools';
 import { getScrollLenis } from '../lib/scroll-lenis';
 import { addAnimationCallback, removeAnimationCallback } from '../lib/webgl/animationLoop';
-import { createWebGLRenderer, updateRendererSize } from '../lib/webgl/createRenderer';
+import {
+  LANDING_MAX_PIXEL_RATIO,
+  createWebGLRenderer,
+  getPointScale,
+  updateRendererSize,
+} from '../lib/webgl/createRenderer';
 import {
   animateWavesParticles,
   createWavesScene,
@@ -16,11 +22,19 @@ import {
   loadLandingModel,
   resizeLandingModelCamera,
   setLandingModelMouse,
+  setLandingPointScale,
   updateLandingModelCamera,
 } from '../lib/webgl/landingModelScene';
+import {
+  shouldHideLandingFallback,
+  shouldRestoreLandingFallback,
+  shouldScissorRenderPortrait,
+} from '../lib/webgl/landingPortraitFallback';
 
 export function initHomeWebGL() {
   if (document.querySelector('.waves')) return;
+
+  if (!is3dEnabled()) return;
 
   const tier = getDevicePerformanceTier();
   if (tier === 'minimal') {
@@ -31,8 +45,6 @@ export function initHomeWebGL() {
   const modelContainer = document.getElementById('threeModel');
   const tmpImage = document.getElementById('landingModelImage') as HTMLImageElement | null;
   const tmpSpinner = document.getElementById('spinner');
-  const landingArea = document.getElementById('landingArea');
-
   if (!modelContainer || !tmpImage) return;
 
   const container = document.createElement('div');
@@ -40,7 +52,7 @@ export function initHomeWebGL() {
   container.setAttribute('aria-hidden', 'true');
   document.body.appendChild(container);
 
-  const renderer = createWebGLRenderer();
+  const renderer = createWebGLRenderer({ maxPixelRatio: LANDING_MAX_PIXEL_RATIO });
   const canvas = renderer.domElement;
   canvas.style.visibility = 'hidden';
   canvas.classList.add('wavesCanvas');
@@ -52,9 +64,21 @@ export function initHomeWebGL() {
   let waves = createWavesScene();
   let landing = createLandingModelScene();
 
+  // Dots are sized in framebuffer pixels; keep their CSS size stable under the DPR cap.
+  const applyPointScale = () => {
+    const scale = getPointScale(renderer);
+    waves.material.uniforms.uPointScale.value = scale;
+    setLandingPointScale(landing, scale);
+  };
+  applyPointScale();
+
   let docHeight = calcDocHeight();
-  let modelVisible = true;
   let modelLoaded = false;
+  let fallbackHidden = false;
+  let confirmedPortraitFrames = 0;
+  let framesWithoutConfirmedPortrait = 0;
+  let missedPortraitRenderFrames = 0;
+  const PORTRAIT_FALLBACK_GRACE_FRAMES = 60;
   let warmupFrames = 0;
   let shadersReady = false;
   let disposed = false;
@@ -72,12 +96,45 @@ export function initHomeWebGL() {
   const onWindowResize = () => {
     if (resizeTimer) clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      updateRendererSize(renderer, window.innerWidth, window.innerHeight);
+      updateRendererSize(renderer, window.innerWidth, window.innerHeight, LANDING_MAX_PIXEL_RATIO);
+      applyPointScale();
       resizeWavesCamera(waves);
       lastLandingWidth = 0;
       lastLandingHeight = 0;
       updateCamera();
     }, 100);
+  };
+
+  const syncLandingFallbackImage = (portraitRect: DOMRect) => {
+    if (
+      shouldRestoreLandingFallback({
+        fallbackHidden,
+        modelLoaded,
+        rect: portraitRect,
+        confirmedPortraitFrames,
+        framesWithoutConfirmedPortrait,
+        missedPortraitRenderFrames,
+        graceFrames: PORTRAIT_FALLBACK_GRACE_FRAMES,
+      })
+    ) {
+      tmpImage.style.display = '';
+      fallbackHidden = false;
+      confirmedPortraitFrames = 0;
+      framesWithoutConfirmedPortrait = 0;
+      missedPortraitRenderFrames = 0;
+      if (tmpSpinner) tmpSpinner.style.display = 'none';
+      return;
+    }
+
+    if (
+      !fallbackHidden &&
+      shouldHideLandingFallback(confirmedPortraitFrames) &&
+      modelLoaded
+    ) {
+      tmpImage.style.display = 'none';
+      fallbackHidden = true;
+      if (tmpSpinner) tmpSpinner.style.display = 'none';
+    }
   };
 
   const renderFrame = (_time: number, delta: number) => {
@@ -86,6 +143,7 @@ export function initHomeWebGL() {
     const canvas = renderer.domElement;
     const canvasRect = canvas.getBoundingClientRect();
     const pr = renderer.getPixelRatio();
+    const portraitRect = modelContainer.getBoundingClientRect();
 
     animateWavesParticles(waves, delta);
 
@@ -94,20 +152,20 @@ export function initHomeWebGL() {
     renderer.autoClear = true;
     renderer.render(waves.scene, waves.camera);
 
-    if (modelLoaded && modelVisible) {
-      const rect = modelContainer.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        if (rect.width !== lastLandingWidth || rect.height !== lastLandingHeight) {
-          lastLandingWidth = rect.width;
-          lastLandingHeight = rect.height;
-          resizeLandingModelCamera(landing, rect.width, rect.height);
-        }
+    let portraitDrawnThisFrame = false;
+    if (shouldScissorRenderPortrait({ modelLoaded, rect: portraitRect })) {
+      if (portraitRect.width !== lastLandingWidth || portraitRect.height !== lastLandingHeight) {
+        lastLandingWidth = portraitRect.width;
+        lastLandingHeight = portraitRect.height;
+        resizeLandingModelCamera(landing, portraitRect.width, portraitRect.height);
+      }
 
-        const left = Math.floor((rect.left - canvasRect.left) * pr);
-        const bottom = Math.floor((canvasRect.bottom - rect.bottom) * pr);
-        const width = Math.floor(rect.width * pr);
-        const height = Math.floor(rect.height * pr);
+      const left = Math.floor((portraitRect.left - canvasRect.left) * pr);
+      const bottom = Math.floor((canvasRect.bottom - portraitRect.bottom) * pr);
+      const width = Math.floor(portraitRect.width * pr);
+      const height = Math.floor(portraitRect.height * pr);
 
+      if (width > 0 && height > 0) {
         renderer.setScissorTest(true);
         renderer.setScissor(left, bottom, width, height);
         renderer.setViewport(left, bottom, width, height);
@@ -119,8 +177,26 @@ export function initHomeWebGL() {
 
         renderer.setScissorTest(false);
         renderer.autoClear = true;
+        portraitDrawnThisFrame = true;
+        confirmedPortraitFrames++;
       }
     }
+
+    const portraitShouldDraw = shouldScissorRenderPortrait({ modelLoaded, rect: portraitRect });
+    if (modelLoaded && fallbackHidden && confirmedPortraitFrames === 0) {
+      framesWithoutConfirmedPortrait++;
+    } else if (portraitDrawnThisFrame) {
+      framesWithoutConfirmedPortrait = 0;
+    }
+
+    if (fallbackHidden && portraitShouldDraw) {
+      if (portraitDrawnThisFrame) missedPortraitRenderFrames = 0;
+      else missedPortraitRenderFrames++;
+    } else if (!fallbackHidden) {
+      missedPortraitRenderFrames = 0;
+    }
+
+    syncLandingFallbackImage(portraitRect);
 
     if (warmupFrames < 15) {
       warmupFrames++;
@@ -156,11 +232,12 @@ export function initHomeWebGL() {
 
   const showModel = () => {
     modelLoaded = true;
+    confirmedPortraitFrames = 0;
+    framesWithoutConfirmedPortrait = 0;
+    missedPortraitRenderFrames = 0;
     modelContainer.style.display = '';
     requestAnimationFrame(() => {
       modelContainer.style.visibility = 'visible';
-      tmpImage.style.display = 'none';
-      if (tmpSpinner) tmpSpinner.style.display = 'none';
     });
     void renderer.compileAsync(landing.scene, landing.camera).then(() => {
       shadersReady = true;
@@ -189,26 +266,18 @@ export function initHomeWebGL() {
   }
 
   const onMouseMove = (event: MouseEvent) => {
-    if (!modelLoaded || !modelVisible) return;
+    if (!modelLoaded) return;
+    const portraitRect = modelContainer.getBoundingClientRect();
+    if (!shouldScissorRenderPortrait({ modelLoaded, rect: portraitRect })) return;
     setLandingModelMouse(landing, event.clientX, event.clientY);
   };
 
   document.addEventListener('mousemove', onMouseMove);
 
-  const visibilityTarget = landingArea ?? modelContainer;
-  const observer = new IntersectionObserver(
-    (entries) => {
-      modelVisible = entries.some((e) => e.isIntersecting);
-    },
-    { threshold: 0.05 },
-  );
-  observer.observe(visibilityTarget);
-
   const disposeAll = () => {
     if (disposed) return;
     disposed = true;
     removeAnimationCallback(renderFrame);
-    observer.disconnect();
     document.removeEventListener('mousemove', onMouseMove);
     window.removeEventListener('resize', onWindowResize);
     if (resizeTimer) clearTimeout(resizeTimer);
@@ -239,13 +308,18 @@ export function initHomeWebGL() {
     waves = createWavesScene();
     landing = createLandingModelScene();
     modelLoaded = false;
+    fallbackHidden = false;
+    confirmedPortraitFrames = 0;
+    framesWithoutConfirmedPortrait = 0;
+    missedPortraitRenderFrames = 0;
     lastLandingWidth = 0;
     lastLandingHeight = 0;
     warmupFrames = 0;
     shadersReady = false;
     canvas.style.visibility = 'hidden';
     tmpImage.style.display = '';
-    updateRendererSize(renderer, window.innerWidth, window.innerHeight);
+    updateRendererSize(renderer, window.innerWidth, window.innerHeight, LANDING_MAX_PIXEL_RATIO);
+    applyPointScale();
     resizeWavesCamera(waves);
     updateCamera();
     scheduleLandingModelLoad();
@@ -262,6 +336,7 @@ export function initHomeWebGL() {
     removeAnimationCallback(renderFrame);
     disposed = true;
     canvas.style.display = 'none';
+    fallbackHidden = false;
     tmpImage.style.display = '';
   });
 

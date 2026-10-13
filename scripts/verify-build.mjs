@@ -6,6 +6,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  findMissingHtaccessRedirectRules,
+  retiredSlugDistPaths,
+} from './retired-slug-redirects.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -173,6 +177,17 @@ for (const slug of inDevelopmentSlugs) {
   forbidPath(`${slug}/index.html`);
   forbidPath(`de/${slug}/index.html`);
   checkProjectHtmlRendering(slug);
+}
+
+for (const relPath of retiredSlugDistPaths()) {
+  forbidPath(relPath);
+}
+
+const htaccessRel = '.htaccess';
+requirePath(htaccessRel);
+const htaccessBody = fs.readFileSync(path.join(dist, htaccessRel), 'utf8');
+for (const missing of findMissingHtaccessRedirectRules(htaccessBody)) {
+  errors.push(`dist/.htaccess missing 301 redirect: ${missing}`);
 }
 
 const ALLOWED_THIRD_PARTY_SCRIPT_HOSTS = new Set(['cloud.umami.is']);

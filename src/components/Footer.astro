@@ -93,9 +93,14 @@ const year = new Date().getFullYear();
         {t('with_astro', locale)}
       </small>
       <small>{t('copyright', locale)} &copy; {year} {t('rights_reserved', locale)}</small>
-      <Checkbox id="lenisScrollToggle" checked variant="auto">
-        <small>{t('enable_smooth_scrolling', locale)}</small>
-      </Checkbox>
+      <div class="footerPreferences">
+        <Checkbox id="lenisScrollToggle" checked variant="auto">
+          <small>{t('enable_smooth_scrolling', locale)}</small>
+        </Checkbox>
+        <Checkbox id="site3dToggle" checked variant="auto">
+          <small>{t('enable_site_3d', locale)}</small>
+        </Checkbox>
+      </div>
       <div class="footerLegal">
         <a href={privacyHref}><small>{t('privacy_policy', locale)}</small></a>
         <a href={privacySettingsHref}><small>{t('privacy_settings', locale)}</small></a>
@@ -109,4 +114,5 @@ const year = new Date().getFullYear();
 
 <script>
   import '../islands/EmailCopy.ts';
+  import '../islands/FooterPreferences.ts';
 </script>

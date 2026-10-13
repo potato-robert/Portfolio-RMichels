@@ -41,4 +41,22 @@ test.describe('overlay menu', () => {
     await skipLink.focus();
     await expect(page.locator('#Content')).toBeVisible();
   });
+
+  test('opens and closes on a case study page (overlay outside nav)', async ({ page }) => {
+    await page.goto('/canfit');
+
+    const overlay = page.locator('#OverlayMenu');
+    const toggle = page.locator('#MenuToggle');
+
+    await expect(page.locator('#projLanding h1')).toBeVisible();
+    await expect(overlay).toHaveClass(/hidden/);
+
+    await toggle.click();
+    await expect(overlay).not.toHaveClass(/hidden/);
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+    await page.keyboard.press('Escape');
+    await expect(overlay).toHaveClass(/hidden/);
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  });
 });

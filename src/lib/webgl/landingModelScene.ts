@@ -19,6 +19,14 @@ export interface LandingModelScene {
   windowHalfX: number;
   windowHalfY: number;
   loaded: boolean;
+  /** Keeps dot CSS size constant when the renderer pixel ratio is capped below native DPR. */
+  pointScale: number;
+  particleMaterial: THREE.ShaderMaterial | null;
+}
+
+export function setLandingPointScale(landing: LandingModelScene, scale: number): void {
+  landing.pointScale = scale;
+  if (landing.particleMaterial) landing.particleMaterial.uniforms.uPointScale.value = scale;
 }
 
 export function getLandingModelDisplaySize(): { width: number; height: number } {
@@ -29,16 +37,20 @@ export function getLandingModelDisplaySize(): { width: number; height: number } 
   };
 }
 
-function handleParticles(scene: THREE.Scene, mesh: THREE.Object3D): void {
+function handleParticles(landing: LandingModelScene, mesh: THREE.Object3D): void {
+  const scene = landing.scene;
   const childMesh = mesh as THREE.Mesh;
   if (!childMesh.geometry) return;
 
+  // Position only, non-indexed: one dot per (welded) vertex. Copying the mesh geometry would
+  // draw every index entry (several overlapping dots per vertex) and upload unused attributes.
   const pointGeo = new THREE.BufferGeometry();
-  pointGeo.copy(childMesh.geometry);
+  const position = childMesh.geometry.getAttribute('position');
+  pointGeo.setAttribute('position', position.clone());
 
-  const count = pointGeo.getAttribute('position').count;
+  const count = position.count;
   const scales = new Float32Array(count);
-  scales.fill(0.05);
+  scales.fill(0.06);
   pointGeo.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
   pointGeo.setAttribute('gridIndex', new THREE.BufferAttribute(new Float32Array(count * 2), 2));
 
@@ -47,10 +59,12 @@ function handleParticles(scene: THREE.Scene, mesh: THREE.Object3D): void {
       color: { value: new THREE.Color(0xffffff) },
       uCount: { value: 0 },
       uWaveAnimate: { value: 0 },
+      uPointScale: { value: landing.pointScale },
     },
     vertexShader: particleWavesVertexShader,
     fragmentShader: particleWavesFragmentShader,
   });
+  landing.particleMaterial = material;
 
   const particles = new THREE.Points(pointGeo, material);
   particles.scale.copy(mesh.scale);
@@ -67,10 +81,10 @@ export function createLandingModelScene(): LandingModelScene {
   camera.position.z = window.innerWidth > SM_BREAKPOINT ? 11 : 15;
   camera.rotation.x = -Math.PI / 5;
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-  const light = new THREE.PointLight(0xc7c7c7, 1.5, 0, 0);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.62));
+  const light = new THREE.PointLight(0xc7c7c7, 1.7, 0, 0);
   light.decay = 0;
-  light.position.set(-6, 7, 6);
+  light.position.set(-3, 7, 6);
   scene.add(light);
 
   const windowHalfX =
@@ -84,6 +98,8 @@ export function createLandingModelScene(): LandingModelScene {
     windowHalfX,
     windowHalfY: window.innerHeight / 4,
     loaded: false,
+    pointScale: 1,
+    particleMaterial: null,
   };
 }
 
@@ -92,20 +108,28 @@ export function loadLandingModel(
   onLoaded?: () => void,
   onError?: (error: unknown) => void,
 ): void {
-  // me_v2.glb (~2MB) stays in-repo uncompressed; callers defer invocation until after LCP.
+  // assets/models/me_v2.glb is the source; rm-assets (glb-pipeline.ts, 'flat-shaded-portrait')
+  // emits a tiny meshopt-compressed build without NORMAL, so GLTFLoader enables flatShading.
+  // Callers defer invocation until after LCP.
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
   loader.load(
     '/assets/models/me_v2.glb',
     (gltf) => {
       const mesh = gltf.scene.children[0];
-      const meshMat = (mesh as THREE.Mesh).material;
-      if (meshMat && 'roughness' in meshMat) {
-        (meshMat as THREE.MeshStandardMaterial).roughness = 0.71;
-        (meshMat as THREE.MeshStandardMaterial).metalness = 0.01;
-      }
+      mesh.traverse((node) => {
+        if (!(node as THREE.Mesh).isMesh) return;
+        const mat = (node as THREE.Mesh).material;
+        const materials = Array.isArray(mat) ? mat : [mat];
+        for (const m of materials) {
+          if (m && 'roughness' in m) {
+            (m as THREE.MeshStandardMaterial).roughness = 0.66;
+            (m as THREE.MeshStandardMaterial).metalness = 0.01;
+          }
+        }
+      });
       landing.scene.add(mesh);
-      handleParticles(landing.scene, mesh);
+      handleParticles(landing, mesh);
       landing.loaded = true;
       onLoaded?.();
     },
