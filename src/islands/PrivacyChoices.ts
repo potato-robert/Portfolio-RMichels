@@ -96,6 +96,7 @@ function render(): void {
 
   const analyticsOptOut = localStorage.getItem(ANALYTICS_OPT_OUT_KEY) === '1';
   const gpc = dntOrGpcActive();
+  const analyticsChecked = analyticsOptOut || gpc;
   const allEmbeds = isAllEmbedsRemembered(remembered);
   const someEmbeds = isAnyEmbedRemembered(remembered) && !allEmbeds;
 
@@ -104,7 +105,7 @@ function render(): void {
       <h2 id="privacy-analytics-heading">${escapeHtml(t.analyticsTitle)}</h2>
       <div class="privacy-choices__row">
         ${renderCheckbox(
-          `id="privacyAnalyticsOptOut" ${analyticsOptOut ? 'checked' : ''} ${gpc ? 'disabled' : ''}`,
+          `id="privacyAnalyticsOptOut" ${analyticsChecked ? 'checked' : ''} ${gpc ? 'disabled' : ''}`,
           t.analytics,
           'ui-checkbox--block',
         )}

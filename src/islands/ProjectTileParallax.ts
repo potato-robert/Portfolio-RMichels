@@ -1,12 +1,5 @@
+import { projectTileParallaxTranslateY } from '../lib/project-tile-parallax';
 import { getScrollLenis } from '../lib/scroll-lenis';
-
-function mapVal(num: number, inMin: number, inMax: number, outMin: number, outMax: number) {
-  return ((num - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
-}
-
-function clamp(num: number, min: number, max: number) {
-  return num <= min ? min : num >= max ? max : num;
-}
 
 function offset(el: Element) {
   return el.getBoundingClientRect().top;
@@ -31,6 +24,7 @@ export function initProjectTileParallax() {
   let wideLayout = window.matchMedia(WIDE_LAYOUT_MQ).matches;
   let activeElements: HTMLElement[] = [];
   let inactiveBySelector = new Map<string, HTMLElement[]>();
+  let lenisScrollBound = false;
 
   const refreshElementLists = () => {
     wideLayout = window.matchMedia(WIDE_LAYOUT_MQ).matches;
@@ -69,14 +63,6 @@ export function initProjectTileParallax() {
   const update = () => {
     resetInactiveParallaxStyles();
 
-    const buffer = 50;
-    let min = -80;
-    let max = 100;
-    if (!wideLayout) {
-      min = -40;
-      max = 0;
-    }
-
     const viewportHeight = window.innerHeight;
     const reads: { el: HTMLElement; yPos: number }[] = activeElements.map((el) => ({
       el,
@@ -84,8 +70,8 @@ export function initProjectTileParallax() {
     }));
 
     for (const { el, yPos } of reads) {
-      const bottomVal = clamp(mapVal(yPos, 0, viewportHeight, max, min), min - buffer, max + buffer);
-      el.style.transform = `translateY(${-bottomVal}px)`;
+      const translateY = projectTileParallaxTranslateY(yPos, viewportHeight, wideLayout);
+      el.style.transform = `translateY(${translateY}px)`;
     }
   };
 
@@ -105,13 +91,17 @@ export function initProjectTileParallax() {
     onScroll();
   };
 
-  const hookLenis = () => {
+  const bindLenisScroll = () => {
     const lenis = getScrollLenis();
-    if (lenis) {
-      lenis.on('scroll', onScroll);
-      onScroll();
-      return;
-    }
+    if (!lenis || lenisScrollBound) return lenisScrollBound;
+    lenis.on('scroll', onScroll);
+    lenisScrollBound = true;
+    onScroll();
+    return true;
+  };
+
+  const hookLenis = () => {
+    if (bindLenisScroll()) return;
     requestAnimationFrame(hookLenis);
   };
 

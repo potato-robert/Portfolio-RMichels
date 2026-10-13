@@ -4,8 +4,8 @@ name:
   en: "Clirio View"
   de: "Clirio View"
 projectType:
-  en: "Unity App Features"
-  de: "Unity App Features"
+  en: "Unity App"
+  de: "Unity App"
 year: "2024"
 company: "Clirio"
 inDevelopment: false

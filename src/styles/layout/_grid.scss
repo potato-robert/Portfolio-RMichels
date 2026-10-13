@@ -46,10 +46,6 @@ body[data-page-type="about"] main {
 
 body[data-page-type="about"] footer {
 	grid-row: 3 / 4;
-
-	@include xl {
-		grid-column: 2 / 6;
-	}
 }
 
 //_____________________________________________________________________ GRID CHILDREN ___________________________________________//
@@ -57,6 +53,8 @@ body[data-page-type="about"] footer {
 main {
   	grid-column: 2 / 3;
   	grid-row: 2 / 4;
+	// Allow grid column to shrink below tile intrinsic width (800px picture).
+	min-width: 0;
 
   	//----------------------- MEDIA QUERIES -----------------------//
   	@include xl {
