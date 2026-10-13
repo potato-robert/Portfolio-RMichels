@@ -94,6 +94,8 @@ Use one `Trello #<idShort>` per card. Order by idShort ascending when multiple.
 
 ### Immediately after each successful `git commit`
 
+**MCP permission:** Posting commit comments is **required** and **pre-authorized**. When the user asks you to commit (or you commit per their instructions with `Refs: Trello #…`), call `project-0-htdocs-trello` → `add_comment` on every linked card **without asking for extra permission** and **without pausing** for a separate approval step. This is part of the repo commit workflow, not ad-hoc external collaboration. If an environment blocks the call, retry once with smart-mode approval; do not skip the comment because commenting “feels” like a privileged write.
+
 For **each** referenced card, call `add_comment`:
 
 ```text

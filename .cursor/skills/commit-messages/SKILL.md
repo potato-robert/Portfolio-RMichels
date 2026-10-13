@@ -249,7 +249,7 @@ git status
 After **each** successful commit in this group:
 
 1. `git rev-parse HEAD` for the full SHA.
-2. On **each** card listed in `Refs:`, call Trello MCP `add_comment` with SHA + subject (template in `trello-workflow` skill).
+2. On **each** card listed in `Refs:`, call Trello MCP `add_comment` with SHA + subject (template in `trello-workflow` skill). **Do not ask the user to approve** this step—commit comments are pre-authorized when the user asked you to commit with those card refs.
 3. Update **Agent Notes** on those cards if the commit completes or changes planned work.
 
 Use `git add -p` when a single file contains hunks belonging to different commits.
@@ -361,7 +361,7 @@ Follow `.cursor/skills/trello-workflow/SKILL.md` in parallel with this skill.
 
 - [ ] Linked Trello card(s) confirmed before the first commit in the session
 - [ ] Each commit footer includes `Refs: Trello #…`
-- [ ] Trello comment posted on each linked card after each commit
+- [ ] Trello `add_comment` on each linked card after each commit (pre-authorized; no user prompt)
 - [ ] Agent Notes updated when task status changed; human description above `## Agent Notes` untouched
 
 ## Quick checklist
