@@ -87,6 +87,25 @@ test.describe('case study', () => {
       await expect(developmentLink).toHaveClass(/is-active/);
     });
 
+    test('highlights nested mockup overview heading on tourguide', async ({ page }) => {
+      await page.setViewportSize({ width: 1920, height: 1080 });
+      await page.goto('/tourguide');
+
+      const toc = page.locator('#projToc');
+      await expect(toc).toHaveClass(/is-enabled/, { timeout: 10000 });
+
+      const overviewLink = toc.locator('[data-toc-link][href="#overview"]');
+      await expect(overviewLink).toHaveClass(/is-active/);
+
+      const firstTargetId = await page.evaluate(() => {
+        const el = document.querySelector<HTMLElement>(
+          '#projContent .sectionText h2[id], #projContent .sectionText h3[id]',
+        );
+        return el?.id ?? null;
+      });
+      expect(firstTargetId).toBe('overview');
+    });
+
     test('hides TOC on narrow viewports', async ({ page }) => {
       await page.setViewportSize({ width: 800, height: 600 });
       await page.goto('/clirioScanViews');
