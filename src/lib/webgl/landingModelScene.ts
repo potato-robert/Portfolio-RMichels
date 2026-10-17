@@ -2,14 +2,27 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
+import { particleWavesFragmentShader } from '../particle-waves-shaders';
 import {
-  particleWavesFragmentShader,
-  particleWavesVertexShader,
-} from '../particle-waves-shaders';
+  bindPortraitFaceMaterial,
+  portraitPointVertexShader,
+  type PortraitFaceUniformSet,
+} from '../portrait-face-displace-shaders';
+import {
+  PORTRAIT_FACE_LIFT,
+  PORTRAIT_FACE_NOISE,
+  PORTRAIT_FACE_RADIUS,
+  PORTRAIT_FACE_SEPARATION,
+  expandFaces,
+  portraitFaceDisplacementPad,
+  portraitPointerNdc,
+} from './portraitFaceDisplace';
 import { lerpFactorPerFrame } from './wave-formula';
 
 const SM_BREAKPOINT = 576;
 const XL_BREAKPOINT = 1200;
+const FACE_STRENGTH_LERP = 0.12;
+const FACE_HIT_LERP = 0.205;
 
 export interface LandingModelScene {
   scene: THREE.Scene;
@@ -22,6 +35,15 @@ export interface LandingModelScene {
   /** Keeps dot CSS size constant when the renderer pixel ratio is capped below native DPR. */
   pointScale: number;
   particleMaterial: THREE.ShaderMaterial | null;
+  faceMesh: THREE.Mesh | null;
+  faceUniforms: PortraitFaceUniformSet | null;
+  faceHit: THREE.Vector3;
+  faceTargetHit: THREE.Vector3;
+  faceStrength: number;
+  faceTime: number;
+  faceRaycaster: THREE.Raycaster;
+  faceNdc: THREE.Vector2;
+  faceInvMatrix: THREE.Matrix4;
 }
 
 export function setLandingPointScale(landing: LandingModelScene, scale: number): void {
@@ -37,31 +59,73 @@ export function getLandingModelDisplaySize(): { width: number; height: number } 
   };
 }
 
-function handleParticles(landing: LandingModelScene, mesh: THREE.Object3D): void {
-  const scene = landing.scene;
-  const childMesh = mesh as THREE.Mesh;
-  if (!childMesh.geometry) return;
+function packPositions(attribute: THREE.BufferAttribute | THREE.InterleavedBufferAttribute): Float32Array {
+  const packed = new Float32Array(attribute.count * 3);
+  for (let i = 0; i < attribute.count; i++) {
+    packed[i * 3] = attribute.getX(i);
+    packed[i * 3 + 1] = attribute.getY(i);
+    packed[i * 3 + 2] = attribute.getZ(i);
+  }
+  return packed;
+}
 
-  // Position only, non-indexed: one dot per (welded) vertex. Copying the mesh geometry would
-  // draw every index entry (several overlapping dots per vertex) and upload unused attributes.
+function padBoundingSphere(geometry: THREE.BufferGeometry): void {
+  geometry.computeBoundingSphere();
+  if (geometry.boundingSphere) geometry.boundingSphere.radius += portraitFaceDisplacementPad();
+}
+
+function createPortraitFaceUniforms(): PortraitFaceUniformSet {
+  return {
+    uHit: { value: new THREE.Vector3() },
+    uStrength: { value: 0 },
+    uTime: { value: 0 },
+    uRadius: { value: PORTRAIT_FACE_RADIUS },
+    uLift: { value: PORTRAIT_FACE_LIFT },
+    uNoiseAmp: { value: PORTRAIT_FACE_NOISE },
+    uCameraRight: { value: new THREE.Vector3(1, 0, 0) },
+    uCameraUp: { value: new THREE.Vector3(0, 1, 0) },
+    uViewDirection: { value: new THREE.Vector3(0, 0, 1) },
+  };
+}
+
+function attachPortraitFaces(landing: LandingModelScene, mesh: THREE.Mesh): void {
+  const position = mesh.geometry?.getAttribute('position');
+  if (!position) return;
+
+  const uniforms = createPortraitFaceUniforms();
+  landing.faceUniforms = uniforms;
+  landing.faceMesh = mesh;
+
+  const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+  for (const material of materials) bindPortraitFaceMaterial(material, uniforms);
+
+  // Dots stay on the welded vertices. The visible mesh is unwelded so each
+  // facet can translate as a rigid triangle and leave a gap.
+  const packed = packPositions(position);
+  const index = mesh.geometry.getIndex();
+  const expanded = expandFaces(packed, index ? index.array : null);
+  const faceGeo = new THREE.BufferGeometry();
+  faceGeo.setAttribute('position', new THREE.BufferAttribute(expanded.positions, 3));
+  faceGeo.setAttribute('faceCentroid', new THREE.BufferAttribute(expanded.centroids, 3));
+  padBoundingSphere(faceGeo);
+  const previous = mesh.geometry;
+  mesh.geometry = faceGeo;
+  previous.dispose();
+
   const pointGeo = new THREE.BufferGeometry();
-  const position = childMesh.geometry.getAttribute('position');
-  pointGeo.setAttribute('position', position.clone());
-
-  const count = position.count;
-  const scales = new Float32Array(count);
+  pointGeo.setAttribute('position', new THREE.BufferAttribute(packed, 3));
+  const scales = new Float32Array(packed.length / 3);
   scales.fill(0.06);
   pointGeo.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
-  pointGeo.setAttribute('gridIndex', new THREE.BufferAttribute(new Float32Array(count * 2), 2));
+  padBoundingSphere(pointGeo);
 
   const material = new THREE.ShaderMaterial({
     uniforms: {
       color: { value: new THREE.Color(0xffffff) },
-      uCount: { value: 0 },
-      uWaveAnimate: { value: 0 },
       uPointScale: { value: landing.pointScale },
+      ...uniforms,
     },
-    vertexShader: particleWavesVertexShader,
+    vertexShader: portraitPointVertexShader,
     fragmentShader: particleWavesFragmentShader,
   });
   landing.particleMaterial = material;
@@ -70,7 +134,7 @@ function handleParticles(landing: LandingModelScene, mesh: THREE.Object3D): void
   particles.scale.copy(mesh.scale);
   particles.rotation.copy(mesh.rotation);
   particles.position.copy(mesh.position);
-  scene.add(particles);
+  landing.scene.add(particles);
 }
 
 export function createLandingModelScene(): LandingModelScene {
@@ -100,6 +164,15 @@ export function createLandingModelScene(): LandingModelScene {
     loaded: false,
     pointScale: 1,
     particleMaterial: null,
+    faceMesh: null,
+    faceUniforms: null,
+    faceHit: new THREE.Vector3(),
+    faceTargetHit: new THREE.Vector3(),
+    faceStrength: 0,
+    faceTime: 0,
+    faceRaycaster: new THREE.Raycaster(),
+    faceNdc: new THREE.Vector2(),
+    faceInvMatrix: new THREE.Matrix4(),
   };
 }
 
@@ -129,7 +202,8 @@ export function loadLandingModel(
         }
       });
       landing.scene.add(mesh);
-      handleParticles(landing, mesh);
+      const portraitMesh = (mesh as THREE.Mesh).isMesh ? (mesh as THREE.Mesh) : null;
+      if (portraitMesh) attachPortraitFaces(landing, portraitMesh);
       landing.loaded = true;
       onLoaded?.();
     },
@@ -161,4 +235,95 @@ export function setLandingModelMouse(
 export function resizeLandingModelCamera(landing: LandingModelScene, width: number, height: number): void {
   landing.camera.aspect = width / height;
   landing.camera.updateProjectionMatrix();
+}
+
+export interface PortraitFacePointer {
+  clientX: number;
+  clientY: number;
+  rect: { left: number; top: number; width: number; height: number };
+  deltaMs: number;
+  pointerFine: boolean;
+  portraitVisible: boolean;
+}
+
+function updatePortraitCameraBasis(landing: LandingModelScene, mesh: THREE.Mesh): void {
+  const uniforms = landing.faceUniforms;
+  if (!uniforms) return;
+
+  landing.camera.updateMatrixWorld();
+  mesh.updateWorldMatrix(true, false);
+  landing.faceInvMatrix.copy(mesh.matrixWorld).invert();
+
+  uniforms.uCameraRight.value
+    .setFromMatrixColumn(landing.camera.matrixWorld, 0)
+    .transformDirection(landing.faceInvMatrix);
+  uniforms.uCameraUp.value
+    .setFromMatrixColumn(landing.camera.matrixWorld, 1)
+    .transformDirection(landing.faceInvMatrix);
+  uniforms.uViewDirection.value
+    .setFromMatrixColumn(landing.camera.matrixWorld, 2)
+    .multiplyScalar(-1)
+    .transformDirection(landing.faceInvMatrix);
+}
+
+/** Raycast the rest pose and ease the face-separation uniforms. GPU displacement does not move the hit. */
+export function updatePortraitFaceInteraction(landing: LandingModelScene, pointer: PortraitFacePointer): void {
+  const uniforms = landing.faceUniforms;
+  const mesh = landing.faceMesh;
+  if (!uniforms || !mesh) return;
+
+  const dt = Math.min(Math.max(pointer.deltaMs, 0), 100) * 0.001;
+  landing.faceTime += dt;
+  uniforms.uTime.value = landing.faceTime;
+
+  const ndc =
+    pointer.pointerFine && pointer.portraitVisible
+      ? portraitPointerNdc(pointer.rect, pointer.clientX, pointer.clientY)
+      : null;
+
+  if (!ndc && landing.faceStrength <= 1e-4) {
+    landing.faceStrength = 0;
+    uniforms.uStrength.value = 0;
+    return;
+  }
+
+  let targetStrength = 0;
+  if (ndc) {
+    landing.camera.updateMatrixWorld();
+    mesh.updateWorldMatrix(true, false);
+    landing.faceNdc.set(ndc.x, ndc.y);
+    landing.faceRaycaster.setFromCamera(landing.faceNdc, landing.camera);
+    const hits = landing.faceRaycaster.intersectObject(mesh, false);
+    const hit = hits[0];
+    if (hit) {
+      landing.faceTargetHit.copy(hit.point);
+      mesh.worldToLocal(landing.faceTargetHit);
+      targetStrength = PORTRAIT_FACE_SEPARATION;
+    }
+  }
+
+  const strengthLerp = lerpFactorPerFrame(FACE_STRENGTH_LERP, pointer.deltaMs);
+  if (targetStrength > 0) {
+    if (landing.faceStrength < 1e-3) landing.faceHit.copy(landing.faceTargetHit);
+    else landing.faceHit.lerp(landing.faceTargetHit, lerpFactorPerFrame(FACE_HIT_LERP, pointer.deltaMs));
+  }
+  landing.faceStrength += (targetStrength - landing.faceStrength) * strengthLerp;
+
+  updatePortraitCameraBasis(landing, mesh);
+  uniforms.uHit.value.copy(landing.faceHit);
+  uniforms.uStrength.value = landing.faceStrength;
+}
+
+export function disposeLandingModelScene(landing: LandingModelScene): void {
+  landing.scene.traverse((obj) => {
+    const drawable = obj as THREE.Mesh | THREE.Points;
+    if (!drawable.isMesh && !drawable.isPoints) return;
+    drawable.geometry?.dispose();
+    const mat = drawable.material;
+    if (Array.isArray(mat)) mat.forEach((entry) => entry.dispose());
+    else mat?.dispose();
+  });
+  landing.faceMesh = null;
+  landing.faceUniforms = null;
+  landing.particleMaterial = null;
 }

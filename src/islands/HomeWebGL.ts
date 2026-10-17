@@ -19,11 +19,13 @@ import {
 } from '../lib/webgl/wavesScene';
 import {
   createLandingModelScene,
+  disposeLandingModelScene,
   loadLandingModel,
   resizeLandingModelCamera,
   setLandingModelMouse,
   setLandingPointScale,
   updateLandingModelCamera,
+  updatePortraitFaceInteraction,
 } from '../lib/webgl/landingModelScene';
 import {
   shouldHideLandingFallback,
@@ -86,6 +88,7 @@ export function initHomeWebGL() {
   let lastLandingHeight = 0;
   let lastPointerClientX: number | undefined;
   let lastPointerClientY: number | undefined;
+  const portraitPointerFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   const getScrollY = () => getScrollLenis()?.animatedScroll ?? window.scrollY ?? 0;
 
@@ -188,13 +191,39 @@ export function initHomeWebGL() {
         renderer.clearDepth();
 
         updateLandingModelCamera(landing, delta);
+        updatePortraitFaceInteraction(landing, {
+          clientX: lastPointerClientX ?? portraitRect.left - 1,
+          clientY: lastPointerClientY ?? portraitRect.top - 1,
+          rect: portraitRect,
+          deltaMs: delta,
+          pointerFine: portraitPointerFine,
+          portraitVisible: true,
+        });
         renderer.render(landing.scene, landing.camera);
 
         renderer.setScissorTest(false);
         renderer.autoClear = true;
         portraitDrawnThisFrame = true;
         confirmedPortraitFrames++;
+      } else {
+        updatePortraitFaceInteraction(landing, {
+          clientX: lastPointerClientX ?? 0,
+          clientY: lastPointerClientY ?? 0,
+          rect: portraitRect,
+          deltaMs: delta,
+          pointerFine: portraitPointerFine,
+          portraitVisible: false,
+        });
       }
+    } else if (modelLoaded) {
+      updatePortraitFaceInteraction(landing, {
+        clientX: lastPointerClientX ?? 0,
+        clientY: lastPointerClientY ?? 0,
+        rect: portraitRect,
+        deltaMs: delta,
+        pointerFine: portraitPointerFine,
+        portraitVisible: false,
+      });
     }
 
     const portraitShouldDraw = shouldScissorRenderPortrait({ modelLoaded, rect: portraitRect });
@@ -298,28 +327,14 @@ export function initHomeWebGL() {
     window.removeEventListener('resize', onWindowResize);
     if (resizeTimer) clearTimeout(resizeTimer);
     disposeWavesScene(waves);
-    landing.scene.traverse((obj) => {
-      if (obj.isMesh) {
-        obj.geometry?.dispose();
-        const mat = obj.material;
-        if (Array.isArray(mat)) mat.forEach((m) => m.dispose());
-        else mat?.dispose();
-      }
-    });
+    disposeLandingModelScene(landing);
     renderer.dispose();
     container.remove();
   };
 
   const rebuildAfterContextRestore = () => {
     disposeWavesScene(waves);
-    landing.scene.traverse((obj) => {
-      if (obj.isMesh) {
-        obj.geometry?.dispose();
-        const mat = obj.material;
-        if (Array.isArray(mat)) mat.forEach((m) => m.dispose());
-        else mat?.dispose();
-      }
-    });
+    disposeLandingModelScene(landing);
 
     waves = createWavesScene();
     landing = createLandingModelScene();
