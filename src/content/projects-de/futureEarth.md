@@ -9,134 +9,110 @@ projectType:
 year: "2020"
 inDevelopment: false
 roles: ["vr", "game", "pm", "design"]
-teammembers: ["Robert Michels (PM)", "3 teammates (SFU IAT)"]
+teammembers: ["Kahn Dinh", "Keefe Liew", "Yashu Estela Xu", "Robert Michels"]
 description:
-  en: "Future Earth is a VR adventure game set in a dystopian future, where the player has to grow trees, fight droids and collect parts. Achieved over 3,000 downloads and 4 stars on SideQuest."
-  de: "Future Earth ist ein VR-Abenteuerspiel in einer dystopischen Zukunft, in der der Spieler Bäume pflanzen, Droiden bekämpfen und Teile sammeln muss. Über 3.000 Downloads und 4 Sterne auf SideQuest."
+  en: "VR adventure shipped on SideQuest with 3,000+ downloads and four class awards. I was project manager and lead developer."
+  de: "VR-Abenteuer, auf SideQuest veröffentlicht, mit 3.000+ Downloads und vier Kursauszeichnungen. Ich war Projektmanager und Lead-Entwickler."
 links:
   - label: "SideQuest"
     url: "https://sidequestvr.com/app/2597/future-earth"
   - label: "Development Blog"
     url: "https://404teamnotfound444314077.wordpress.com/"
 heroAltLayout: true
-order: 5
+order: 4
 ---
 
 <section class="sectionText">
-    <h2>Die Aufgabe</h2>
-    <p>Future Earth wurde als Übung für die Gestaltung und Entwicklung immersiver Umgebungen entwickelt.</p>
-    <p>Mit dem Konzeptentwurf wollten wir ein VR-Abenteuerspiel schaffen, das die Spieler zu nachhaltigen Verhaltensweisen anregt. Dies wird erreicht, indem wir den Spieler in eine dystopische, futuristische Umgebung versetzen und ihm die Macht geben, diese durch das Spiel radikal zum Besseren zu verändern.</p>
-  </section>
-  <section class="sectionMedia">
-    <div class="mediaGrid">
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/3.jpg" alt="future Earth – 3">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/4.jpg" alt="future Earth – 4">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/5.jpg" alt="future Earth – 5">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/6.jpg" alt="future Earth – 6">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/7.jpg" alt="future Earth – 7">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/8.jpg" alt="future Earth – 8">
-      </figure>
-    </div>
-  </section>
-  <section class="sectionText">
-    <h2>Das Ergebnis</h2>
-    <h3>Geschichte</h3>
-    <p>In einer dystopischen Zukunft bist du der erste Mensch, der seit langer Zeit die Erde bewandert.</p>
-    <p>Ihr Missionsziel ist es, 100 Bäume zu pflanzen und zu erhalten. Von Ihrem Erfolg hängt es ab, ob die Menschheit versuchen wird, zur Erde zurückzukehren oder nicht.</p>
-    <p></p>
-    <h3>Erfolg</h3>
-    <p>Unser Projekt gewann den Preis für das beste Gesamtprojekt, das beste Interaktionsdesign, das beste Projekt für die Wirkung und das beste VR/AR-Projekt in unserer Klasse.</p>
-    <p></p>
-  </section>
+  <h2>Überblick</h2>
+  <p>Ich leitete Future Earth, ein VR-Abenteuer über die Wiederherstellung einer dystopischen Erde, veröffentlicht auf SideQuest mit 3.000+ Downloads, 4 Sternen und vier Kursauszeichnungen.</p>
+  <ul>
+    <li><strong>Rolle:</strong> Projektmanager und Lead-Entwickler (etwa 65 von rund 80 Commits) und einer der VR-Designer und -Entwickler.</li>
+    <li><strong>Team:</strong> Vierköpfiges Team: Kahn Dinh, Keefe Liew, Yashu Estela Xu und Robert Michels.</li>
+    <li><strong>Zeitraum:</strong> 2020. Vier Monate. SFU-Kurs IAT 445.</li>
+    <li><strong>Plattformen:</strong> VR auf SideQuest.</li>
+    <li><strong>Stack:</strong> Unity und C#.</li>
+    <li><strong>Status:</strong> 3.000+ Downloads und 4 Sterne auf SideQuest. Kursauszeichnungen: bestes Gesamtprojekt, bestes Interaktionsdesign, Projekt für Wirkung und bestes VR/AR. SideQuest: https://sidequestvr.com/app/2597/future-earth. Entwicklungsblog: https://404teamnotfound444314077.wordpress.com/. GitHub: https://github.com/Robert01101101/FutureEarth</li>
+  </ul>
+</section>
+<section class="sectionMedia">
   <div class="auto-resizable-iframe">
     <div>
       <iframe src="https://www.youtube.com/embed/uQQSdkzXJdg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture;" allowfullscreen></iframe>
     </div>
   </div>
-  <section class="sectionMedia">
-    <div class="mediaGrid">
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/9.jpg" alt="future Earth – 9">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/10.jpg" alt="future Earth – 10">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/11.jpg" alt="future Earth – 11">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/12.jpg" alt="future Earth – 12">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/13.jpg" alt="future Earth – 13">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/14.jpg" alt="future Earth – 14">
-      </figure>
-    </div>
-  </section>
-  <section class="sectionText">
-    <h2>Prozess</h2>
-    <p>Das Projekt wurde in 4 Monaten von einem 4-köpfigen Team entwickelt. Ich war der Projektleiter sowie einer der VR-/Spieldesigner und -entwickler.</p>
-    <p>Nachdem wir beschlossen hatten, ein Impact-Projekt zum Thema Nachhaltigkeit zu entwickeln, begannen wir mit der Erstellung eines Spiels. Unser Ziel war es, ein VR-Spiel zu entwickeln, das auch Spieler ohne Interesse an Nachhaltigkeit anspricht, um ein breiteres Publikum zu erreichen.</p>
-    <p>Als PM teilte ich das Konzeptdesign in eine Liste von Kern- und Bonusfunktionen auf. Der Kernentwurf beinhaltete ein kleines Spiel, in dem die Spieler gegen bösartige Roboter kämpfen, deren Teile sammeln und eine Wasserfiltertechnologie bauen, die Bäumen beim Wachsen hilft. Dieser Kernprototyp wurde innerhalb der ersten drei Monate umgesetzt.</p>
-    <p>Nach einer Runde von Benutzertests haben wir als Reaktion auf die Testergebnisse aktualisierte Funktionen implementiert. Dazu gehörten Maßnahmen zur besseren Vermittlung der Geschichte, wie z. B. eine umfassende Aktualisierung des Leveldesigns und die Implementierung einer ästhetischen Veränderung, wenn der Spieler mehr Bäume pflanzt. Wir hatten auch Zeit, einige unserer Bonus-Features zu implementieren, bei denen es sich hauptsächlich um ästhetische Verbesserungen handelte, wie z. B. das Hinzufügen von VFX, bessere Modelle und mehrere sammelbare Teile.</p>
-  </section>
-  <section class="sectionMedia">
-    <div class="mediaGrid">
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/15.jpg" alt="future Earth – 15">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/16.jpg" alt="future Earth – 16">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/17.jpg" alt="future Earth – 17">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/18.jpg" alt="future Earth – 18">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/19.jpg" alt="future Earth – 19">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/20.jpg" alt="future Earth – 20">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/hud1.jpg" alt="future Earth – hud1">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/hud2.jpg" alt="future Earth – hud2">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/hud3.jpg" alt="future Earth – hud3">
-      </figure>
-      <figure>
-        <img src="/assets/img/futureEarth/lqip/hud4.jpg" alt="future Earth – hud4">
-      </figure>
-    </div>
-  </section>
-  <section class="sectionText">
-    <h2>Der Code</h2>
-    <p>Meine Programmierarbeit für dieses Projekt konzentrierte sich auf die ungewöhnlicheren Funktionen unseres Spiels, wie z. B. das Sammeln von Ersatzteilen, das Bauen von Gegenständen, die Interaktion mit der Benutzeroberfläche, die Abfolge der Geschichte und mehr. Eine weitere interessante Funktion, die ich implementiert habe, waren die Bäume, die Animationen für das Wachstum und die Überwachung ihres Gesundheitszustands auf der Grundlage der verfügbaren Wasservorräte benötigten. Um eine feine Kontrolle über das Wachstumsverhalten zu erreichen, habe ich eine Coroutine verwendet, die auch zur Kontrolle sterbender Bäume eingesetzt wird. Anstatt eine Unity-Animation zu verwenden, implementierte ich ein sanftes Wachstum, indem ich Skalierung und Rotation definierte mit Hilfe von <code>Mathf.SmoothStep()</code> und <code>Mathf.Sin()</code></p>
-  </section>
-  <section class="sectionMedia">
-    <script src="https://gist.github.com/potato-robert/13bb15385194385ba5d5700ee224d858.js"></script>
-  </section>
-  <section class="sectionText">
-    <p>Eine der interessanten Änderungen, die sich aus unseren Benutzertests ergaben, war die drastischere Veränderung der Umgebung in Abhängigkeit vom Fortschritt des Spielers. Die Umgebung verändert sich, wenn der Spieler mehr Bäume pflanzt. Um die gewünschte emotionale Wirkung beim Spieler zu erzielen, haben wir viele variable Ebenen eingebaut: die Skybox, Nebel, Staubpartikel, Wasser, Beleuchtung und Nachbearbeitung. All diese Aspekte der Umgebung werden zwischen einem Start- und einem Endzustand interpoliert, und zwar mit der Methode <code>SetEnvironment()</code> die ich implementierte in <code>GameCtrl.cs</code>. Zum Beispiel hat der Nebel Definitionen für seine Farbe, die Startdistanz und die Enddistanz sowohl für den Anfang als auch für das Ende des Nebels.</p>
-  </section>
-  <section class="sectionMedia">
-    <script src="https://gist.github.com/potato-robert/1272b6f0de41f4409cf4e61fdfbbd622.js"></script>
-  </section>
+</section>
+<section class="sectionMedia">
+  <div class="mediaGrid">
+    <figure>
+      <img src="/assets/img/futureEarth/lqip/3.jpg" alt="Standbild aus Future Earth">
+      <figcaption>TODO(Robert): what /assets/img/futureEarth/lqip/3.jpg shows.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/futureEarth/lqip/4.jpg" alt="Standbild aus Future Earth">
+      <figcaption>TODO(Robert): what /assets/img/futureEarth/lqip/4.jpg shows.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/futureEarth/lqip/5.jpg" alt="Standbild aus Future Earth">
+      <figcaption>TODO(Robert): what /assets/img/futureEarth/lqip/5.jpg shows.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/futureEarth/lqip/6.jpg" alt="Standbild aus Future Earth">
+      <figcaption>TODO(Robert): what /assets/img/futureEarth/lqip/6.jpg shows.</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="sectionText">
+  <h2>Kontext und Problem</h2>
+  <p>IAT 445 an der SFU war eine viermonatige Übung im Entwerfen und Entwickeln immersiver Umgebungen. Mit Kahn Dinh, Keefe Liew und Yashu Estela Xu habe ich Future Earth erstellt, ein VR-Abenteuer für Spieler, die nicht bereits nach einem Nachhaltigkeitstitel suchten. Wir haben uns vorgenommen, ein breiteres Publikum über eine dystopische Zukunft zu erreichen, die der Spieler zum Besseren verändern konnte, indem er Bäume wachsen ließ, und ich habe diese Idee in eine Kernliste und eine Bonusliste gefasst. Die Geschichte setzte den Spieler als den ersten Menschen ein, der seit langer Zeit die Erde begeht, mit dem Auftrag, 100 Bäume zu pflanzen und zu erhalten, weil die Rückkehr der Menschheit von diesem Erfolg abhing.</p>
+</section>
+<section class="sectionText">
+  <h2>Meine Rolle und mein Ansatz</h2>
+  <p>Ich war Projektmanager und Lead-Entwickler und einer der VR-Designer und -Entwickler. Etwa 65 der rund 80 Commits stammen von mir. Ich habe Design und Code an denselben Zeitplan gebunden. Das Nachhaltigkeitsthema musste zu Handlungen werden, die ein Spieler ausführen konnte, und ich musste diese Handlungen klein genug halten, um sie im Kurs fertigzustellen. Nachdem das Team ein Projekt für Wirkung gewählt hatte, das um Nachhaltigkeit herum aufgebaut war, habe ich das Konzept in Kernfunktionen und Bonusfunktionen aufgeteilt, damit ein kleines Spiel gespielt werden konnte, bevor es Feinschliff gab.</p>
+</section>
+<section class="sectionText">
+  <h2>Zentrale Arbeit</h2>
+  <h3>Kern und Bonus</h3>
+  <p><strong>Problem.</strong> Das Spiel musste Spieler ansprechen, die kein besonderes Interesse an Nachhaltigkeit hatten, und der Kern musste trotzdem klein genug bleiben, um ihn in vier Monaten fertigzustellen und zu testen.</p>
+  <p><strong>Entscheidung.</strong> Ich habe den Kern auf eine Schleife begrenzt. Die Spieler bekämpfen abtrünnige Roboter, sammeln deren Teile und bauen eine Wasserfiltertechnik, die Bäumen beim Wachsen hilft. Alles andere habe ich auf der Bonusliste gelassen.</p>
+  <p><strong>Ergebnis.</strong> Dieser Kernprototyp war innerhalb der ersten drei Monate umgesetzt, sodass Zeit für Nutzertests und für einige der Bonusfunktionen blieb.</p>
+  <h3>Sammeln, Bauen und Geschichte</h3>
+  <p><strong>Problem.</strong> Die Roboter dienten dem Thema nur dann, wenn ihre Teile das Werkzeug wurden, das den Bäumen hilft, und die Mission brauchte diese Schritte in einer Reihenfolge, der der Spieler folgen konnte.</p>
+  <p><strong>Entscheidung.</strong> Ich habe das Sammeln von Ersatzteilen, das Bauen von Gegenständen, die UI-Interaktionen für diese Schritte und die Sequenzierung der Geschichte programmiert, die die Mission ordnete.</p>
+  <p><strong>Ergebnis.</strong> Sammeln, Bauen, UI und die Reihenfolge der Geschichte wurden innerhalb des dreimonatigen Kerns ausgeliefert, auf dem Weg dazu, 100 Bäume zu pflanzen und zu erhalten.</p>
+  <h3>Baumwachstum und Gesundheit</h3>
+  <p><strong>Problem.</strong> Die Bäume brauchten ein Wachstum, das ich abstimmen konnte, und eine Gesundheit, die der verfügbaren Wasserversorgung folgte, einschließlich eines Verhaltens für Bäume, die sterben.</p>
+  <p><strong>Entscheidung.</strong> Ich habe eine Coroutine statt eines Unity-Animationsclips verwendet, damit ich das Wachstum fein steuern konnte. Skalierung und Rotation änderten sich über <code>Mathf.SmoothStep()</code> und <code>Mathf.Sin()</code>, und dieselbe Coroutine steuerte sterbende Bäume.</p>
+  <p><strong>Ergebnis.</strong> Wachstum und Tod blieben auf einem Pfad, und die Bewegung konnte der Wasserversorgung folgen.</p>
+</section>
+<section class="sectionMedia">
+  <script src="https://gist.github.com/potato-robert/13bb15385194385ba5d5700ee224d858.js"></script>
+</section>
+<section class="sectionText">
+  <h2>Nutzertests</h2>
+  <p>Nach diesem Kern habe ich mit dem Team auf eine Runde Nutzertests reagiert, und wir haben Maßnahmen umgesetzt, um die Erzählung klarer zu vermitteln, etwa ein großes Update des Leveldesigns und eine ästhetische Veränderung, je mehr Bäume der Spieler pflanzte. VFX, bessere Modelle und mehrere sammelbare Teile hatte ich auf die Bonusliste gesetzt, und die Zeit nach dem Kern haben wir genutzt, um einige davon hinzuzufügen. Diese Ergänzungen waren überwiegend ästhetisch.</p>
+  <p>Der Umgebungswechsel war die Änderung, die ich im Code umgesetzt habe. Ich habe <code>SetEnvironment()</code> in <code>GameCtrl.cs</code> geschrieben, um die emotionale Wirkung zu erreichen, die wir mit fortschreitendem Pflanzen wollten. Die Methode interpoliert Skybox, Nebel, Staub, Wasser, Beleuchtung und Post-Processing zwischen einem Startzustand und einem Endzustand. Der Nebel enthält eine Farbe, eine Startdistanz und eine Enddistanz, jeweils für den Anfang und für das Ende. Die anderen Ebenen in dieser Liste blenden im selben Durchgang zwischen ihren eigenen Start- und Endwerten über.</p>
+</section>
+<section class="sectionMedia">
+  <script src="https://gist.github.com/potato-robert/1272b6f0de41f4409cf4e61fdfbbd622.js"></script>
+</section>
+<section class="sectionText">
+  <h2>Ergebnis</h2>
+  <p>Future Earth wurde auf SideQuest veröffentlicht, mit 3.000+ Downloads und 4 Sternen. Im Kurs gewann es bestes Gesamtprojekt, bestes Interaktionsdesign, Projekt für Wirkung und bestes VR/AR.</p>
+</section>
+<section class="sectionText">
+  <h2>Reflexion</h2>
+  <p>Kern und Bonus zu trennen gab dem Projekt innerhalb von drei Monaten einen spielbaren Kern und danach Zeit, auf die Tests zu reagieren. Beim nächsten kurzen XR-Build würde ich dieselbe Trennung verwenden.</p>
+  <p>Die Lehre aus der VR war, dass sich die Geschichte im Raum lesen lassen musste. Eine klarere Erzählung, ein überarbeitetes Level und eine Welt, die sich mit den Bäumen veränderte, waren der Weg, wie das Thema etwas wurde, das der Spieler sehen konnte. Ein späteres immersives Projekt würde ich damit beginnen, festzulegen, wie der Ort reagiert, wenn der Spieler Erfolg hat.</p>
+  <p>TODO(Robert): Future Earth comfort and onboarding findings from VR testing, if they should be specific.</p>
+  <p>Wachstum aus einer Coroutine und die Szene aus <code>SetEnvironment()</code> zu steuern hielt das Aussehen von Future Earth am Spiel. Die Gesundheit und der Tod der Bäume folgten der Wasserversorgung, und Nebel, Licht und der Himmel änderten sich, je mehr Bäume der Spieler pflanzte. Diese Kopplung möchte ich in späterer XR-Arbeit beibehalten.</p>
+</section>
+<section class="sectionText">
+  <h2>Credits und Links</h2>
+  <p>Future Earth war ein vierköpfiges Team: Kahn Dinh, Keefe Liew, Yashu Estela Xu und Robert Michels. Ich war Projektmanager und Lead-Entwickler. Ich habe die Trennung zwischen Kern- und Bonusfunktionen verantwortet und das Sammeln von Ersatzteilen, das Bauen von Gegenständen, UI-Interaktionen, die Sequenzierung der Geschichte, Baumwachstum und Gesundheit sowie <code>SetEnvironment()</code> in <code>GameCtrl.cs</code> programmiert.</p>
+  <p>TODO(Robert): what Kahn Dinh, Keefe Liew, and Yashu Estela Xu each owned on Future Earth.</p>
+  <ul>
+    <li><strong>SideQuest:</strong> <a href="https://sidequestvr.com/app/2597/future-earth">https://sidequestvr.com/app/2597/future-earth</a></li>
+    <li><strong>Entwicklungsblog:</strong> <a href="https://404teamnotfound444314077.wordpress.com/">https://404teamnotfound444314077.wordpress.com/</a></li>
+    <li><strong>GitHub:</strong> <a href="https://github.com/Robert01101101/FutureEarth">https://github.com/Robert01101101/FutureEarth</a></li>
+  </ul>
+</section>

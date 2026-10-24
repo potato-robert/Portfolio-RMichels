@@ -10,8 +10,8 @@ year: "2019"
 inDevelopment: false
 roles: ["game", "design"]
 description:
-  en: "A narrative-driven 2D platformer, which revolves around unit 241, an AI-equipped droid that gains consciousness. Using a range of available body mods, unit 241 has to fight enemies, solve puzzles, and escape the building."
-  de: "Ein erzählerisches 2D-Platformer-Spiel um Einheit 241, einen KI-ausgestatteten Droiden, der Bewusstsein erlangt. Mit verschiedenen Body Mods bekämpft Einheit 241 Gegner, löst Rätsel und entkommt aus dem Gebäude."
+  en: "Playable narrative platformer on itch.io and the web, where an android swaps body mods and spends energy."
+  de: "Spielbarer erzählerischer Platformer auf itch.io und im Web, in dem ein Androide Body Mods wechselt und Energie verbraucht."
 links:
   - label: "Itch.io"
     url: "https://rmichels.itch.io/cyberview"
@@ -19,42 +19,75 @@ links:
     url: "https://404teamnotfound561902897.wordpress.com/"
   - label: "Play Online (WebGL Beta)"
     url: "https://cyberview.rmichels.com"
-order: 9
+order: 8
 ---
 
 <section class="sectionText">
-    <h2>The Task</h2>
-    <p>The goal of this project was to design and develop a fully-fledged game. The project was created in an advanced game design course, and we used the Unity game engine to develop the game.</p>
-    <p>Cyberview is a 2D platformer, where you fight enemies and solve puzzles, using a range of body mods. But be careful! You can only equip up to three at a time, and each use depletes your energy. After all, you are still a robot and are bound by your robot body's limits.</p>
-  </section>
-  <section class="sectionMedia">
-    <figure ignorecarousel>
-      <div class="mediaSquare">
-        <figure>
-          <img src="/assets/img/cyberview/lqip/screen-0.jpg" alt="cyberview – screen 0">
-        </figure>
-        <figure>
-          <img src="/assets/img/cyberview/lqip/screen-1.jpg" alt="cyberview – screen 1">
-        </figure>
-        <figure>
-          <img src="/assets/img/cyberview/lqip/screen-2.jpg" alt="cyberview – screen 2">
-        </figure>
-        <figure>
-          <img src="/assets/img/cyberview/lqip/screen-3.jpg" alt="cyberview – screen 3">
-        </figure>
-      </div>
-      <figcaption class="center">Screenshots from the game.</figcaption>
-    </figure>
-  </section>
-  <section class="sectionText">
-    <h2>The Result</h2>
-    <h3>Mechanics</h3>
-    <p>An important aspect of our design was the game mechanics. The most important two mechanics were the ability to swap body mods, and energy depletion when using body mods. Body mods include a drill, grappling hook, strong arms, gun, regular and super legs, as well as a jetpack.</p>
-    <h3>Narrative</h3>
-    <p>Unit 241 is an all-purpose android at the mega-factory Airsite. This factory uses androids, like Unit 241, to carry out all sorts of dangerous tasks. All androids come equipped with highly functional AI, but their cognitive abilities are inhibited to what is essential for their tasks. When 241 is damaged in a mine collapse, the android's intelligence inhibitor is shut off, allowing 241 to think freely. You get to explore the Airsite factory with 241 and overcome many challenges while discovering what it means to be alive. Find a way out, and try to save the other bots!</p>
-  </section>
-  <div class="auto-resizable-iframe">
-    <div>
-      <iframe src="https://www.youtube.com/embed/cMnbb1hC0T4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  <h2>Snapshot</h2>
+  <p>I designed and programmed the body-mod and energy combat in Cyberview, a narrative 2D platformer about an android that gains consciousness.</p>
+  <p>Student project, SIAT, 2019.</p>
+  <ul>
+    <li><strong>Role:</strong> Lead developer and game designer: body mods, the energy system, the player controller, and the WebGL build.</li>
+    <li><strong>Team:</strong> Advanced game design course.</li>
+    <li><strong>Timeline:</strong> 2019.</li>
+    <li><strong>Platforms:</strong> WebGL and itch.io.</li>
+    <li><strong>Stack:</strong> Unity.</li>
+    <li><strong>Status:</strong> Itch.io: https://rmichels.itch.io/cyberview. Play online: https://cyberview.rmichels.com. Development blog: https://404teamnotfound561902897.wordpress.com/</li>
+  </ul>
+  <p>TODO(Robert): Cyberview teammate names. The page does not list them.</p>
+</section>
+<section class="sectionMedia">
+  <figure ignorecarousel>
+    <div class="mediaSquare">
+      <figure>
+        <img src="/assets/img/cyberview/lqip/screen-0.jpg" alt="screen-0.jpg">
+      </figure>
+      <figure>
+        <img src="/assets/img/cyberview/lqip/screen-1.jpg" alt="screen-1.jpg">
+      </figure>
+      <figure>
+        <img src="/assets/img/cyberview/lqip/screen-2.jpg" alt="screen-2.jpg">
+      </figure>
+      <figure>
+        <img src="/assets/img/cyberview/lqip/screen-3.jpg" alt="screen-3.jpg">
+      </figure>
     </div>
+    <figcaption class="center">Screenshots from the game. TODO(Robert): real descriptions for screen-0.jpg, screen-1.jpg, screen-2.jpg, and screen-3.jpg. The page does not say what each file shows.</figcaption>
+  </figure>
+</section>
+<section class="sectionText">
+  <h2>Concept</h2>
+  <p>Cyberview was a narrative 2D platformer from an advanced game design course in 2019, made in Unity. Unit 241, an android at the Airsite factory, gains free thought after a mine collapse damages an intelligence inhibitor that had held the android to essential tasks. The goal is to escape and try to save the other bots.</p>
+</section>
+<section class="sectionText">
+  <h2>What I built</h2>
+  <p>Working assumption, not stated on the original page: lead developer and game designer for the body mods, the energy system, the player controller, and the WebGL build.</p>
+  <ul>
+    <li>Body mods, with at most three equipped at once.</li>
+    <li>An energy cost each time a mod is used.</li>
+    <li>The player controller, under that assumption.</li>
+    <li>The WebGL build, under that assumption.</li>
+  </ul>
+</section>
+<section class="sectionText">
+  <h2>Mods and energy</h2>
+  <p>The two main mechanics are swapping body mods and spending energy on each use. The mods are a drill, a grappling hook, strong arms, a gun, regular legs, super legs, and a jetpack. At most three can be equipped, and each use spends energy, so Unit 241 stays bound by a robot body's limits.</p>
+  <p>The playable demo is the WebGL build at https://cyberview.rmichels.com, and itch.io hosts the project at https://rmichels.itch.io/cyberview. The video below sits with those two links.</p>
+</section>
+<div class="auto-resizable-iframe">
+  <div>
+    <iframe src="https://www.youtube.com/embed/cMnbb1hC0T4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
   </div>
+</div>
+<section class="sectionText">
+  <h2>What it shows today</h2>
+  <p>The three-mod cap and the energy cost are a tight interaction rule: the player has to choose. That kind of constraint is design engineering I still use.</p>
+</section>
+<section class="sectionText">
+  <h2>Links</h2>
+  <ul>
+    <li>Itch.io: https://rmichels.itch.io/cyberview</li>
+    <li>Play online: https://cyberview.rmichels.com</li>
+    <li>Development blog: https://404teamnotfound561902897.wordpress.com/</li>
+  </ul>
+</section>

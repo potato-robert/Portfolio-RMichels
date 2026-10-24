@@ -8,85 +8,102 @@ projectType:
   de: "UX / UI Mockup"
 year: "2019"
 inDevelopment: false
-roles: ["design", "android"]
+roles: ["design"]
 description:
-  en: "Amae is a utility app for busy parents. Amae helps parents to manage their time, learn about parenting and get help easily and quickly."
-  de: "Amae ist eine Utility-App für vielbeschäftigte Eltern. Amae hilft Eltern, ihre Zeit zu managen, mehr über Erziehung zu lernen und schnell Hilfe zu erhalten."
+  en: "Young-parent Figma mockup for coordinating care, learning, and nanny booking. I was project manager and one of the UX/UI designers."
+  de: "Figma-Mockup für junge Eltern zur Koordination der Betreuung, zum Lernen und zur Nanny-Buchung. Ich war Projektmanager und einer der UX/UI-Designer."
 links:
   - label: "Interactive Mockup"
     url: "https://www.figma.com/proto/MTkTlvyHoJziDU2ZnpaCSs/334_Stage5_v2"
   - label: "Product Website"
     url: "http://amae.rmichels.com/"
 heroAltLayout: true
-order: 6
+order: 9
 ---
 
 <section class="sectionText">
-    <h2>The Task</h2>
-    <p>This project was a design exercise to create a user interface mockup. It was created for an interface design course that focused on goal-oriented design. Consequently, a big part of the project was identifying user needs within a particular domain, and designing a product that helps the users achieve their goals.</p>
-    <p>Our domain was that of young parents. With our design, we tried to create an app that helps parents coordinate their parenting tasks, as well as get help easily and quickly when in need.</p>
-  </section>
-  <section class="sectionMedia">
-    <div class="mediaRow mediaRow-zigzag">
+  <h2>Snapshot</h2>
+  <p>I was project manager and lead UX/UI on Amae, an interface mockup that helps young parents coordinate care, learn, and book a nanny.</p>
+  <p>Student project, SIAT, 2019.</p>
+  <ul>
+    <li><strong>Role:</strong> Project manager and lead UX/UI: style guide, core flows, and the safety features.</li>
+    <li><strong>Team:</strong> Team of five, over four months.</li>
+    <li><strong>Timeline:</strong> 2019. Four months. Interface design course focused on goal-oriented design.</li>
+    <li><strong>Platforms:</strong> Figma mockup and a product website.</li>
+    <li><strong>Stack:</strong> Figma.</li>
+    <li><strong>Status:</strong> Interactive mockup: https://www.figma.com/proto/MTkTlvyHoJziDU2ZnpaCSs/334_Stage5_v2. Product website: http://amae.rmichels.com/</li>
+  </ul>
+  <p>TODO(Robert): confirm Amae as "lead UX/UI". The current page says project manager and one of the UX and UI designers.</p>
+  <p>TODO(Robert): Amae teammate names. The page says a team of five and does not name them.</p>
+</section>
+<section class="sectionMedia">
+  <div class="mediaRow mediaRow-zigzag">
+    <figure>
+      <img src="/assets/img/amae/lqip/Screen_Dashboard.png" alt="Dashboard screen for coordinating parenting tasks">
+      <figcaption class="center">The dashboard mockup, where parents coordinate diaper changes and appointments.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/amae/lqip/Screen_Nanny.png" alt="Nanny screen with ratings, reviews, and skills">
+      <figcaption class="center">Nanny profiles show ratings, reviews, and skills so a parent can book or rebook.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/amae/lqip/Screen_Learn.png" alt="Learn screen with articles, news, and discussion">
+      <figcaption class="center">Learn offers articles, news, and discussion so parents and nannies can keep learning together.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/amae/lqip/Screen_Chat.png" alt="Chat screen for assigning tasks and managing a nanny appointment">
+      <figcaption class="center">Chat keeps caretakers in touch and is where parents assign tasks or manage a nanny appointment.</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="sectionText">
+  <h2>Concept</h2>
+  <p>Amae was an interface mockup for young parents who need to coordinate care and get help quickly. Our team of five worked from domain brainstorming and ethnography through personas, flows, and wireframes in a goal-oriented design course, and I managed the project and led the UX and UI. A two-day sprint produced the product website that presented the Figma mockup.</p>
+</section>
+<section class="sectionText">
+  <h2>What I built</h2>
+  <ul>
+    <li>The style guide that kept the mockup consistent.</li>
+    <li>The core flows for the dashboard, nanny booking and rebooking, Learn, and chat.</li>
+    <li>The safety features in the nanny experience.</li>
+  </ul>
+  <p>User testing dropped a planned health feature, so the mockup stayed on coordination, learning, and booking help.</p>
+</section>
+<section class="sectionText">
+  <h2>Safety by design</h2>
+  <p>A core challenge was making the nanny experience safe, and I designed it around transparency. Nannies learn and certify in Learn. Profiles show ratings, reviews, and skills so a parent can choose. A parent can see the tasks a nanny completed, call at any time, and report a nanny.</p>
+</section>
+<section class="sectionMedia">
+  <figure ignorecarousel>
+    <div class="mediaSquare">
       <figure>
-        <img src="/assets/img/amae/lqip/Screen_Dashboard.png" alt="Dashboard">
-        <figcaption class="center">Dashboard</figcaption>
+        <img src="/assets/img/amae/lqip/process-scroll.jpg" alt="Process scroll artifact">
       </figure>
       <figure>
-        <img src="/assets/img/amae/lqip/Screen_Nanny.png" alt="Nanny">
-        <figcaption class="center">Nanny</figcaption>
+        <img src="/assets/img/amae/lqip/process-modality.jpg" alt="Process modality artifact">
       </figure>
       <figure>
-        <img src="/assets/img/amae/lqip/Screen_Learn.png" alt="Learn">
-        <figcaption class="center">Learn</figcaption>
+        <img src="/assets/img/amae/lqip/process-styleguide.jpg" alt="Amae style guide">
       </figure>
       <figure>
-        <img src="/assets/img/amae/lqip/Screen_Chat.png" alt="Chat">
-        <figcaption class="center">Chat</figcaption>
+        <img src="/assets/img/amae/lqip/process-components.jpg" alt="Amae component specifications">
       </figure>
     </div>
-  </section>
-  <section class="sectionText">
-    <h2>The Result</h2>
-    <h3>Dashboard</h3>
-    <p>The dashboard helps parents with their most frequent tasks. Parents can coordinate recurring tasks, such as diaper changes, as well as scheduled events, such as doctor appointments.</p>
-    <h3>Nanny</h3>
-    <p>With the nanny feature, users can browse for and book nearby nannies. Their profiles show ratings and reviews, their skills, and more information. Users can also easily rebook previously booked nannies.</p>
-    <h3>Learn</h3>
-    <p>Learn features curated articles, relevant news as well as community discussions. This helps parents as well as nannies learn more about child-rearing and provides a parenting community to engage with.</p>
-    <h3>Chat</h3>
-    <p>The chat feature doubles as an easy way to stay in touch with other caretakers, as well as a way to organize. Through chat, parents can assign tasks to each other, as well as book and manage an appointment with a nanny.</p>
-  </section>
-   <section class="sectionMedia">
-    <figure ignorecarousel>
-      <div class="mediaSquare">
-        <figure>
-          <img src="/assets/img/amae/lqip/process-scroll.jpg" alt="amae – process scroll">
-        </figure>
-        <figure>
-          <img src="/assets/img/amae/lqip/process-modality.jpg" alt="amae – process modality">
-        </figure>
-        <figure>
-          <img src="/assets/img/amae/lqip/process-styleguide.jpg" alt="amae – process styleguide">
-        </figure>
-        <figure>
-          <img src="/assets/img/amae/lqip/process-components.jpg" alt="amae – process components">
-        </figure>
-      </div>
-      <figcaption>Design artifacts that detail components of our design & define a clear styleguide to achieve consistency.</figcaption>
-    </figure>
-  </section>
-  <section class="sectionText">
-    <h2>Process</h2>
-    <p>The project was developed in 4 months by a team of 5. I was the project manager, as well as one of the UX and UI designers. Our process began with brief domain brainstorming, followed by an ethnography study to better understand our users. After coming up with personas and multiple concept ideas, we focused on Amae. We then designed our product. For this, we designed many artifacts, such as flowcharts, wireframes, user journey maps, interaction patterns, and a style guide. In the last stages, we performed user testing and refinement. An outcome of this was that we dropped a health feature we had previously planned to include. Finally, we created a product website to present our final design.</p>
-    <h3>Challenges</h3>
-    <p>One of our core challenges throughout the design process was making the app safe. One of our solutions was the design of the nanny experience. Nannies can learn and get certified through the Learn feature. Their thorough profiles feature ratings, reviews, and skills, to allow parents to find the best nanny for their needs. Parents can see what tasks a nanny has completed, call them at any time, and report a nanny. These features aim to maximize transparency to create a safe experience.</p>
-  </section>
+    <figcaption>Design artifacts that define the components and the style guide.</figcaption>
+  </figure>
+</section>
+<section class="sectionText">
+  <h2>What it shows today</h2>
+  <p>The mockup shows how I turn a user's goal into concrete flows and treat safety as part of the interface. I still use that design-engineering judgment when I take a product from Figma toward a working build.</p>
+</section>
+<section class="sectionText">
+  <h2>Links</h2>
+  <ul>
+    <li><strong>Interactive mockup:</strong> https://www.figma.com/proto/MTkTlvyHoJziDU2ZnpaCSs/334_Stage5_v2</li>
+    <li><strong>Product website:</strong> http://amae.rmichels.com/</li>
+  </ul>
+</section>
 <section class="sectionMedia">
-  <div class="divText">
-      <h2>Result & Design Artifacts</h2>
-      <p>You can try the interactive mockup below, and take a look at the file itself. We got very positive feedback and were satisfied with our final result, the journey we took to get there, and the things we learned along the way.</p>
-  </div>
   <div class="mediaColumn mediaColumn-fullWidth">
     <figure ignorecarousel>
       <div class="mediaRow mediaRow-equalWidth mediaRow-equalHeight">
@@ -101,33 +118,7 @@ order: 6
           </div>
         </div>
       </div>
+      <figcaption>The Figma file and the interactive prototype of the final mockup.</figcaption>
     </figure>
-    <div class="divText">
-      <h3>Design Artifacts</h3>
-      <p>Below are a selection of various design artifacts from this project. These represent many stages of our process, from researching our audience and their needs, to planning out UX flows and wireframes, to our final presentation of the mockup via a fictional product website, which was created in a 2 day sprint.</p>
   </div>
-    <figure ignorecarousel>
-      <div class="mediaRow mediaRow-equalWidth mediaRow-equalHeight mediaRow-maxHeightMd">
-        <figure>
-        <img src="/assets/img/amae/lqip/personaChristina.jpg" alt="amae – persona Christina">
-        </figure>
-        <figure>
-          <img src="/assets/img/amae/lqip/stage3WireflowsSimplified.jpg" alt="amae – stage3Wireflows Simplified">
-        </figure>
-      </div>
-    </figure>
-    <figure ignorecarousel>
-      <div class="mediaRow">
-        <figure>
-          <img src="/assets/img/amae/lqip/site-home.jpg" alt="amae – site home">
-        </figure>
-        <figure>
-          <img src="/assets/img/amae/lqip/site-taskboard.jpg" alt="amae – site taskboard">
-        </figure>
-        <figure>
-          <img src="/assets/img/amae/lqip/site-concept.jpg" alt="amae – site concept">
-        </figure>
-      </div>
-    </figure>
-    </div>
-  </section>
+</section>

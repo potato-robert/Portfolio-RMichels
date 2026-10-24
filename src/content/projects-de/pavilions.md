@@ -10,31 +10,81 @@ year: "2018"
 inDevelopment: false
 roles: ["3d-model", "cad", "design"]
 description:
-  en: "Pavilions is the result of a spatial design exercise. Three pavilions proposed as a public space in Surrey's Holland Park, featuring abstract, modular, and parametric architecture."
-  de: "Pavilions ist das Ergebnis einer räumlichen Designübung. Drei Pavillons als öffentlicher Raum in Surreys Holland Park – mit abstrakter, modularer und parametrischer Architektur."
+  en: "I modeled two Holland Park pavilions, sliced the modular model, and printed the Grasshopper one in wood-PLA."
+  de: "Ich habe zwei Pavillons für den Holland Park modelliert, das modulare Modell in Schichten geschnitten und den Grasshopper-Pavillon in Holz-PLA gedruckt."
 links:
   - label: "View 3D Models"
     url: "https://sketchfab.com/rmichels/collections/iat233-pavilions"
-order: 12
+order: 13
 ---
 
 <section class="sectionText">
-    <h2>Die Aufgabe</h2>
-    <p>Diese Pavillons entstanden in einem Kurs, der Designprinzipien durch räumliche Designübungen vermittelt. Ziel war eine Serie von Pavillon-Entwürfen, die Menschen, Objekte, Raum, räumliche Komposition und parametrisches Design erkunden. Wir mussten Rhinoceros 3D erlernen und einsetzen, um diese Entwürfe zu erstellen, sowie physische Prototypen bauen.</p>
-  </section>
-  <div class="auto-resizable-iframe">
-    <div>
-      <iframe title="Pavilions-Projektvideo" src="https://www.youtube.com/embed/3MXKiZ-IckA?start=15" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  <h2>Überblick</h2>
+  <p>Ich habe zwei Pavillons für den Holland Park in Surrey in Rhino modelliert, darunter eine parametrische Grasshopper-Überdachung, und die physischen Prototypen gebaut.</p>
+  <p>Studienprojekt, SIAT, 2018.</p>
+  <ul>
+    <li><strong>Rolle:</strong> Ich habe den modularen Pavillon und den parametrischen Pavillon modelliert und beide physischen Modelle gebaut. Die Konzeptskizzen waren Teamarbeit.</li>
+    <li><strong>Team:</strong> Kurs für Raumgestaltung. Der Slug der Sketchfab-Sammlung ist iat233-pavilions.</li>
+    <li><strong>Zeitraum:</strong> 2018.</li>
+    <li><strong>Plattformen:</strong> Rhino-Modelle auf Sketchfab sowie physische Modelle.</li>
+    <li><strong>Stack:</strong> Rhinoceros 3D, Grasshopper, Mesh+, Weaverbird, lasergeschnittene Pappe und ein Anet-A8-Druck in Holz-PLA.</li>
+    <li><strong>Status:</strong> https://sketchfab.com/rmichels/collections/iat233-pavilions</li>
+  </ul>
+  <p>TODO(Robert): Pavilions teammate names.</p>
+  <p>TODO(Robert): whether a third pavilion should be described. The page body shows the modular pavilion and the parametric pavilion only.</p>
+</section>
+<section class="sectionMedia">
+  <figure ignorecarousel class="spacer">
+    <div class="mediaColumn">
+      <figure>
+        <img src="/assets/img/pavilions/lqip/3_5.jpg" alt="Grasshopper-Node-Graph für den parametrischen Pavillon">
+      </figure>
     </div>
-  </div>
-  <section class="sectionText">
-    <h2>Das Ergebnis</h2>
-    <h3>Modularer Pavillon</h3>
-    <p>Dieser Pavillon ist als Bühne für Veranstaltungen gedacht. Er umfasst zwei ineinandergreifende Räume, die innerhalb derselben Veranstaltung unterschiedlich genutzt werden können. Das Designthema ist eine abstrakte Darstellung der menschlichen Form. Der Pavillon wurde unter der Vorgabe entworfen, Träger- und Füllwerk-Architektur als Bausteine zu nutzen. Wir griffen diese Philosophie auf und schufen einen abstrakten modularen Entwurf aus hohlen Würfeln.</p>
-    <h3>Parametrischer Pavillon</h3>
-    <p>Der parametrische Pavillon wurde mit organischem Design im Sinn geplant. Er soll neben Bäumen im Holland Park stehen und die Form von Baumwurzeln und -ästen nachahmen. Er beherbergt eine versteckte Skulptur und wirkt als Überdachung über einem bestehenden Weg. Dieser Pavillon wurde ausschließlich mit parametrischem Design entwickelt – mit Grasshopper sowie den Plugins Mesh+ und Weaverbird.</p>
-  </section>
-  <section class="sectionMedia">
+    <figcaption>Die Grasshopper-Nodes, die die parametrische Überdachung definieren.</figcaption>
+  </figure>
+</section>
+<section class="sectionText">
+  <h2>Konzept</h2>
+  <p>2018 stellte ein Kurs für Raumgestaltung die Aufgabe, Pavillons für den Holland Park in Surrey zu entwerfen, die Menschen, Objekte, Raum, Komposition und parametrisches Design erkunden. Die Prinzipien habe ich mit dem Team anhand von Papierskizzen studiert und danach die beiden hier gezeigten Entwürfe in Rhino modelliert. Zuschnitt und Verklebung der Pappe waren gemeinsame Arbeit. Der Holz-PLA-Druck war meiner.</p>
+</section>
+<section class="sectionText">
+  <h2>Was ich gebaut habe</h2>
+  <ul>
+    <li>Ich habe den modularen Pavillon in Rhino aus Polysurfaces modelliert: eine Bühne, zwei ineinandergreifende Räume und Würfel aus Träger- und Füllwerk als abstrakte menschliche Figur. Dieses Modell habe ich in Schichten und Träger geschnitten, und wir haben die Pappe lasergeschnitten und mit Heißkleber verklebt.</li>
+    <li>Den parametrischen Pavillon habe ich ausschließlich in Grasshopper modelliert: eine organische Form neben den Bäumen, mit Wurzel- und Astformen, einer versteckten Skulptur und einer Überdachung über einem Weg. Ich habe ihn auf meinem Anet A8 in Holz-PLA in vier Teilen gedruckt, weil er nicht in einen Druck passte. Überhänge und der Drucker haben den Druck erschwert.</li>
+  </ul>
+</section>
+<section class="sectionMedia">
+  <figure ignorecarousel class="spacer">
+    <div class="mediaSquare">
+      <div class="mediaColumn">
+        <figure>
+          <img src="/assets/img/pavilions/lqip/2_1.jpg" alt="Lasergeschnittenes Pappmodell des modularen Pavillons">
+        </figure>
+        <figure>
+          <img src="/assets/img/pavilions/lqip/2_2.jpg" alt="Lasergeschnittenes Pappmodell des modularen Pavillons">
+        </figure>
+        <figure>
+          <img src="/assets/img/pavilions/lqip/2_3.jpg" alt="Lasergeschnittenes Pappmodell des modularen Pavillons">
+        </figure>
+      </div>
+      <div class="mediaColumn">
+        <figure>
+          <img src="/assets/img/pavilions/lqip/3_1.jpg" alt="Holz-PLA-Druck des parametrischen Pavillons">
+        </figure>
+        <figure>
+          <img src="/assets/img/pavilions/lqip/3_2.jpg" alt="Holz-PLA-Druck des parametrischen Pavillons">
+        </figure>
+        <figure>
+          <img src="/assets/img/pavilions/lqip/3_3.jpg" alt="Holz-PLA-Druck des parametrischen Pavillons">
+        </figure>
+        <figure>
+          <img src="/assets/img/pavilions/lqip/3_4.jpg" alt="Holz-PLA-Druck des parametrischen Pavillons">
+        </figure>
+      </div>
+    </div>
+    <figcaption>Physische Prototypen. Links: modulare Bühne aus lasergeschnittener Pappe. Rechts: parametrische Überdachung aus Holz-PLA in vier Teilen.</figcaption>
+  </figure>
   <div class="models">
     <div class="sketchfab-embed-wrapper">
       <iframe title="Pavilion 2" src="https://sketchfab.com/models/8ce32155bef54f559eb023e085b21d33/embed">
@@ -55,62 +105,34 @@ order: 12
       </p>
     </div>
   </div>
-  </section>
-  <section class="sectionText">
-    <h2>Prozess</h2>
-    <p>Alle unsere Entwürfe folgten in der Konzeptionsphase einem ähnlichen Prozess. Zunächst studierten wir die Designprinzipien, die wir anwenden wollten. Anschließend diskutierten wir Ideen anhand einfacher Papier-Skizzen. Sobald wir uns für ein Konzept entschieden hatten, entwarfen wir hochauflösende Prototypen in Rhino. Die beiden hier gezeigten Pavillons modellierte ich selbst.</p>
-    <p>Der modulare Pavillon ließ sich in Rhino relativ leicht erstellen, da ich ihn in einfache Komponenten zerlegen konnte, die sich mit Polysurfaces modellieren ließen. Deutlich komplexer war der Aufbau des physischen Modells. Dafür schichtete ich das Modell in 2D-Stützstrukturen und Verbindungsträger, die wir aus Pappe laserschneiden konnten. Die finale Struktur klebten wir mit Heißkleber zusammen.</p>
-    <p>Der parametrische Pavillon war unsere größte Herausforderung. Ich musste Rhinos parametrischen Grasshopper-Editor erlernen, um das Modell zu erstellen. Es wird durch nur zwei Grundkurven und acht Kontrollpunkte definiert. Die Grundkurven legen fest, wo der Pavillon den Boden berührt; die Kontrollpunkte beeinflussen Dicke und Form der gewebten Struktur. Diese Eingaben verarbeitet ein generativer Algorithmus, den ich in Grasshopper mit den Plugins Mesh+ und Weaverbird definierte. Auch die finale Prozessstufe war anspruchsvoll: Ich musste das Modell mit meinem eigenen 3D-Drucker drucken. Es war zu groß für einen Durchgang und musste in vier Teile geschnitten werden. Hinzu kamen die komplexe Struktur mit Überhängen, das Holzfilament und die begrenzte Qualität meines günstigen Druckers. Das Ergebnis repräsentierte unser Designkonzept dennoch überzeugend.</p>
-  </section>
-  <section class="sectionMedia">
-    <figure ignorecarousel class="spacer">
-      <div class="mediaSquare">
-        <div class="mediaColumn">
-          <figure>
-            <img src="/assets/img/pavilions/lqip/2_1.jpg" alt="Physisches Modell des modularen Pavillons – Ansicht 1">
-          </figure>
-          <figure>
-            <img src="/assets/img/pavilions/lqip/2_2.jpg" alt="Physisches Modell des modularen Pavillons – Ansicht 2">
-          </figure>
-          <figure>
-            <img src="/assets/img/pavilions/lqip/2_3.jpg" alt="Physisches Modell des modularen Pavillons – Detail">
-          </figure>
-        </div>
-        <div class="mediaColumn">
-          <figure>
-            <img src="/assets/img/pavilions/lqip/3_1.jpg" alt="Physisches Modell des parametrischen Pavillons – Ansicht 1">
-          </figure>
-          <figure>
-            <img src="/assets/img/pavilions/lqip/3_2.jpg" alt="Physisches Modell des parametrischen Pavillons – Ansicht 2">
-          </figure>
-          <figure>
-            <img src="/assets/img/pavilions/lqip/3_3.jpg" alt="Physisches Modell des parametrischen Pavillons – Detail 1">
-          </figure>
-          <figure>
-            <img src="/assets/img/pavilions/lqip/3_4.jpg" alt="Physisches Modell des parametrischen Pavillons – Detail 2">
-          </figure>
-        </div>
-      </div>
-      <figcaption>Physische Modelle der beiden Pavillons. Der modulare Pavillon (L) entstand aus lasergeschnittener Pappe. Der parametrische Pavillon (R) wurde mit dem Anet A8 3D-Drucker und Holz-PLA-Filament gedruckt.</figcaption>
-    </figure>
-    <figure ignorecarousel class="spacer">
-        <div class="mediaColumn">
-          <figure>
-            <img src="/assets/img/pavilions/lqip/3_5.jpg" alt="Grasshopper-Algorithmus als Node-Diagramm">
-          </figure>
-        </div>
-      <figcaption>Parametrischer Grasshopper-Algorithmus als Node-Diagramm.</figcaption>
-    </figure>
-    <div class="auto-resizable-iframe">
-      <div>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/9VzTCMDgkMM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <figcaption>Kurzer Walkthrough des Grasshopper-Algorithmus mit der Funktion jedes Nodes.</figcaption>
+</section>
+<section class="sectionText">
+  <h2>Grasshopper-Prozess</h2>
+  <p>Diese Überdachung habe ich mit zwei Grundkurven und acht Kontrollpunkten definiert. Die Kurven legen fest, wo sie den Boden berührt, und die Kontrollpunkte bestimmen Dicke und Form der gewebten Struktur. Mesh+ und Weaverbird haben aus diesen Eingaben die Form erzeugt. Die Videos führen durch jeden Node und die Reaktorpunkte.</p>
+</section>
+<section class="sectionMedia">
+  <div class="auto-resizable-iframe">
+    <div>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/9VzTCMDgkMM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
     </div>
-    <div class="auto-resizable-iframe">
-      <div>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/MHUs1-AVnpA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <figcaption>Reaktorpunkte beeinflussen algorithmisch die Strukturdicke des finalen Pavillons.</figcaption>
+    <figcaption>Ein Node-für-Node-Durchgang durch die Grasshopper-Definition.</figcaption>
+  </div>
+  <div class="auto-resizable-iframe">
+    <div>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/MHUs1-AVnpA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen></iframe>
     </div>
-  </section>
+    <figcaption>Reaktorpunkte verändern die Dicke der gewebten Struktur.</figcaption>
+  </div>
+</section>
+<section class="sectionText">
+  <h2>Was es heute zeigt</h2>
+  <p>Parametrisches Modellieren aus wenigen Eingaben ist dieselbe Design-Engineering-Gewohnheit, die ich nutze, wenn eine Form auf Vorgaben reagieren muss.</p>
+</section>
+<section class="sectionText">
+  <h2>Links</h2>
+  <ul>
+    <li><a href="https://sketchfab.com/rmichels/collections/iat233-pavilions">Sketchfab-Sammlung</a></li>
+    <li><a href="https://sketchfab.com/3d-models/pavilion-2-8ce32155bef54f559eb023e085b21d33">Pavilion 2</a></li>
+    <li><a href="https://sketchfab.com/3d-models/pavilion-3-97df40a59e4845a1821a65b434bd2035">Pavilion 3</a></li>
+  </ul>
+</section>

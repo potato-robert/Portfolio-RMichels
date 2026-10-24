@@ -10,71 +10,64 @@ year: "2018"
 inDevelopment: false
 roles: ["d3js", "front-end"]
 description:
-  en: "A website that uses D3.js to visually analyze climate change data. Data visualizations include line charts and stacked area charts of global climate change data, as well as a detailed choropleth map and other visualizations of Canadian weather data."
-  de: "Eine Website, die D3.js nutzt, um Klimawandeldaten visuell zu analysieren. Visualisierungen umfassen Linien- und Stacked-Area-Charts globaler Klimadaten sowie eine detaillierte Choropleth-Karte und weitere Darstellungen kanadischer Wetterdaten."
+  en: "Interactive choropleth of Canadian weather on a D3.js climate site from a two-person, two-month project."
+  de: "Interaktive Choropleth des kanadischen Wetters auf einer D3.js-Website zum Klima aus einem Projekt zu zweit über zwei Monate."
 links:
   - label: "View Project"
     url: "http://understandingclimatechange.rmichels.com/ccImpacts.html"
-order: 13
+order: 10
 ---
 
 <section class="sectionText">
-    <h2>Die Aufgabe</h2>
-    <p>Als Übung interaktiver Datenvisualisierung planten wir, Klimawandeldaten umfassend zu visualisieren. Unser Ziel war, komplexe Datensätze in einfache Diagramme zu verdichten, die Mechanismen, Ursprünge und lokale Auswirkungen des Klimawandels in Kanada vermitteln. Um Nutzer anzusprechen, entwickelten wir einfache Interaktionen wie Pop-up-Tooltips sowie komplexere wie Brushing, Darstellungswechsel und Animation.</p>
-  </section>
-  <section class="sectionMedia">
-    <div class="mediaColumn">
-      <figure>
-        <img src="/assets/img/understandingClimateChange/lqip/chart1.jpg" alt="Liniendiagramm globaler CO₂-Emissionen">
-      </figure>
-      <figure>
-        <img src="/assets/img/understandingClimateChange/lqip/chart2.jpg" alt="Liniendiagramm der atmosphärischen CO₂-Konzentration">
-      </figure>
-      <figure>
-        <img src="/assets/img/understandingClimateChange/lqip/chart3.jpg" alt="Stacked-Area-Chart der CO₂-Emissionen nach Region">
-      </figure>
-    </div>
-  </section>
-  <section class="sectionText">
-    <h2>Das Ergebnis</h2>
-    <h3>Klimawandel verstehen</h3>
-    <p>Vier farbcodierte Liniendiagramme globaler CO₂-Emissionen und atmosphärischer Konzentration sowie ein Stacked-Area-Chart der CO₂-Emissionen nach Region.</p>
-    <h3>Auswirkungen des Klimawandels verstehen</h3>
-    <p>Mit der Choropleth-Karte Kanadas und seiner Provinzen und Territorien können Nutzer kanadische Wetterdaten – einschließlich Temperatur und Niederschlag – nach Jahr, Monat und Provinz erkunden. Zusätzlich gibt es ein Spider-Chart der globalen Temperaturanomalie über die Zeit. Beide Diagramme sind dynamisch abfragbar und animierbar.</p>
-    <h3>Zusammenfassung der Klimawandelauswirkungen</h3>
-    <p>Die Summary-Charts zeigen einen Zusammenhang – oder dessen Fehlen – zwischen CO₂-Emissionen und Wetteranomalien. Vier Liniendiagramme der mittleren kanadischen Wettertemperatur, des Niederschlags und deren Anomalien sind mit einem Liniendiagramm globaler CO₂-Emissionen gruppiert.</p>
-  </section>
-  <section class="sectionMedia">
-    <div class="mediaColumn">
-      <figure id="chart4">
-        <img src="/assets/img/understandingClimateChange/lqip/chart4.jpg" alt="Interaktive Choropleth-Karte kanadischer Wetterdaten">
-      </figure>
-      <figure>
-        <img src="/assets/img/understandingClimateChange/lqip/chart5.jpg" alt="Spider-Chart der globalen Temperaturanomalie">
-      </figure>
-    </div>
-  </section>
-  <section class="sectionText">
-    <h2>Prozess</h2>
-    <p>Wir entwickelten das Projekt zu zweit über zwei Monate hinweg – unsere erste Erfahrung mit D3.js. Früh definierten wir zwei zentrale Fragen, die das Projekt beantworten sollte:</p>
-    <ol>
-      <li>Was sind die Beitragsfaktoren zum Klimawandel?</li>
-      <li>Da der Klimawandel das Wetter beeinflusst: Gibt es Anzeichen dafür, dass sich das kanadische Wetter abnormal verhält?</li>
-    </ol>
-    <p>Nach der Fragestellung suchten wir relevante Daten. Die meisten mussten von Ausreißern und fehlerhaften Werten bereinigt werden. Am komplexesten war der kanadische Wetterdatensatz: Mehrere große Datensätze mussten manuell zusammengeführt, bereinigt, sortiert und monatliche sowie jährliche Durchschnitte berechnet werden.</p>
-    <p>In der finalen Phase entwickelten wir die D3.js-gesteuerten Visualisierungen und bauten die Website, die zugleich als Projektbericht dient. Die meisten Diagramme – einschließlich Linien- und Stacked-Area-Charts – waren relativ unkompliziert. Mit Abstand am komplexesten war die Choropleth-Karte kanadischer Wetterdaten. Die visuelle Zuordnung von Daten zu Geografie und Farbe war anspruchsvoll, das Ergebnis lohnte sich: Die Karte bietet eine ansprechende, interaktive Möglichkeit, einen großen Wetterdatensatz schnell zu durchsuchen und lokale sowie bundesweite Beobachtungen zu machen.</p>
-  </section>
-  <section class="sectionMedia">
-    <div class="mediaColumn">
-      <figure>
-        <img src="/assets/img/understandingClimateChange/lqip/chart6.jpg" alt="Korrelationsdiagramm von CO₂-Emissionen und Wetteranomalien in Kanada">
-      </figure>
-    </div>
-  </section>
-  <section class="sectionText">
-    <h2>Der Code</h2>
-    <p>Das Projekt ist in HTML, CSS und JS entwickelt; für die Visualisierungen nutzen wir die datengetriebene Bibliothek <a href="https://d3js.org/" target="_blank">D3.js</a>. Die Umsetzung aller Visualisierungen war anspruchsvoll, da D3 für uns neu war – besonders die Ketten-Syntax war anfangs umständlich. Der allgemeine Workflow lädt Daten, wählt DOM-Elemente aus und fügt SVG-Elemente mit bestimmten, an die Daten gebundenen Attributen ein. Im Auszug unten wird das <a href="#chart4">kanadische Wetterdaten-Diagramm</a> in <code>drawMap()</code> gerendert; die Farbe jeder Provinz wird Temperatur- oder Niederschlagsdaten je nach Nutzereingabe zugeordnet. Der Auszug enthält ab Zeile 58 auch Hover-Interaktionen für einzelne Provinzen: Die Provinz wird hervorgehoben und die Legende über <code>updateDataData()</code> aktualisiert (im Beispiel nicht gezeigt).</p>
-  </section>
-  <section class="sectionMedia">
-    <script src="https://gist.github.com/potato-robert/fea50c19b3bcdff1b1ee446cad3a8028.js"></script>
-  </section>
+  <h2>Überblick</h2>
+  <p>Ich habe die Datenbereinigung und die interaktive Choropleth des kanadischen Wetters für eine D3.js-Website zum Klimawandel gebaut.</p>
+  <p>Studienprojekt, SIAT, 2018.</p>
+  <ul>
+    <li><strong>Rolle:</strong> Datenpipeline, Choropleth-Karte und Diagramminteraktionen.</li>
+    <li><strong>Team:</strong> Team zu zweit, über zwei Monate.</li>
+    <li><strong>Zeitraum:</strong> 2018. Zwei Monate. Erstes D3.js-Projekt.</li>
+    <li><strong>Plattformen:</strong> Web.</li>
+    <li><strong>Stack:</strong> HTML, CSS, JavaScript und D3.js.</li>
+    <li><strong>Status:</strong> http://understandingclimatechange.rmichels.com/ccImpacts.html</li>
+  </ul>
+  <p>TODO(Robert): the Understanding Climate Change partner's name.</p>
+</section>
+<section class="sectionMedia">
+  <div class="mediaColumn">
+    <figure id="chart4">
+      <img src="/assets/img/understandingClimateChange/lqip/chart4.jpg" alt="Choropleth-Karte der kanadischen Provinzen und Territorien, eingefärbt nach einer Wetterfarbskala.">
+      <figcaption>Das kanadische Wetterdiagramm: eine Choropleth der Provinzen und Territorien für Temperatur und Niederschlag. Es ist die Ansicht, um den bereinigten kanadischen Wetterdatensatz nach Ort zu durchsuchen.</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="sectionText">
+  <h2>Konzept</h2>
+  <p>Understanding Climate Change war 2018 eine D3.js-Website, ausgerichtet auf zwei Fragen: was zum Klimawandel beiträgt, und ob das kanadische Wetter abnormales Verhalten zeigt. Ein Teammitglied und ich haben sie in zwei Monaten als unser erstes Projekt mit der Bibliothek gebaut.</p>
+  <p>Die Website umfasste vier farbcodierte Liniendiagramme der globalen CO2-Emissionen und der atmosphärischen Konzentration, ein gestapeltes Flächendiagramm der CO2-Emissionen nach Region, ein Spider-Chart der globalen Temperaturanomalie im Zeitverlauf und vier Linienplots der kanadischen Mitteltemperatur, des Niederschlags und ihrer Anomalien, gruppiert mit den globalen CO2-Emissionen.</p>
+</section>
+<section class="sectionText">
+  <h2>Was ich gebaut habe</h2>
+  <p>Arbeitsannahme: Mein Anteil war die Datenpipeline, die Choropleth und die Diagramminteraktionen. Die ursprüngliche Seite sagt nur „wir“.</p>
+  <ul>
+    <li>Datenpipeline: Ausreißer und fehlerhafte Daten bereinigen, die kanadischen Wetterdatensätze von Hand zusammenführen, sie sortieren und monatliche sowie jährliche Durchschnitte berechnen.</li>
+    <li>Choropleth der Provinzen und Territorien für Temperatur und Niederschlag nach Jahr, Monat und Provinz.</li>
+    <li>Diagramminteraktionen: Tooltips, Brushing, Wechsel der Darstellung und Animation.</li>
+  </ul>
+</section>
+<section class="sectionText">
+  <h2>Choropleth-Karte</h2>
+  <p>Dieser Abschnitt folgt der Arbeitsannahme oben. Die Choropleth war das komplexeste Diagramm. In <code>drawMap()</code> wird jede Provinz und jedes Territorium anhand der gewählten Messgröße, Temperatur oder Niederschlag, für das gewählte Jahr und den gewählten Monat eingefärbt. Hover hebt diese Provinz hervor und ruft <code>updateDataData()</code> auf, um die Legende zu aktualisieren. Der Auszug unten ist <code>drawMap()</code>.</p>
+  <p>Die Karte lässt Besuchende eine große Menge kanadischer Wetterdaten durchsuchen und Beobachtungen auf lokaler und bundesweiter Ebene machen.</p>
+  <p>TODO(Robert): the one climate data finding to highlight. Do not invent a statistic.</p>
+</section>
+<section class="sectionMedia">
+  <script src="https://gist.github.com/potato-robert/fea50c19b3bcdff1b1ee446cad3a8028.js"></script>
+</section>
+<section class="sectionText">
+  <h2>Was es heute zeigt</h2>
+  <p>Unter der Arbeitsannahme oben besteht die Fähigkeit darin, die Daten aufzubereiten und dann die Interaktion zu gestalten, die eine große Datenmenge lesbar macht.</p>
+</section>
+<section class="sectionText">
+  <h2>Links</h2>
+  <p><a href="http://understandingclimatechange.rmichels.com/ccImpacts.html" target="_blank">Projekt ansehen</a></p>
+</section>

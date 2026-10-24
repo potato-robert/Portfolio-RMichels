@@ -10,80 +10,114 @@ year: "2024"
 inDevelopment: false
 roles: ["android", "design"]
 description:
-  en: "A cross-platform Flutter app that helps tourists navigate and learn about places along digitally guided tours. Available for Android and as a web app."
-  de: "Eine plattformübergreifende Flutter-App, die Touristen hilft, sich auf digital geführten Touren zu orientieren und mehr über Orte zu erfahren. Verfügbar für Android und als Web-App."
+  en: "Solo-built Flutter app for guided tours with a Gemini AI guide, in public beta on Google Play and the web."
+  de: "Allein gebaute Flutter-App für geführte Touren mit einem Gemini-KI-Guide, in öffentlicher Beta bei Google Play und im Web."
 links:
   - label: "Google Play Store (Beta)"
     url: "https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp"
   - label: "Web App (Beta)"
     url: "https://tourguide-firebase.web.app"
 threeMockup: "phone"
-order: 1
+order: 3
 ---
 
+<section class="sectionText">
+  <h2>Überblick</h2>
+  <p>Ich habe Tourguide entworfen und gebaut, eine Flutter-App zum Durchstöbern, Durchführen und Herunterladen geführter Touren, mit einem KI-Guide auf Basis von Gemini.</p>
+  <ul>
+    <li><strong>Rolle:</strong> Alleiniger Product Engineer und Designer, vom Konzept bis zur Veröffentlichung im Play Store.</li>
+    <li><strong>Team:</strong> Allein.</li>
+    <li><strong>Zeitraum:</strong> Juli 2024–heute. Erster Android-Build am 10. Juli 2024.</li>
+    <li><strong>Plattformen:</strong> Android und Web.</li>
+    <li><strong>Stack:</strong> Flutter, Firebase, Cloud Functions, Firebase AI, Gemini mit Maps- oder Search-Grounding, Google Maps, Places, Fastlane, GitHub Actions, Figma und Material 3.</li>
+    <li><strong>Status:</strong> Öffentliche Beta bei Google Play und im Web, mit 10 Testern. Google Play: https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp. Web: https://tourguide-firebase.web.app.</li>
+  </ul>
+</section>
 <section class="sectionText mockup">
-    <div>
-      <h2>Übersicht</h2>
-      <p>Während eines Urlaubs in Rom fiel mir auf, dass es an Angeboten für selbstgeführte Touren fehlte, die Navigation und Informationen zu Orten verbinden. Es gibt Websites mit Tagesplänen, Wikipedia, um Geschichte und mehr zu erfahren, und Google Maps erlaubt es, eine kleine Anzahl von Orten in eine Route zu legen, aber es gab keine zusammenhängende Plattform, die alles vereint.</p>
-      <p>Ich wollte das Flutter-Framework schon länger ausprobieren, und dies schien die perfekte Gelegenheit, damit eine plattformübergreifende App zu bauen.</p>
-      <p>Tourguide ist als Beta im <a href="https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp" title="Tourguide im Google Play Store (Beta)" target="_blank">Google Play Store</a> und als <a href="https://tourguide-firebase.web.app" title="Tourguide Web-App (Beta)" target="_blank">Web-App</a> verfügbar.</p>
-      <h3>Entdecken</h3>
-      <p>Stöbere in beliebten Touren in deiner Nähe und weltweit, oder suche nach einem Ort. Setze Lesezeichen oder lade Touren herunter, um sie offline zu laufen.</p>
-      <h3>Tour</h3>
-      <p>Starte eine Tour und folge der Route mit Wegbeschreibungen und Ortsbeschreibungen, die per Sprachausgabe vorgelesen werden können.</p>
-      <h3>Guide</h3>
-      <p>Frag den KI-Guide nach Unternehmungen und Touren in der Nähe. Während einer Tour kannst du zu jedem Stopp mehr erfahren und wie du dorthin kommst. Unterstützt von Gemini über Firebase AI.</p>
-      <h3>Einstellungen</h3>
-      <p>Verwalte App- und Profileinstellungen, erstelle Touren und weitere Einstellungen.</p>
+  <div>
+    <h2>Kontext und Problem</h2>
+    <p>Im Urlaub in Rom wollte ich eine selbstgeführte Tour, die die Route und die Informationen zu jedem Ort zusammenhält. Websites für Reisepläne konnten einen Tag vorschlagen, Wikipedia die Geschichte liefern, und Google Maps konnte eine kleine Anzahl von Stopps zu einer Route hinzufügen. Es gab kein einzelnes Produkt, um eine Tour zu durchstöbern, sie mit Wegbeschreibung zu gehen und etwas über den Ort zu lesen. Ich habe Tourguide für diesen Spaziergang gebaut und um Flutter zu lernen, indem ich die App auslieferte.</p>
+  </div>
+</section>
+<video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" loop muted playsinline poster="/assets/video/frame.jpg"></video>
+<section class="sectionText">
+  <h2>Meine Rolle und mein Vorgehen</h2>
+  <p>Ich habe Tourguide allein verantwortet, vom Konzept über das Design bis zur Veröffentlichung im Play Store. Explore durchstöbert beliebte Touren in der Nähe oder weltweit, sucht nach einem Ort und setzt ein Lesezeichen oder lädt eine Tour herunter. Tour folgt der Route mit Wegbeschreibungen und Ortsbeschreibungen, die Text-to-Speech vorlesen kann. Guide ist das Gemini-Gespräch über eine Tour. Settings enthält das Profil, das Erstellen von Touren und die übrigen Präferenzen. Ich habe die Screens in Figma entworfen und in Flutter gebaut.</p>
+</section>
+<section class="sectionText">
+  <h2>Zentrale Arbeit</h2>
+  <h3>Zuerst Android</h3>
+  <p><strong>Problem.</strong> Die erste Veröffentlichung musste eine Plattform sein, die ich ausliefern konnte, während ich Flutter lernte.</p>
+  <p><strong>Entscheidung.</strong> Die erste Version war Android: eine Tour anlegen, Touren durchstöbern, mit Gemini chatten und ein Profil, auf Firebase plus Places, Maps und Vertex AI. Eine Web-Version war der Plan danach.</p>
+  <p><strong>Ergebnis.</strong> Dieser Build war am 10. Juli 2024 fertig.</p>
+  <h3>Offener Test</h3>
+  <p><strong>Problem.</strong> Der offene Test bei Google Play war mehr als das Hochladen eines Builds.</p>
+  <p><strong>Entscheidung.</strong> Ich habe Meldefunktion, Kontolöschung und rechtliche Seiten eingerichtet und E-Mail sowie Meldungen über Firebase-Erweiterungen und Cloud Functions abgewickelt. Fastlane und GitHub Actions haben danach von main deployt.</p>
+  <p><strong>Ergebnis.</strong> Der offene Test begann am 29. Juli 2024. Die Screens unten sind vom 4. August 2024.</p>
+</section>
+<section class="sectionMedia">
+  <figure ignorecarousel>
+    <div class="mediaRow mediaRow-equalWidth mediaRow-equalHeight">
+      <figure>
+        <img src="/assets/img/tourguide/Screenshot_1.webp" alt="Tourguide-Screenshot 1 von 6 vom 4. August 2024">
+      </figure>
+      <figure>
+        <img src="/assets/img/tourguide/Screenshot_2.webp" alt="Tourguide-Screenshot 2 von 6 vom 4. August 2024">
+      </figure>
+      <figure>
+        <img src="/assets/img/tourguide/Screenshot_3.webp" alt="Tourguide-Screenshot 3 von 6 vom 4. August 2024">
+      </figure>
+      <figure>
+        <img src="/assets/img/tourguide/Screenshot_4.webp" alt="Tourguide-Screenshot 4 von 6 vom 4. August 2024">
+      </figure>
+      <figure>
+        <img src="/assets/img/tourguide/Screenshot_5.webp" alt="Tourguide-Screenshot 5 von 6 vom 4. August 2024">
+      </figure>
+      <figure>
+        <img src="/assets/img/tourguide/Screenshot_6.webp" alt="Tourguide-Screenshot 6 von 6 vom 4. August 2024">
+      </figure>
     </div>
-  </section>
-  <video id="video" src="/assets/video/tourguideScreencap.mp4" style="display:none" preload="none" loop muted playsinline poster="/assets/video/frame.jpg"></video>
-  <section class="sectionText">
-    <h2>Entwicklung</h2>
-    <h3>Offline-Touren - 30. September 2026</h3>
-    <p>Touren lassen sich auf Android jetzt für offline speichern. Titelbild und Wegbeschreibung bleiben auf dem Gerät, eine Tour kann nach einem Neustart weitermachen, und fehlt die Wegbeschreibung, wird einfach eine Luftlinie gezeichnet. Die Web-App bleibt online.</p>
-    <h3>Guide - 28. September 2026</h3>
-    <p>Aus dem Chat wurde Guide: getrennte Unterhaltungen, Fragen aus der Vorschau oder während einer Tour, und Antworten, die auf echte Touren verweisen können. Gemini läuft über Firebase AI, mit Maps- oder Such-Grounding, wenn es hilft.</p>
-    <h3>Entdecken, Gäste und Freunde - 2. September 2026</h3>
-    <p>Entdecken hat eine Suche bekommen, und der Standort wird erst abgefragt, wenn eine Funktion ihn wirklich braucht. Freunde können einer Live-Sitzung beitreten und sich auf der Karte sehen.</p>
-    <h3>Web und TTS - 2. Oktober 2024</h3>
-    <p>Den Web-Build an Android heranzubringen hieß, Wegbeschreibungen über Cloud Functions zu holen und die Layouts an mehr Bildschirmgrößen anzupassen. Gleichzeitig kam Tippen-zum-Vorlesen dazu. Das fehlende Web-Fortschritts-Event ging an flutter_tts, und <a href="https://pub.dev/packages/google_maps_custom_marker" title="google_maps_custom_marker package on pub.dev" target="_blank">google_maps_custom_marker</a> landete auf pub.dev.</p>
-    <h3>Web-App - 27. August 2024</h3>
-    <p>Die <a href="https://tourguide-firebase.web.app" title="Tourguide Web App" target="_blank">Web-App</a> ging online. Flutter hat den Großteil der Portierung getragen. Bilder, CORS und breite Bildschirme brauchten extra Aufmerksamkeit.</p>
-    <h3>Material 3 - 19. August 2024</h3>
-    <p>Mit dem offenen Test rückte das Aussehen in den Vordergrund. Die Stile laufen über einen Theme-Provider, die Oberfläche folgt Material 3 und unterstützt den dunklen Modus. Ausgearbeitet in <a href="https://www.figma.com/proto/DKwKzxmnYg9oQeuUSmrlN7/Tourguide_App?page-id=54496%3A24191&node-id=54852-28956&viewport=-5776%2C-250%2C2&t=4HYfco7oHsFnRHPh-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=54852%3A28956" title="Interactive Figma Mockup" target="_blank">Figma</a> mit dem <a href="https://material-foundation.github.io/material-theme-builder/" title="Material Theme Builder" target="_blank">Material Theme Builder</a>, zusammen mit einem Durchgang an der Karte während laufender Touren.</p>
-    <h3>Play-Beta und CI/CD - 29. Juli 2024</h3>
-    <p>Der offene Test bei Google Play war mehr als ein Upload. Melden, Kontolöschung und rechtliche Seiten mussten stehen, E-Mail und Meldungen über Firebase-Erweiterungen und Cloud Functions. Danach haben Fastlane und GitHub Actions die Deploys von main übernommen.</p>
-    <h3>Erster Build - 10. Juli 2024</h3>
-    <p>Die erste Version war Android: Touren anlegen, sie durchstöbern, mit Gemini chatten und ein Profil, auf Firebase plus Places, Maps und Vertex AI. Eine Web-Version sollte danach kommen. iOS nur, wenn jemand danach fragt.</p>
-    <p>Fragen oder Feedback: <a href="mailto:contact@tourguide.rmichels.com">contact@tourguide.rmichels.com</a>. Rechtliches: <a href="https://tourguide.rmichels.com/privacyPolicy.html" target="_blank">Datenschutzerklärung</a> und <a href="https://tourguide.rmichels.com/termsOfService.html" target="_blank">Nutzungsbedingungen</a>.</p>
-  </section>
-  <section class="sectionMedia">
-    <figure ignorecarousel>
-      <div class="mediaRow mediaRow-equalWidth mediaRow-equalHeight">
-        <figure>
-          <img src="/assets/img/tourguide/Screenshot_1.webp" alt="tourguide – Screenshot 1">
-        </figure>
-        <figure>
-          <img src="/assets/img/tourguide/Screenshot_2.webp" alt="tourguide – Screenshot 2">
-        </figure>
-        <figure>
-          <img src="/assets/img/tourguide/Screenshot_3.webp" alt="tourguide – Screenshot 3">
-        </figure>
-        <figure>
-          <img src="/assets/img/tourguide/Screenshot_4.webp" alt="tourguide – Screenshot 4">
-        </figure>
-        <figure>
-          <img src="/assets/img/tourguide/Screenshot_5.webp" alt="tourguide – Screenshot 5">
-        </figure>
-        <figure>
-          <img src="/assets/img/tourguide/Screenshot_6.webp" alt="tourguide – Screenshot 6">
-        </figure>
-      </div>
-      <figcaption>Screenshots vom 04.08.2024</figcaption>
-    </figure>
-  </section>
-  <section class="sectionText">
-    <h2>Was ich bisher gelernt habe</h2>
-    <p>Flutter hat mir viel Freude gemacht. Zuvor arbeitete ich bei <a href="https://clir.io/">Clirio</a>, wo ich komplexe Oberflächen mit C# in Unity gebaut habe — ein Setup, das für komplexe UIs wenig geeignet ist, erst recht nicht, wenn die Apps VR, MR, Touchscreens auf iOS und Android sowie Desktop unterstützen und die Oberfläche für jede Plattform angepasst werden muss. Im Vergleich dazu macht Flutter komplexe Oberflächen über viele Geräte hinweg leicht, mit einer intuitiven Architektur aus Stateless- und StatefulWidgets, Providern und vielen Paketen für wiederkehrende Aufgaben.</p>
-  </section>
+    <figcaption>Screens vom 4. August 2024, während des offenen Tests und vor der Material-3-Umgestaltung am 19. August 2024.</figcaption>
+  </figure>
+</section>
+<section class="sectionText">
+  <h3>Material 3, Web und Sprache</h3>
+  <p><strong>Problem.</strong> Während der offene Test lief, brauchte die Oberfläche ein visuelles System, und der Web-Build musste zu Android passen. Flutter deckte den Großteil der Portierung ab. Bilder, CORS und breite Bildschirme brauchten zusätzliche Aufmerksamkeit.</p>
+  <p><strong>Entscheidung.</strong> Am 19. August 2024 habe ich die Styles über einen Theme-Provider geführt, sodass die Oberfläche Material 3 folgt und den dunklen Modus unterstützt. Das habe ich in <a href="https://www.figma.com/proto/DKwKzxmnYg9oQeuUSmrlN7/Tourguide_App?page-id=54496%3A24191&node-id=54852-28956&viewport=-5776%2C-250%2C2&t=4HYfco7oHsFnRHPh-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=54852%3A28956" title="Interaktives Figma-Mockup" target="_blank">Figma</a> mit dem <a href="https://material-foundation.github.io/material-theme-builder/" title="Material Theme Builder" target="_blank">Material Theme Builder</a> ausgearbeitet, zusammen mit einem Durchgang an der Karte, während eine Tour läuft. Die <a href="https://tourguide-firebase.web.app" title="Tourguide-Web-App" target="_blank">Web-App</a> ging am 27. August 2024 online. Bis zum 2. Oktober 2024 habe ich Wegbeschreibungen über Cloud Functions geleitet, Layouts an mehr Bildschirmgrößen angepasst und Tippen-zum-Vorlesen per Text-to-Speech ergänzt. Das fehlende Web-Fortschritts-Event ging upstream an flutter_tts, und <a href="https://pub.dev/packages/google_maps_custom_marker" title="Paket google_maps_custom_marker auf pub.dev" target="_blank">google_maps_custom_marker</a> kam auf pub.dev.</p>
+  <p><strong>Ergebnis.</strong> Android und Web teilten sich diese Material-3-Oberfläche, Tippen-zum-Vorlesen und die beiden öffentlichen Paketkorrekturen.</p>
+  <h3>Explore, Gäste und Freunde</h3>
+  <p><strong>Problem.</strong> Explore konnte Touren auflisten, und die Suche fehlte noch. Eine Live-Sitzung brauchte außerdem die Karte, ohne die ganze Zeit den Standort anzufordern.</p>
+  <p><strong>Entscheidung.</strong> Am 2. September 2026 bekam Explore die Suche. Der Standort wird nur angefordert, wenn etwas ihn braucht. Freunde können einer Live-Sitzung beitreten und sich gegenseitig auf der Karte sehen.</p>
+  <p><strong>Ergebnis.</strong> Suche, Standort auf Anfrage und Freunde auf der Karte wurden zusammen ausgeliefert.</p>
+</section>
+<section class="sectionText">
+  <h2>Architektur und KI</h2>
+  <p><strong>Firebase.</strong> Touren, das Profil und der erste Gemini-Chat liegen auf Firebase, mit Places, Maps und Vertex AI. Play-E-Mail und Meldungen laufen über Firebase-Erweiterungen und Cloud Functions. Der Kompromiss ist die Konzentration: Das Produkt und diese Store-Anforderungen teilen sich ein Backend.</p>
+  <p><strong>Cloud Functions.</strong> Den Web-Build an Android anzupassen bedeutete, Wegbeschreibungen über Cloud Functions zu leiten. Der Kompromiss ist, dass Wegbeschreibungen im Web von Cloud Functions abhängen.</p>
+  <p><strong>Offline-Modus.</strong> Am 30. September 2026 konnten Touren auf Android für die Offline-Nutzung gespeichert werden. Das Cover und die Wegbeschreibungen bleiben auf dem Gerät, eine Tour kann nach einem Neustart weitermachen, und wenn Wegbeschreibungen fehlen, zeichnet die App eine gerade Linie. Der Kompromiss ist die Web-App, die online bleibt.</p>
+  <p><strong>Gemini-Grounding.</strong> Am 28. September 2026 wurde aus dem Chat Guide. Threads bleiben getrennt. Eine Frage kann aus einer Vorschau oder einer laufenden Tour starten, und eine Antwort kann auf eine echte Tour verweisen. Diese Fragen decken Unternehmungen, Touren in der Nähe, mehr zu einem Stopp und den Weg dorthin ab. Gemini läuft über Firebase AI, mit Maps- oder Search-Grounding, wenn es hilft. Der Kompromiss ist selektives Grounding, eingesetzt, wenn es hilft.</p>
+</section>
+<section class="sectionText">
+  <h2>Ergebnis</h2>
+  <p>Ausgeliefert wurden der Release-Pfad und Guide. Fastlane und GitHub Actions deployen von main. Der offene Test umfasste Meldefunktion, Kontolöschung und rechtliche Seiten, mit Datenschutzerklärung und Nutzungsbedingungen auf tourguide.rmichels.com. Ein fehlendes Web-Fortschritts-Event ging upstream an flutter_tts, und google_maps_custom_marker ist auf pub.dev. Guide bindet Gemini über Firebase AI ein, mit Maps- oder Search-Grounding.</p>
+  <p>TODO(Robert): what Tourguide is iterating on next. The page only says iOS if people ask.</p>
+  <p>iOS wartet, bis jemand danach fragt.</p>
+</section>
+<section class="sectionText">
+  <h2>Reflexion</h2>
+  <p>Das Widget-Modell von Flutter hat die plattformübergreifende Oberfläche praktikabel gemacht. StatelessWidget und StatefulWidget, zusammen mit Providern, gaben den Screens eine Struktur, die ich vom ersten Android-Build bis zu den breiteren Web-Layouts erweitern konnte.</p>
+  <p>Ein Theme-Provider machte Material 3 und den dunklen Modus zu einer einzigen Implementierung für Android und das Web. Layouts an mehr Bildschirmgrößen anzupassen gehörte zu derselben Aufgabe: ein Produkt, zwei Clients.</p>
+</section>
+<section class="sectionText">
+  <h2>Credits und Links</h2>
+  <p>Ich habe Tourguide allein entworfen und gebaut. Fragen oder Feedback: <a href="mailto:contact@tourguide.rmichels.com">contact@tourguide.rmichels.com</a>.</p>
+  <ul>
+    <li><a href="https://play.google.com/store/apps/details?id=com.robertmichelsdigitalmedia.tourguideapp" title="Tourguide bei Google Play (Beta)" target="_blank">Google Play</a></li>
+    <li><a href="https://tourguide-firebase.web.app" title="Tourguide-Web-App (Beta)" target="_blank">Web-App</a></li>
+    <li><a href="https://www.figma.com/proto/DKwKzxmnYg9oQeuUSmrlN7/Tourguide_App?page-id=54496%3A24191&node-id=54852-28956&viewport=-5776%2C-250%2C2&t=4HYfco7oHsFnRHPh-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=54852%3A28956" title="Interaktives Figma-Mockup" target="_blank">Figma-Prototyp</a></li>
+    <li><a href="https://material-foundation.github.io/material-theme-builder/" title="Material Theme Builder" target="_blank">Material Theme Builder</a></li>
+    <li><a href="https://pub.dev/packages/google_maps_custom_marker" title="Paket google_maps_custom_marker auf pub.dev" target="_blank">google_maps_custom_marker</a></li>
+    <li><a href="https://tourguide.rmichels.com/privacyPolicy.html" target="_blank">Datenschutzerklärung</a></li>
+    <li><a href="https://tourguide.rmichels.com/termsOfService.html" target="_blank">Nutzungsbedingungen</a></li>
+  </ul>
+</section>
