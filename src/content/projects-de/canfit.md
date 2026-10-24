@@ -28,6 +28,14 @@ order: 2
     <p>Anwender nutzen Canfit, um individuelle O&amp;P-Hilfsmittel präzise und effizient digital zu formen und zu gestalten. Canfit verarbeitet 3D-Patientenscans, manuelle Messungen oder beides. Seine Stärke liegt in einer Reihe intuitiver Werkzeuge, Vorlagen und Makros für anatomisch korrekte Modifikationen. Fertige Designs werden als Shape-Dateien für 3D-Druck oder CNC-Fertigung exportiert, etwa für Prothesenschäfte, Sprunggelenkorthesen und individuelle Schuheinlagen.</p>
     <p>Canfit war Pionier der CAD/CAM-Technologie in der O&amp;P und ist das Herzstück vieler digitaler O&amp;P-Workflows in Kliniken. Im Vergleich zur arbeitsintensiven traditionellen O&amp;P-Fertigung sind digitale Workflows hochgradig anpassbar, präzise und effizient.</p>
   </section>
+  <section class="sectionMedia">
+    <div class="mediaColumn mediaColumn-intrinsic">
+      <figure>
+        <img src="/assets/img/canfit/op_process.png" alt="Digitaler O&amp;P-Workflow von Patientenscan bis zur gefertigten Hilfe.">
+        <figcaption class="center">Scan → Design in Canfit → Manufacture</figcaption>
+      </figure>
+    </div>
+  </section>
   <section class="sectionText">
     <h2>Meine Beiträge</h2>
     <h3>Formmodifikatoren und 3D-Design</h3>

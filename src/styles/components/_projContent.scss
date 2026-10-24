@@ -286,6 +286,26 @@ main {
 					width: 100%;
 				}
 			}
+
+			// Diagrams stay at native resolution and shrink only when the column is narrower.
+			&-intrinsic {
+				width: 100%;
+
+				> * {
+					width: 100%;
+				}
+
+				figure .responsivePicture {
+					display: flex;
+					justify-content: center;
+
+					img {
+						width: 100%;
+						height: auto;
+						margin-inline: auto;
+					}
+				}
+			}
 		}
     }
 }

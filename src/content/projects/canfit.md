@@ -28,6 +28,14 @@ order: 2
     <p>Practitioners use Canfit to shape and design custom O&amp;P devices digitally in a precise and efficient way. Canfit accepts 3D patient scans, manual measurements, or both. Its strength lies in a range of intuitive tools, templates, and macros that support anatomically correct modifications. Completed designs are exported as shape files for 3D printing or CNC manufacturing of devices like prosthetic sockets, ankle braces, and custom shoe insoles.</p>
     <p>Canfit pioneered CAD/CAM O&amp;P technology and is the centerpiece of many clinics' digital O&amp;P workflows. Compared with labor-intensive traditional O&amp;P manufacturing, digital workflows are highly customizable, precise, and efficient.</p>
   </section>
+  <section class="sectionMedia">
+    <div class="mediaColumn mediaColumn-intrinsic">
+      <figure>
+        <img src="/assets/img/canfit/op_process.png" alt="Orthotic and prosthetic digital design workflow from patient scan to manufactured device.">
+        <figcaption class="center">Scan → Design in Canfit → Manufacture</figcaption>
+      </figure>
+    </div>
+  </section>
   <section class="sectionText">
     <h2>My Contributions</h2>
     <h3>Shape modifiers and 3D design</h3>

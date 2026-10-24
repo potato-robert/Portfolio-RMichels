@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-export const OPTION_VERSION = 4;
+export const OPTION_VERSION = 5;
 
 export const IMAGE_WIDTHS = [480, 800, 1200, 1600, 2400] as const;
 
