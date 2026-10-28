@@ -3,12 +3,11 @@ slug: "siar"
 name:
   en: "Semester in Alternate Realities"
   de: "Semester in Alternate Realities"
-projectType:
-  en: "VR Game"
-  de: "VR-Spiel"
+format: xr-app
 year: "2019"
+context: coursework
 inDevelopment: false
-roles: ["vr", "game", "pm", "design"]
+stack: ["unity", "csharp", "3d-modelling"]
 description:
   en: "Semester in Alternate Realities (SIAR) is a program in which interdisciplinary teams tackle real-world problems using xR technologies. With the design challenge of \"VR4good\", we set out to create transformative experiences with a positive impact."
   de: "Semester in Alternate Realities (SIAR) ist ein Programm, in dem interdisziplinäre Teams reale Probleme mit xR-Technologien angehen. Mit der Design-Herausforderung „VR4good“ entwickelten wir transformative Erlebnisse mit positivem gesellschaftlichem Impact."

@@ -3,12 +3,12 @@ slug: "portfolio"
 name:
   en: "Portfolio Website"
   de: "Portfolio Website"
-projectType:
-  en: "Static Website"
-  de: "Statische Website"
+format: web-app
 year: "2020"
+ongoing: true
+context: personal
 inDevelopment: false
-roles: ["front-end", "back-end", "threejs", "design"]
+stack: ["astro", "typescript", "threejs", "sass"]
 description:
   en: "A static portfolio site built with Astro, TypeScript islands, Three.js, and Sass."
   de: "Eine statische Portfolio-Website mit Astro, TypeScript-Islands, Three.js und Sass."
@@ -21,7 +21,7 @@ order: 8
 
 <section class="sectionText">
     <h2>Übersicht</h2>
-    <p>Diese Portfolio-Website wurde in Figma entworfen und als statische Site mit Astro, Sass und Three.js-Client-Islands umgesetzt. Die Entwicklung begann 2020; die Site wurde vom LAMP-Stack auf Astro migriert, für schnellere Ladezeiten und einfacheres Deployment. Projektmetadaten liegen in Markdown-Content-Collections, wodurch Case Studies organisiert und versionskontrolliert bleiben. Der Homepage-Filter unterstützt weiterhin individuelle Portfolio-Links bei Bewerbungen – zum Beispiel <a href="https://rmichels.com/?filter=vr">nur VR-Projekte anzeigen.</a></p>
+    <p>Diese Portfolio-Website wurde in Figma entworfen und als statische Site mit Astro, Sass und Three.js-Client-Islands umgesetzt. Die Entwicklung begann 2020; die Site wurde vom LAMP-Stack auf Astro migriert, für schnellere Ladezeiten und einfacheres Deployment. Projektmetadaten liegen in Markdown-Content-Collections, wodurch Case Studies organisiert und versionskontrolliert bleiben. Der Homepage-Filter unterstützt weiterhin individuelle Portfolio-Links bei Bewerbungen – zum Beispiel <a href="https://rmichels.com/?filter=unity">nur Unity-Projekte anzeigen.</a></p>
   </section>
   <section class="sectionMedia">
     <div class="mediaColumn">

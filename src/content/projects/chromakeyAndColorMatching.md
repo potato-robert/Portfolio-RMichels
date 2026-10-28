@@ -3,12 +3,11 @@ slug: "chromakeyAndColorMatching"
 name:
   en: "Chromakey & Color Matching"
   de: "Chromakey & Color Matching"
-projectType:
-  en: "Java App"
-  de: "Java App"
+format: desktop-app
 year: "2018"
+context: coursework
 inDevelopment: false
-roles: ["java-dev", "design"]
+stack: ["java"]
 description:
   en: "A digital image compositing process. Automatically creates high-quality composites. Advantages include the ability to deal with any foreground color, preventing color spill and color grading the subject to match the background."
   de: "Ein digitales Bild-Compositing-Verfahren. Erstellt automatisch hochwertige Composites. Vorteile: beliebige Vordergrundfarben, Unterdrückung von Color Spill und Farbanpassung des Motivs an den Hintergrund."

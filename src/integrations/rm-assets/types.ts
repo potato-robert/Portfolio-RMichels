@@ -9,6 +9,8 @@ export interface ImageAssetEntry {
   height: number;
   dominantColor: string;
   placeholder: string;
+  /** Source has a transparent alpha channel. Variants stay transparent; no LQIP matte. */
+  hasAlpha?: boolean;
   avif: ImageVariantSet;
   webp: ImageVariantSet;
 }

@@ -81,10 +81,10 @@ async function dominantColor(input: Sharp): Promise<string> {
 }
 
 function imageCacheOutputsComplete(cacheDir: string, meta: ImageAssetEntry): boolean {
-  const genDir = path.join(cacheDir, 'gen');
-  if (!fs.existsSync(genDir)) return false;
   const hasMaster = fs.readdirSync(cacheDir).some((f) => f.startsWith('master.'));
   if (!hasMaster) return false;
+  const genDir = path.join(cacheDir, 'gen');
+  if (!fs.existsSync(genDir)) return false;
   for (const w of Object.keys(meta.avif)) {
     if (!fs.existsSync(path.join(genDir, `${w}.avif`))) return false;
   }
@@ -163,8 +163,9 @@ async function processRasterImage(
       return;
     }
 
-    const placeholder = await buildPlaceholder(image);
-    const color = await dominantColor(image);
+    const hasAlpha = info.hasAlpha === true && ext === '.png';
+    const placeholder = hasAlpha ? '' : await buildPlaceholder(image);
+    const color = hasAlpha ? 'transparent' : await dominantColor(image);
     const widths: number[] = IMAGE_WIDTHS.filter((w) => w <= width);
     if (!widths.includes(width)) {
       widths.push(width);
@@ -172,6 +173,13 @@ async function processRasterImage(
 
     const avif: ImageAssetEntry['avif'] = {};
     const webp: ImageAssetEntry['webp'] = {};
+    const avifOpts = hasAlpha
+      ? { quality: 70, effort: 4, chromaSubsampling: '4:4:4' as const }
+      : { quality: 55, effort: 4 };
+    const webpOpts = hasAlpha
+      ? { quality: 88, alphaQuality: 100, smartSubsample: false, effort: 4 }
+      : { quality: 82, effort: 4 };
+
     const genDir = path.join(cacheDir, 'gen');
     await ensureDir(genDir);
 
@@ -180,13 +188,13 @@ async function processRasterImage(
       const webpName = `${w}.webp`;
       await image
         .clone()
-        .resize(w, undefined, { withoutEnlargement: true })
-        .avif({ quality: 55, effort: 4 })
+        .resize(w, undefined, { withoutEnlargement: true, kernel: 'lanczos3' })
+        .avif(avifOpts)
         .toFile(path.join(genDir, avifName));
       await image
         .clone()
-        .resize(w, undefined, { withoutEnlargement: true })
-        .webp({ quality: 82, effort: 4 })
+        .resize(w, undefined, { withoutEnlargement: true, kernel: 'lanczos3' })
+        .webp(webpOpts)
         .toFile(path.join(genDir, webpName));
       const avifUrl = publicUrl(
         path.join(relNoExt, RM_GEN_DIR, path.basename(relNoExt), avifName).replace(/\\/g, '/'),
@@ -220,6 +228,7 @@ async function processRasterImage(
       height,
       dominantColor: color,
       placeholder,
+      ...(hasAlpha ? { hasAlpha: true } : {}),
       avif,
       webp,
     };

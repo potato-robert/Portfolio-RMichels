@@ -21,7 +21,7 @@ const altLabel = locale === 'en' ? t('deutsch', locale) : t('english', locale);
     <ul>
       {pageType === 'project' || pageType === 'about' ? (
         <li class="homeIcon">
-          <a title={t('nav_home', locale)} href={homeHref} data-home-link aria-label={t('nav_home', locale)}>
+          <a title={t('nav_home', locale)} href={homeHref} aria-label={t('nav_home', locale)}>
             <Icon name="house" class="icon-header" />
           </a>
         </li>
@@ -52,7 +52,7 @@ const altLabel = locale === 'en' ? t('deutsch', locale) : t('english', locale);
   <div id="OverlayMenu" class="hidden" role="navigation" aria-label={t('menu', locale)} aria-hidden="true">
     <ul id="MenuContent">
       <li class:list={{ curPage: pageType === 'home' }}>
-        <a title={t('featured_work', locale)} href={homeHref} data-home-link>
+        <a title={t('featured_work', locale)} href={homeHref}>
           {t('featured_work', locale)}
         </a>
       </li>
@@ -73,19 +73,6 @@ const altLabel = locale === 'en' ? t('deutsch', locale) : t('english', locale);
     </ul>
   </div>
 </header>
-
-<script>
-  import { readVisitorFilterSession } from '../lib/visitor-filter';
-
-  function applyVisitorFilterToHomeLinks() {
-    const filter = readVisitorFilterSession();
-    document.querySelectorAll('[data-home-link]').forEach((el) => {
-      const base = el.getAttribute('href') || '/';
-      el.setAttribute('href', filter ? `${base}?filter=${filter}` : base);
-    });
-  }
-  applyVisitorFilterToHomeLinks();
-</script>
 
 <style>
   .lang-toggle {

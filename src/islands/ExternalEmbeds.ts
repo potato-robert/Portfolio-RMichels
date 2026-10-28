@@ -11,6 +11,7 @@ function iframeFromPlaceholder(el: HTMLElement): HTMLIFrameElement {
     if (!attr.name.startsWith('data-iframe-')) continue;
     const key = attr.name.slice('data-iframe-'.length);
     iframe.setAttribute(key, attr.value);
+    if (key === 'allowfullscreen') iframe.allowFullscreen = true;
   }
   iframe.loading = 'lazy';
   if (!iframe.getAttribute('title')?.trim()) {

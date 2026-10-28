@@ -22,7 +22,6 @@ const root = path.resolve(__dirname, '..');
 
 const PROJECTS_EN = path.join(root, 'src/content/projects');
 const PROJECTS_DE = path.join(root, 'src/content/projects-de');
-const ROLES_TS = path.join(root, 'src/lib/roles.ts');
 const UI_EN = path.join(root, 'src/i18n/ui-en.json');
 const UI_DE = path.join(root, 'src/i18n/ui-de.json');
 /** Tracked masters (Git LFS); rm-assets generates public/assets at build time. */
@@ -243,20 +242,6 @@ function checkFrontmatterParity(enData, deData, slug) {
 }
 
 /**
- * @returns {Set<string>}
- */
-function loadRoleSlugs() {
-  const source = fs.readFileSync(ROLES_TS, 'utf8');
-  const slugs = new Set();
-  const re = /slug:\s*'([^']+)'/g;
-  let match;
-  while ((match = re.exec(source)) !== null) {
-    slugs.add(match[1]);
-  }
-  return slugs;
-}
-
-/**
  * @param {Record<string, unknown>} obj
  * @param {string} [prefix]
  * @returns {string[]}
@@ -338,7 +323,6 @@ function warnLargeMasters() {
 }
 
 function checkProjects() {
-  const roleSlugs = loadRoleSlugs();
   const enFiles = listMarkdownBasenames(PROJECTS_EN).map((name) => path.join(PROJECTS_EN, name));
   const deByBasename = new Map(
     listMarkdownBasenames(PROJECTS_DE).map((name) => [name, path.join(PROJECTS_DE, name)]),
@@ -370,13 +354,6 @@ function checkProjects() {
       } else {
         checkFrontmatterParity(project.data, deProject.data, project.slug);
         checkMarkdownHtmlBlankLines(dePath, project.slug);
-      }
-    }
-
-    const roles = Array.isArray(project.data.roles) ? project.data.roles : [];
-    for (const role of roles) {
-      if (typeof role === 'string' && !roleSlugs.has(role)) {
-        fail(project.slug, 'roles', `unknown role "${role}"`);
       }
     }
 

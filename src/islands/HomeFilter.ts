@@ -1,34 +1,39 @@
-// Homepage URL filter — client-side cookie for static build (?filter=vr)
-import {
-  readVisitorFilterSession,
-  writeVisitorFilterSession,
-} from '../lib/visitor-filter';
+import { visibleTileAlignments } from '../lib/home-tile-align';
+import { stackFilterWithMatches } from '../lib/stack';
+
+function stackSlugs(row: HTMLElement): string[] {
+  return (row.dataset.stack ?? '').split(/\s+/).filter(Boolean);
+}
+
+function dropFilterParam(): void {
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has('filter')) return;
+  url.searchParams.delete('filter');
+  history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+}
 
 function applyHomeFilter(): void {
   const section = document.getElementById('MyWork');
   if (!section) return;
 
-  const params = new URLSearchParams(window.location.search);
-  const filterParam = params.get('filter');
-  const effectiveFilter = filterParam ?? readVisitorFilterSession();
-  const filters = effectiveFilter ? effectiveFilter.split(',').filter(Boolean) : [];
-
-  if (filterParam) {
-    writeVisitorFilterSession(filterParam);
-  }
-
   const rows = Array.from(section.querySelectorAll<HTMLElement>('.projRow'));
-  rows.forEach((row, index) => {
-    const roles = (row.dataset.js ?? '').split(',').filter(Boolean);
-    let visible = false;
+  const requested = new URLSearchParams(window.location.search).get('filter');
+  const filter = stackFilterWithMatches(requested, rows.map(stackSlugs));
+  if (requested && !filter) dropFilterParam();
 
-    if (filters.length === 0) {
-      visible = index < 6;
-    } else {
-      visible = filters.some((slug) => roles.includes(slug));
-    }
+  const visibleFlags = rows.map((row, index) => {
+    if (!filter) return index < 6;
+    return stackSlugs(row).includes(filter);
+  });
+  const alignments = visibleTileAlignments(visibleFlags);
+
+  rows.forEach((row, index) => {
+    const visible = visibleFlags[index];
+    const side = alignments[index];
 
     row.classList.toggle('projRow--hidden', !visible);
+    row.classList.toggle('projRow--zigzag-end', side === 'end');
+    row.classList.toggle('projRow--zigzag-start', side === 'start');
     row.style.display = visible ? '' : 'none';
   });
 }

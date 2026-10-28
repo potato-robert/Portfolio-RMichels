@@ -13,6 +13,15 @@
       &:nth-of-type(even) {
         justify-content: flex-start;
       }
+
+      // Visible order, so filtered-out siblings do not keep their original side.
+      &.projRow--zigzag-end {
+        justify-content: flex-end;
+      }
+
+      &.projRow--zigzag-start {
+        justify-content: flex-start;
+      }
     }
   }
 

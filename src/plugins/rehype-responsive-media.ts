@@ -3,19 +3,16 @@ import type { Element, Root } from 'hast';
 type RawNode = { type: 'raw'; value: string };
 import { visit } from 'unist-util-visit';
 import { manifestKeyFromUrl, resolveContentAssetRef } from '../integrations/rm-assets/resolve-url.ts';
-import type { ResponsiveLayout } from '../lib/responsive-image-html.ts';
-import { renderResponsivePicture } from '../lib/responsive-image-html.ts';
+import {
+  inferResponsiveLayout,
+  openAncestorClasses,
+  renderResponsivePicture,
+} from '../lib/responsive-image-html.ts';
 import type { RmAssetsManifest } from '../integrations/rm-assets/types.ts';
 import {
   getImageEntryFromManifest,
   readRmAssetsManifest,
 } from '../lib/rm-assets.ts';
-
-function inferLayout(classNames: string): ResponsiveLayout {
-  if (classNames.includes('mediaColumn')) return 'mediaColumn';
-  if (classNames.includes('sectionMedia')) return 'sectionMedia';
-  return 'default';
-}
 
 function classNameProp(properties: Element['properties']): string {
   const raw = properties?.className;
@@ -40,7 +37,7 @@ function renderVideoHtml(
 }
 
 function transformImgTagsInHtml(html: string, manifest: RmAssetsManifest): string {
-  return html.replace(/<img\b[^>]*>/gi, (tag) => {
+  return html.replace(/<img\b[^>]*>/gi, (tag, offset: number) => {
     const src = attrFromTag(tag, 'src');
     if (!src.startsWith('/assets/')) return tag;
 
@@ -54,10 +51,11 @@ function transformImgTagsInHtml(html: string, manifest: RmAssetsManifest): strin
     if (!entry) return tag;
 
     const className = attrFromTag(tag, 'class');
+    const ancestorClasses = openAncestorClasses(html.slice(0, offset));
     return renderResponsivePicture({
       entry,
       alt: attrFromTag(tag, 'alt'),
-      layout: inferLayout(className),
+      layout: inferResponsiveLayout(`${ancestorClasses} ${className}`),
       className,
       loading: 'lazy',
       decoding: 'async',
@@ -127,7 +125,7 @@ export function rehypeResponsiveMedia() {
       if (!entry) return;
 
       const className = classNameProp(node.properties);
-      const layout = inferLayout(className);
+      const layout = inferResponsiveLayout(className);
       const alt = String(node.properties?.alt ?? '');
       const html = renderResponsivePicture({
         entry,

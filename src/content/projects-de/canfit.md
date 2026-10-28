@@ -3,13 +3,14 @@ slug: "canfit"
 name:
   en: "Canfit"
   de: "Canfit"
-projectType:
-  en: "C++ Desktop Application"
-  de: "C++-Desktop-Anwendung"
+format: op-cad-desktop-app
 year: "2025"
-company: "Qwadra"
+ongoing: true
+context: employment
+organization: "Qwadra"
+organizationUrl: "https://qwadra.com/"
 inDevelopment: false
-roles: ["front-end", "back-end", "cad", "3d-model"]
+stack: ["cpp", "mfc", "php", "cad"]
 description:
   en: "C++ and MFC development on Canfit, Qwadra's CAD application for custom prosthetic and orthotic design. Contributions to clinical modifier tools, 3D visualizations, macros, networking, and UI."
   de: "C++- und MFC-Entwicklung an Canfit, Qwadras CAD-Anwendung für individuelle Prothesen- und Orthesen-Designs. Beiträge zu klinischen Modifikator-Werkzeugen, 3D-Visualisierungen, Makros, Netzwerkfunktionen und UI."
@@ -27,6 +28,14 @@ order: 2
     <p>Bei <a href="https://qwadra.com/" target="_blank" rel="noopener noreferrer">Qwadra Vancouver</a> arbeite ich als Softwareentwickler an <a href="https://qwadra.com/solution/canfit-design-software/" target="_blank" rel="noopener noreferrer">Canfit</a>, Qwadras CAD-Anwendung für digitale Orthetik und Prothetik (O&amp;P).</p>
     <p>Anwender nutzen Canfit, um individuelle O&amp;P-Hilfsmittel präzise und effizient digital zu formen und zu gestalten. Canfit verarbeitet 3D-Patientenscans, manuelle Messungen oder beides. Seine Stärke liegt in einer Reihe intuitiver Werkzeuge, Vorlagen und Makros für anatomisch korrekte Modifikationen. Fertige Designs werden als Shape-Dateien für 3D-Druck oder CNC-Fertigung exportiert, etwa für Prothesenschäfte, Sprunggelenkorthesen und individuelle Schuheinlagen.</p>
     <p>Canfit war Pionier der CAD/CAM-Technologie in der O&amp;P und ist das Herzstück vieler digitaler O&amp;P-Workflows in Kliniken. Im Vergleich zur arbeitsintensiven traditionellen O&amp;P-Fertigung sind digitale Workflows hochgradig anpassbar, präzise und effizient.</p>
+  </section>
+  <section class="sectionMedia">
+    <div class="mediaColumn mediaColumn-intrinsic">
+      <figure>
+        <img src="/assets/img/canfit/op_process.png" alt="Digitaler O&amp;P-Workflow von Patientenscan bis zur gefertigten Hilfe.">
+        <figcaption class="center">Scan → Design in Canfit → Manufacture</figcaption>
+      </figure>
+    </div>
   </section>
   <section class="sectionText">
     <h2>Meine Beiträge</h2>

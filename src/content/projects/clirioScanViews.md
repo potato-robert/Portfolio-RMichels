@@ -3,13 +3,13 @@ slug: "clirioScanViews"
 name:
   en: "Clirio View"
   de: "Clirio View"
-projectType:
-  en: "Unity App"
-  de: "Unity App"
-year: "2024"
-company: "Clirio"
+format: xr-gis-app
+year: "2021–2024"
+context: employment
+organization: "Clirio"
+organizationUrl: "https://clir.io/"
 inDevelopment: false
-roles: ["vr", "front-end"]
+stack: ["xr", "unity", "csharp", "mrtk", "gis", "photogrammetry"]
 description:
   en: "A collection of features in the Clirio View apps for loading and viewing photogrammetry scans. Includes on-map, XR, comparison, and other views."
   de: "Eine Sammlung von Funktionen in den Clirio View Apps zum Laden und Anzeigen von Photogrammetrie-Scans. Enthält Karten-, XR-, Vergleichs- und andere Ansichten."

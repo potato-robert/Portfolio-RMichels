@@ -3,12 +3,11 @@ slug: "pavilions"
 name:
   en: "Pavilions"
   de: "Pavilions"
-projectType:
-  en: "Spatial Design"
-  de: "Raumgestaltung"
+format: spatial-design
 year: "2018"
+context: coursework
 inDevelopment: false
-roles: ["3d-model", "cad", "design"]
+stack: ["rhino", "cad", "3d-modelling"]
 description:
   en: "Pavilions is the result of a spatial design exercise. Three pavilions proposed as a public space in Surrey's Holland Park, featuring abstract, modular, and parametric architecture."
   de: "Pavilions ist das Ergebnis einer räumlichen Designübung. Drei Pavillons als öffentlicher Raum in Surreys Holland Park – mit abstrakter, modularer und parametrischer Architektur."

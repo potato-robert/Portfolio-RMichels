@@ -3,12 +3,11 @@ slug: "understandingClimateChange"
 name:
   en: "Understanding Climate Change"
   de: "Klimawandel verstehen"
-projectType:
-  en: "D3.js Website"
-  de: "D3.js Website"
+format: data-visualization
 year: "2018"
+context: coursework
 inDevelopment: false
-roles: ["d3js", "front-end"]
+stack: ["d3js"]
 description:
   en: "A website that uses D3.js to visually analyze climate change data. Data visualizations include line charts and stacked area charts of global climate change data, as well as a detailed choropleth map and other visualizations of Canadian weather data."
   de: "Eine Website, die D3.js nutzt, um Klimawandeldaten visuell zu analysieren. Visualisierungen umfassen Linien- und Stacked-Area-Charts globaler Klimadaten sowie eine detaillierte Choropleth-Karte und weitere Darstellungen kanadischer Wetterdaten."

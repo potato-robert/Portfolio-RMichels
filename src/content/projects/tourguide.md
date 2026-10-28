@@ -3,12 +3,12 @@ slug: "tourguide"
 name:
   en: "Tourguide"
   de: "Tourguide"
-projectType:
-  en: "Flutter App"
-  de: "Flutter App"
+format: cross-platform-app
 year: "2024"
+ongoing: true
+context: personal
 inDevelopment: false
-roles: ["android", "design"]
+stack: ["flutter", "firebase", "dart", "ai-development", "gcp"]
 description:
   en: "A cross-platform Flutter app that helps tourists navigate and learn about places along digitally guided tours. Available for Android and as a web app."
   de: "Eine plattformübergreifende Flutter-App, die Touristen hilft, sich auf digital geführten Touren zu orientieren und mehr über Orte zu erfahren. Verfügbar für Android und als Web-App."

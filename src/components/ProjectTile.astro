@@ -8,19 +8,19 @@ interface Props {
   name: string;
   type: string;
   inDevelopment?: boolean;
-  roles?: string[];
+  stack?: string[];
   locale: Locale;
   href?: string;
 }
 
-const { slug, name, type, inDevelopment = false, roles = [], locale, href } = Astro.props;
+const { slug, name, type, inDevelopment = false, stack = [], locale, href } = Astro.props;
 const prefix = locale === 'de' ? '/de' : '';
 const finalHref = href ?? `${prefix}${inDevelopment ? `/development/${slug}` : `/${slug}`}`;
-const roleString = roles.join(',');
+const stackAttr = stack.join(' ');
 const tileSrc = `/assets/img/${slug}.jpg`;
 ---
 
-<article class="projRow projRow--visible" data-js={roleString || undefined}>
+<article class="projRow projRow--visible" data-stack={stackAttr || undefined}>
   <div class:list={['projPanel', inDevelopment && 'inDevelopment']}>
     <a href={finalHref} title={name} aria-label={`${name} — ${type}`}>
       <ResponsiveImage

@@ -1,17 +1,18 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectTile from '../../components/ProjectTile.astro';
-import { roles } from '../../lib/roles';
+import { stacksInUse } from '../../lib/stack';
 import { getAllProjects, projectToTileData } from '../../lib/projects';
 import { t } from '../../lib/i18n';
 
 const locale = 'de' as const;
 const projects = await getAllProjects(locale);
+const filterStacks = stacksInUse(projects.flatMap((project) => project.data.stack));
 ---
 
 <BaseLayout
   title="Alle Projekte | Robert Michels Portfolio"
-  description="Alle Projekte von Robert Michels: Games, VR, Web und Apps. Nach Rolle filtern und Fallstudien auf rmichels.com entdecken."
+  description="Alle Projekte von Robert Michels: Games, XR, Web und Apps. Nach Technologie filtern und Fallstudien auf rmichels.com entdecken."
   locale={locale}
   pageType="projects"
   canonicalPath="/de/projects"
@@ -21,8 +22,8 @@ const projects = await getAllProjects(locale);
       <div>
         <h1>{t('filter_projects', locale)} (<span id="projectCount">{projects.length}</span>)</h1>
       </div>
-      {roles.map((role) => (
-        <button class="filterBtn" data-js={role.slug}>{role.name.de}</button>
+      {filterStacks.map((entry) => (
+        <button class="filterBtn" data-js={entry.slug}>{entry.label}</button>
       ))}
     </div>
     <div id="projectTileHidden"></div>
@@ -30,7 +31,7 @@ const projects = await getAllProjects(locale);
       {projects.map((project) => {
         const tile = projectToTileData(project, locale);
         return (
-          <ProjectTile slug={tile.slug} name={tile.name} type={tile.type} inDevelopment={tile.inDevelopment} roles={tile.roles} locale={locale} />
+          <ProjectTile slug={tile.slug} name={tile.name} type={tile.type} inDevelopment={tile.inDevelopment} stack={tile.stack} locale={locale} />
         );
       })}
     </div>

@@ -3,12 +3,11 @@ slug: "cyberview"
 name:
   en: "Cyberview"
   de: "Cyberview"
-projectType:
-  en: "2D Game"
-  de: "2D-Spiel"
+format: game
 year: "2019"
+context: coursework
 inDevelopment: false
-roles: ["game", "design"]
+stack: ["unity", "csharp"]
 description:
   en: "A narrative-driven 2D platformer, which revolves around unit 241, an AI-equipped droid that gains consciousness. Using a range of available body mods, unit 241 has to fight enemies, solve puzzles, and escape the building."
   de: "Ein erzählerisches 2D-Platformer-Spiel um Einheit 241, einen KI-ausgestatteten Droiden, der Bewusstsein erlangt. Mit verschiedenen Body Mods bekämpft Einheit 241 Gegner, löst Rätsel und entkommt aus dem Gebäude."

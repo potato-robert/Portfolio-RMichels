@@ -3,13 +3,14 @@ slug: "canfit"
 name:
   en: "Canfit"
   de: "Canfit"
-projectType:
-  en: "C++ Desktop Application"
-  de: "C++-Desktop-Anwendung"
+format: op-cad-desktop-app
 year: "2025"
-company: "Qwadra"
+ongoing: true
+context: employment
+organization: "Qwadra"
+organizationUrl: "https://qwadra.com/"
 inDevelopment: false
-roles: ["front-end", "back-end", "cad", "3d-model"]
+stack: ["cpp", "mfc", "php", "cad"]
 description:
   en: "C++ and MFC development on Canfit, Qwadra's CAD application for custom prosthetic and orthotic design. Contributions to clinical modifier tools, 3D visualizations, macros, networking, and UI."
   de: "C++- und MFC-Entwicklung an Canfit, Qwadras CAD-Anwendung für individuelle Prothesen- und Orthesen-Designs. Beiträge zu klinischen Modifikator-Werkzeugen, 3D-Visualisierungen, Makros, Netzwerkfunktionen und UI."
@@ -27,6 +28,14 @@ order: 2
     <p>At <a href="https://qwadra.com/" target="_blank" rel="noopener noreferrer">Qwadra Vancouver</a>, I work as a software developer on <a href="https://qwadra.com/solution/canfit-design-software/" target="_blank" rel="noopener noreferrer">Canfit</a>, Qwadra's computer-aided design (CAD) application for digital orthotics and prosthetics (O&amp;P).</p>
     <p>Practitioners use Canfit to shape and design custom O&amp;P devices digitally in a precise and efficient way. Canfit accepts 3D patient scans, manual measurements, or both. Its strength lies in a range of intuitive tools, templates, and macros that support anatomically correct modifications. Completed designs are exported as shape files for 3D printing or CNC manufacturing of devices like prosthetic sockets, ankle braces, and custom shoe insoles.</p>
     <p>Canfit pioneered CAD/CAM O&amp;P technology and is the centerpiece of many clinics' digital O&amp;P workflows. Compared with labor-intensive traditional O&amp;P manufacturing, digital workflows are highly customizable, precise, and efficient.</p>
+  </section>
+  <section class="sectionMedia">
+    <div class="mediaColumn mediaColumn-intrinsic">
+      <figure>
+        <img src="/assets/img/canfit/op_process.png" alt="Orthotic and prosthetic digital design workflow from patient scan to manufactured device.">
+        <figcaption class="center">Scan → Design in Canfit → Manufacture</figcaption>
+      </figure>
+    </div>
   </section>
   <section class="sectionText">
     <h2>My Contributions</h2>

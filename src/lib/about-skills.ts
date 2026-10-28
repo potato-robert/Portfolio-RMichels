@@ -31,8 +31,8 @@ const aboutSkills: AboutSkillGroup[] = [
       { label: 'Blazor' },
       { label: 'Unity XRI' },
       { label: 'Three.js' },
-      { label: 'D3.js' },
-      { label: 'Tailwind' },
+      { label: 'React' },
+      { label: 'Astro' },
     ],
   },
   {

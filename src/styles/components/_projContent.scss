@@ -192,6 +192,94 @@ main {
 				max-height: 40rem;
 			}
 
+			// Poster beside a wide diagram. Each image keeps its own aspect ratio.
+			// A shared row height lets the taller image paint over the next row.
+			&-artifactPair {
+				align-items: flex-start;
+
+				> figure {
+					flex: 1 1 100%;
+					min-width: 0;
+				}
+
+				> figure:first-child {
+					max-width: 26rem;
+					margin-inline: auto;
+				}
+
+				@include lg {
+					align-items: center;
+
+					> figure:first-child {
+						flex: 0 1 26rem;
+						margin-inline: 0;
+					}
+
+					> figure:last-child {
+						flex: 1 1 0;
+					}
+				}
+
+				.responsivePicture,
+				img {
+					display: block;
+					width: 100%;
+					height: auto;
+					object-fit: contain;
+				}
+			}
+
+			// Full-page captures. Show the top of each page in one frame;
+			// the lightbox still opens the full screenshot.
+			&-pagePreview {
+				align-items: stretch;
+
+				> figure {
+					flex: 1 1 100%;
+					min-width: 0;
+					overflow: hidden;
+
+					@include lg {
+						flex: 1 1 0;
+					}
+				}
+
+				> figure .responsivePicture {
+					display: block;
+					position: relative;
+					width: 100%;
+					aspect-ratio: 4 / 5;
+					overflow: hidden;
+					background-color: _colour(bg);
+
+					&::after {
+						content: "";
+						position: absolute;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						height: 4.5rem;
+						background: linear-gradient(to bottom, rgba(_colour(bg), 0), _colour(bg));
+						pointer-events: none;
+					}
+				}
+
+				> figure .responsivePicture img {
+					position: absolute;
+					inset: 0;
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					object-position: top center;
+				}
+			}
+
+			> .auto-resizable-iframe {
+				flex: 1 1 100%;
+				min-width: 0;
+				width: 100%;
+			}
+
 			&-centered {
 				justify-content: center;
 			}
@@ -284,6 +372,26 @@ main {
 				width: 100%;
 				> * {
 					width: 100%;
+				}
+			}
+
+			// Diagrams stay at native resolution and shrink only when the column is narrower.
+			&-intrinsic {
+				width: 100%;
+
+				> * {
+					width: 100%;
+				}
+
+				figure .responsivePicture {
+					display: flex;
+					justify-content: center;
+
+					img {
+						width: 100%;
+						height: auto;
+						margin-inline: auto;
+					}
 				}
 			}
 		}
