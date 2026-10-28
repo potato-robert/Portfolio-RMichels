@@ -3,12 +3,11 @@ slug: "amae"
 name:
   en: "Amae"
   de: "Amae"
-projectType:
-  en: "UX / UI Mockup"
-  de: "UX / UI Mockup"
+format: prototype
 year: "2019"
+context: coursework
 inDevelopment: false
-roles: ["design", "android"]
+stack: ["figma", "prototyping", "ux-ui-wireframing"]
 description:
   en: "Amae is a utility app for busy parents. Amae helps parents to manage their time, learn about parenting and get help easily and quickly."
   de: "Amae ist eine Utility-App für vielbeschäftigte Eltern. Amae hilft Eltern, ihre Zeit zu managen, mehr über Erziehung zu lernen und schnell Hilfe zu erhalten."
@@ -107,17 +106,17 @@ order: 6
       <p>Im Folgenden finden Sie eine Auswahl verschiedener Design-Artefakte aus diesem Projekt. Diese repräsentieren viele Phasen unseres Prozesses, von der Erforschung unserer Zielgruppe und ihrer Bedürfnisse über die Planung von UX-Flows und Wireframes bis hin zu unserer abschließenden Präsentation des Mockups über eine fiktive Produktwebsite, die in einem zweitägigen Sprint erstellt wurde.</p>
   </div>
     <figure ignorecarousel>
-      <div class="mediaRow mediaRow-equalWidth mediaRow-equalHeight mediaRow-maxHeightMd">
+      <div class="mediaRow mediaRow-artifactPair">
         <figure>
         <img src="/assets/img/amae/lqip/personaChristina.jpg" alt="amae – persona Christina">
         </figure>
         <figure>
-          <img src="/assets/img/amae/lqip/stage3WireflowsSimplified.jpg" alt="amae – stage3Wireflows Simplified">
+          <img src="/assets/img/amae/lqip/stage3WireflowsSimplified.png" alt="amae – stage3Wireflows Simplified">
         </figure>
       </div>
     </figure>
     <figure ignorecarousel>
-      <div class="mediaRow">
+      <div class="mediaRow mediaRow-pagePreview">
         <figure>
           <img src="/assets/img/amae/lqip/site-home.jpg" alt="amae – site home">
         </figure>

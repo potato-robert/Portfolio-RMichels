@@ -3,13 +3,14 @@ slug: "canfit"
 name:
   en: "Canfit"
   de: "Canfit"
-projectType:
-  en: "C++ Desktop Application"
-  de: "C++-Desktop-Anwendung"
+format: op-cad-desktop-app
 year: "2025"
-company: "Qwadra"
+ongoing: true
+context: employment
+organization: "Qwadra"
+organizationUrl: "https://qwadra.com/"
 inDevelopment: false
-roles: ["front-end", "back-end", "cad", "3d-model"]
+stack: ["cpp", "mfc", "php", "cad"]
 description:
   en: "C++ and MFC development on Canfit, Qwadra's CAD application for custom prosthetic and orthotic design. Contributions to clinical modifier tools, 3D visualizations, macros, networking, and UI."
   de: "C++- und MFC-Entwicklung an Canfit, Qwadras CAD-Anwendung für individuelle Prothesen- und Orthesen-Designs. Beiträge zu klinischen Modifikator-Werkzeugen, 3D-Visualisierungen, Makros, Netzwerkfunktionen und UI."

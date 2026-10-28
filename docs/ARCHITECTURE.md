@@ -7,7 +7,7 @@ The site is a **static Astro** build. All HTML is generated at build time from:
 - **Pages** in `src/pages/` (and `src/pages/de/` for German)
 - **Project metadata + body** in `src/content/projects/*.md` (EN) and `src/content/projects-de/*.md` (DE)
 - **UI strings** in `src/i18n/ui-en.json` and `ui-de.json`
-- **Roles** for filtering in `src/lib/roles.ts`
+- **Stack** for case-study tags and `?filter=` in `src/lib/stack.ts`
 
 No MySQL or PHP at runtime after cutover.
 
@@ -70,8 +70,11 @@ Two collections share the same Zod schema (`src/content.config.ts`):
 Frontmatter fields:
 
 - `slug` — URL override (camelCase; not in Zod — Astro reserved)
-- `name`, `projectType`, `description` — `{ en, de }`
-- `year`, `roles`, `links`, `heroAltLayout`, `threeMockup`, `inDevelopment`, `order`
+- `name`, `description` — `{ en, de }`
+- `format` — slug from `src/lib/formats.ts` (tile subtitle and meta)
+- `year`, optional `ongoing`, `context` (`employment` | `personal` | `coursework`), optional `organization` / `organizationUrl`
+- `stack` — slugs from `src/lib/stack.ts` (meta labels and the single `?filter=` value)
+- `links`, `heroAltLayout`, `threeMockup`, `inDevelopment`, `order`
 
 Markdown body = case study HTML sections (former `#projContent`).
 

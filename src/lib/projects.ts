@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { getFormatLabel } from './formats';
 import type { Locale } from './i18n';
 
 export type ProjectEntry =
@@ -43,9 +44,15 @@ export async function getHomeProjects(locale: Locale = 'en'): Promise<ProjectEnt
   return projects.filter((p) => !p.data.hideFromHome);
 }
 
-export function filterByRoles(projects: ProjectEntry[], filters: string[]): ProjectEntry[] {
-  if (!filters.length) return projects;
-  return projects.filter((p) => filters.some((f) => p.data.roles.includes(f)));
+export function filterByStack(projects: ProjectEntry[], slug: string | null): ProjectEntry[] {
+  if (!slug) return projects;
+  return projects.filter((p) => (p.data.stack as readonly string[]).includes(slug));
+}
+
+/** Closed ranges are stored as written. Open ranges append a localized "present" label. */
+export function formatProjectYear(year: string, ongoing: boolean, presentLabel: string): string {
+  if (!ongoing) return year;
+  return `${year}–${presentLabel}`;
 }
 
 export function projectToTileData(project: ProjectEntry, locale: Locale) {
@@ -54,9 +61,9 @@ export function projectToTileData(project: ProjectEntry, locale: Locale) {
   return {
     slug,
     name: getLocalized(project.data.name, locale),
-    type: getLocalized(project.data.projectType, locale),
+    type: getFormatLabel(project.data.format, locale),
     inDevelopment: project.data.inDevelopment,
-    roles: project.data.roles,
+    stack: project.data.stack,
     href: project.data.inDevelopment ? `${prefix}/development/${slug}` : `${prefix}/${slug}`,
   };
 }

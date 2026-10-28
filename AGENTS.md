@@ -51,7 +51,7 @@ npm run test:e2e       # Playwright (after build)
 │   ├── layouts/BaseLayout.astro, ProjectLayout.astro
 │   ├── components/          # Header, Footer, ProjectTile, etc.
 │   ├── islands/             # Client TS: Menu, Lenis, Three.js, filters
-│   ├── lib/projects.ts, roles.ts, i18n.ts
+│   ├── lib/projects.ts, stack.ts, i18n.ts
 │   ├── pages/               # EN routes
 │   └── pages/de/            # DE routes
 ├── scripts/
@@ -76,7 +76,7 @@ const locale = 'en';
 
 ## Case Study Pattern
 
-1. Add `src/content/projects/{slug}.md` with frontmatter (`slug`, `name`, `projectType`, `roles`, etc.) and markdown body
+1. Add `src/content/projects/{slug}.md` with frontmatter (`slug`, `name`, `format`, `stack`, `context`, etc.) and markdown body
 2. Add hero `assets/img/{slug}.jpg` and gallery masters under `assets/img/{slug}/` (rm-assets generates `public/assets/` on build)
 3. Astro generates `/slug` and `/de/slug` via `src/pages/[slug].astro`
 
@@ -100,13 +100,12 @@ UI strings: `t('key', locale)` from `src/lib/i18n.ts`. Language toggle links to 
 
 | Topic | Behavior |
 |-------|----------|
-| Session filter | `sessionStorage` key `rmVisitorFilter` stores the last `?filter=` value (comma-separated role slugs) for the browser tab. It persists when visiting `/` or `/projects` **without** a query string until the tab is closed. |
-| OR semantics | Comma-separated filters match projects whose `roles` include **any** listed slug (OR), on **both** home and `/projects`. Server-side helpers in `src/lib/projects.ts` already use OR. |
-| Home | `HomeFilter.ts`: `?filter=vr` writes session storage and hides non-matching tiles; reads session when no query. |
-| Projects | `ProjectFilter.ts`: URL preselect and multi-select use OR semantics. |
-| Links | Filter-aware nav links append `?filter=` from session storage when present. |
+| URL only | The homepage shows a filtered set only when `?filter=` is present. Nothing is stored in `sessionStorage`, and home links do not rewrite the query. |
+| One slug | `?filter=` is a single stack slug from `src/lib/stack.ts`. A project matches when its `stack` includes that slug. An unknown slug, a comma-separated value, or a slug that matches nothing is ignored and the unfiltered set is shown. |
+| Home | `HomeFilter.ts`: with a matching filter, every matching tile is shown and the zigzag is reapplied to the visible set. With no usable filter, the first six tiles show. |
+| Projects | `ProjectFilter.ts`: one button is selected at a time. Clicking it writes or clears `?filter=` with `history.replaceState`. |
 
-Quick check: `/?filter=vr,front-end` shows tiles with role `vr` **or** `front-end`.
+Quick check: `/?filter=unity` shows projects whose stack includes `unity`. `/` after that visit shows the first six tiles again.
 
 ## Privacy
 

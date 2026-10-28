@@ -4,6 +4,7 @@ import ProjectLanding from '../components/ProjectLanding.astro';
 import ProjectMeta from '../components/ProjectMeta.astro';
 import type { CollectionEntry } from 'astro:content';
 import type { Locale } from '../lib/i18n';
+import { getFormatLabel } from '../lib/formats';
 import { getLocalized, getProjectSlug } from '../lib/projects';
 import { projectMetaDescription } from '../lib/seo-meta';
 
@@ -15,14 +16,14 @@ interface Props {
 const { project, locale } = Astro.props;
 const p = project.data;
 const name = getLocalized(p.name, locale);
-const projectType = getLocalized(p.projectType, locale);
+const formatLabel = getFormatLabel(p.format, locale);
 const titleSuffix =
   locale === 'de' ? 'Portfolio von Robert Michels' : 'Robert Michels Portfolio';
 const devLabel = p.inDevelopment ? (locale === 'de' ? ' (In Arbeit)' : ' (In Development)') : '';
 const title = `${name}${devLabel} | ${titleSuffix}`;
 const description = projectMetaDescription(
   name,
-  projectType,
+  formatLabel,
   getLocalized(p.description, locale),
   locale,
 );

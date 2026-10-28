@@ -3,12 +3,12 @@ slug: "portfolio"
 name:
   en: "Portfolio Website"
   de: "Portfolio Website"
-projectType:
-  en: "Static Website"
-  de: "Statische Website"
+format: web-app
 year: "2020"
+ongoing: true
+context: personal
 inDevelopment: false
-roles: ["front-end", "back-end", "threejs", "design"]
+stack: ["astro", "typescript", "threejs", "sass"]
 description:
   en: "A static portfolio site built with Astro, TypeScript islands, Three.js, and Sass."
   de: "Eine statische Portfolio-Website mit Astro, TypeScript-Islands, Three.js und Sass."
@@ -21,7 +21,7 @@ order: 8
 
 <section class="sectionText">
     <h2>Overview</h2>
-    <p>This portfolio website was designed in Figma and is built as a static site with Astro, Sass, and Three.js client islands. Development began in 2020; the site was migrated from a LAMP stack to Astro for faster loads and simpler deployment. Project metadata lives in markdown content collections, which keeps case studies organized and version-controlled. The homepage filter still supports custom portfolio links when applying for jobs — for example, <a href="https://rmichels.com/?filter=vr">showing only VR projects.</a></p>
+    <p>This portfolio website was designed in Figma and is built as a static site with Astro, Sass, and Three.js client islands. Development began in 2020; the site was migrated from a LAMP stack to Astro for faster loads and simpler deployment. Project metadata lives in markdown content collections, which keeps case studies organized and version-controlled. The homepage filter still supports custom portfolio links when applying for jobs — for example, <a href="https://rmichels.com/?filter=unity">showing only Unity projects.</a></p>
   </section>
   <section class="sectionMedia">
     <div class="mediaColumn">

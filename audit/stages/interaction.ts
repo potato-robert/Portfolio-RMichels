@@ -238,7 +238,7 @@ async function runClickInteractionScenarios(
   if (auditPage.path === '/projects' || auditPage.path === '/de/projects') {
     await startFrameSampling(page);
     const t0 = Date.now();
-    const btn = page.locator('.filterBtn[data-js="vr"]');
+    const btn = page.locator('.filterBtn[data-js="unity"]');
     if (await btn.count()) {
       await btn.click();
       await page.waitForTimeout(300);

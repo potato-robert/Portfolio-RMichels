@@ -1,43 +1,52 @@
 import { test, expect } from './fixtures';
 
-test.describe('projects page filter', () => {
-  test('OR logic updates projectCount and URL filter pre-selects buttons', async ({ page }) => {
+test.describe('projects page stack filter', () => {
+  test('selects one stack at a time and writes it to the URL', async ({ page }) => {
     await page.goto('/projects');
 
     const projectCount = page.locator('#projectCount');
     const initialCount = Number(await projectCount.textContent());
     expect(initialCount).toBeGreaterThan(0);
 
-    const vrBtn = page.locator('.filterBtn[data-js="vr"]');
-    const frontEndBtn = page.locator('.filterBtn[data-js="front-end"]');
+    const unityBtn = page.locator('.filterBtn[data-js="unity"]');
+    const csharpBtn = page.locator('.filterBtn[data-js="csharp"]');
 
-    await vrBtn.click();
-    await expect(vrBtn).toHaveClass(/filterBtn--selected/);
-    const vrOnlyCount = Number(await projectCount.textContent());
-    expect(vrOnlyCount).toBe(3);
+    await unityBtn.click();
+    await expect(unityBtn).toHaveClass(/filterBtn--selected/);
+    await expect(page).toHaveURL(/\/projects\?filter=unity$/);
+    await expect(projectCount).toHaveText('4');
 
-    await frontEndBtn.click();
-    await expect(frontEndBtn).toHaveClass(/filterBtn--selected/);
-    const orCount = Number(await projectCount.textContent());
-    expect(orCount).toBeGreaterThan(1);
-    expect(orCount).toBeGreaterThanOrEqual(vrOnlyCount);
+    await csharpBtn.click();
+    await expect(csharpBtn).toHaveClass(/filterBtn--selected/);
+    await expect(unityBtn).not.toHaveClass(/filterBtn--selected/);
+    await expect(page).toHaveURL(/\/projects\?filter=csharp$/);
+    await expect(projectCount).toHaveText('5');
 
-    await page.goto('/projects?filter=vr');
-    await expect(page.locator('.filterBtn[data-js="vr"]')).toHaveClass(/filterBtn--selected/);
-    await expect(projectCount).toHaveText(String(vrOnlyCount));
-  });
-
-  test('?filter=vr,front-end applies OR in one pass', async ({ page, context }) => {
-    await page.goto('/projects?filter=vr,front-end');
-
-    await expect(page.locator('.filterBtn[data-js="vr"]')).toHaveClass(/filterBtn--selected/);
-    await expect(page.locator('.filterBtn[data-js="front-end"]')).toHaveClass(/filterBtn--selected/);
-
-    const projectCount = page.locator('#projectCount');
-    const orFromUrl = Number(await projectCount.textContent());
-    expect(orFromUrl).toBeGreaterThan(1);
+    await csharpBtn.click();
+    await expect(csharpBtn).not.toHaveClass(/filterBtn--selected/);
+    await expect(page).toHaveURL(/\/projects$/);
+    await expect(projectCount).toHaveText(String(initialCount));
 
     const stored = await page.evaluate(() => sessionStorage.getItem('rmVisitorFilter'));
-    expect(stored).toBe('vr,front-end');
+    expect(stored).toBeNull();
+  });
+
+  test('?filter=unity pre-selects that button only', async ({ page }) => {
+    await page.goto('/projects?filter=unity');
+
+    await expect(page.locator('.filterBtn[data-js="unity"]')).toHaveClass(/filterBtn--selected/);
+    await expect(page.locator('.filterBtn.filterBtn--selected')).toHaveCount(1);
+    await expect(page.locator('#projectCount')).toHaveText('4');
+  });
+
+  test('an unmatched filter shows every project and selects no button', async ({ page }) => {
+    await page.goto('/projects');
+    const initialCount = await page.locator('#projectCount').textContent();
+
+    await page.goto('/projects?filter=vr,front-end');
+
+    await expect(page.locator('.filterBtn.filterBtn--selected')).toHaveCount(0);
+    await expect(page.locator('#projectCount')).toHaveText(initialCount ?? '');
+    await expect(page).not.toHaveURL(/filter=/);
   });
 });

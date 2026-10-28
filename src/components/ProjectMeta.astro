@@ -2,8 +2,9 @@
 import type { CollectionEntry } from 'astro:content';
 import type { Locale } from '../lib/i18n';
 import { t } from '../lib/i18n';
-import { getLocalized } from '../lib/projects';
-import { getRoleBySlug } from '../lib/roles';
+import { getFormatLabel } from '../lib/formats';
+import { getStackLabel } from '../lib/stack';
+import { formatProjectYear } from '../lib/projects';
 
 interface Props {
   project: CollectionEntry<'projects'> | CollectionEntry<'projects-de'>;
@@ -12,41 +13,39 @@ interface Props {
 
 const { project, locale } = Astro.props;
 const p = project.data;
-const teammembers = p.teammembers ?? [];
+const SIAT_URL = 'https://www.sfu.ca/siat.html';
+const formatLabel = getFormatLabel(p.format, locale);
+const yearLabel = formatProjectYear(p.year, p.ongoing, t('year_present', locale));
+const contextLabel =
+  p.context === 'coursework'
+    ? t('context_coursework', locale)
+    : p.context === 'personal'
+      ? t('context_personal', locale)
+      : (p.organization ?? '');
+const contextHref = p.context === 'coursework' ? SIAT_URL : p.organizationUrl;
 ---
 
 <div id="projMeta">
   <div class="projMetaItem">
-    <h2>{t('type', locale)}</h2>
-    <p>{getLocalized(p.projectType, locale)}</p>
+    <h2>{t('format', locale)}</h2>
+    <p>{formatLabel}</p>
   </div>
   <div class="projMetaItem">
     <h2>{t('year', locale)}</h2>
-    <p>{p.year}</p>
+    <p>{yearLabel}</p>
   </div>
-  <div class="projMetaItem skillsApplied">
-    <h2>{t('skills_applied', locale)}</h2>
+  <div class="projMetaItem stack">
+    <h2>{t('stack', locale)}</h2>
     <ul>
-      {p.roles.map((slug) => {
-        const role = getRoleBySlug(slug);
-        return <li>{role ? (locale === 'de' ? role.name.de : role.name.en) : slug}</li>;
-      })}
+      {p.stack.map((item) => <li>{getStackLabel(item)}</li>)}
     </ul>
   </div>
-  <div class="projMetaItem team">
-    {!p.company ? (
-      <>
-        <h2>{t('team', locale)}</h2>
-        <ul>
-          {teammembers.length === 0 ? <li>{t('personal_project', locale)}</li> : null}
-          {teammembers.map((member) => <li>{member}</li>)}
-        </ul>
-      </>
+  <div class="projMetaItem context">
+    <h2>{t('context', locale)}</h2>
+    {contextHref ? (
+      <a href={contextHref} target="_blank" rel="noopener noreferrer">{contextLabel}</a>
     ) : (
-      <>
-        <h2>{t('company', locale)}</h2>
-        <a href="https://clir.io/" target="_blank" rel="noopener noreferrer">{p.company}</a>
-      </>
+      <p>{contextLabel}</p>
     )}
   </div>
 </div>

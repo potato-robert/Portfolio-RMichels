@@ -50,11 +50,11 @@
 		@include sm {
 			flex-basis: 25%;
 
-			&.skillsApplied {
+			&.stack {
 				flex-basis: 30%;
 			}
 
-			&.team {
+			&.context {
 				flex-basis: 20%;
 			}
 		}
@@ -86,18 +86,12 @@
 		@include inTextLink;
 	}
 
-	.skillsApplied {
-
+	.stack {
 		ul {
 			display: flex;
 			flex-wrap: wrap;
 			column-gap: .5rem;
-		}
-		
-	}
 
-	.skillsApplied, .team {
-		ul {
 			li:not(:last-child)::after {
 				content: ",";
 			}

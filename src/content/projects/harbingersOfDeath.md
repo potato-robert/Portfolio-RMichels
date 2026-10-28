@@ -3,12 +3,11 @@ slug: "harbingersOfDeath"
 name:
   en: "Harbingers Of Death"
   de: "Harbingers Of Death"
-projectType:
-  en: "LAMP Website"
-  de: "LAMP Website"
+format: web-app
 year: "2018"
+context: coursework
 inDevelopment: false
-roles: ["back-end", "front-end", "java-dev"]
+stack: ["php", "mysql"]
 description:
   en: "'Are you going to die?' compiles historic superstitions about death. This project satirizes present-day conspiracy theories, by presenting now-defunct superstitions as if they are real."
   de: "'Are you going to die?' sammelt historische Aberglauben über den Tod. Dieses Projekt satirisiert heutige Verschwörungstheorien, indem es veraltete Aberglauben als real darstellt."

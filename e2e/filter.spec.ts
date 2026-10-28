@@ -1,31 +1,25 @@
 import { test, expect } from './fixtures';
 
-test.describe('homepage filter session', () => {
-  test('?filter=vr sets session filter and home link preserves it', async ({ page }) => {
-    await page.goto('/?filter=vr');
+test.describe('homepage stack filter', () => {
+  test('filters only while ?filter= is in the URL', async ({ page }) => {
+    await page.goto('/?filter=unity');
 
-    await page.waitForFunction(() => sessionStorage.getItem('rmVisitorFilter') === 'vr');
-
-    await expect(page.locator('#MyWork .projRow:not(.projRow--hidden)')).toHaveCount(3);
-
-    await page.goto('/about');
-
-    const homeLink = page.locator('a[data-home-link]').first();
-    await expect(homeLink).toHaveAttribute('href', /\?filter=vr$/);
-  });
-
-  test('session filter persists on bare / and filters rows', async ({ page }) => {
-    await page.goto('/?filter=vr');
-    await page.waitForFunction(() => sessionStorage.getItem('rmVisitorFilter') === 'vr');
+    await expect(page.locator('#MyWork .projRow:not(.projRow--hidden)')).toHaveCount(4);
+    const stored = await page.evaluate(() => sessionStorage.getItem('rmVisitorFilter'));
+    expect(stored).toBeNull();
 
     await page.goto('/');
+    await expect(page.locator('#MyWork .projRow:not(.projRow--hidden)')).toHaveCount(6);
 
-    const stored = await page.evaluate(() => sessionStorage.getItem('rmVisitorFilter'));
-    expect(stored).toBe('vr');
+    await page.goto('/about');
+    await expect(page.locator('header a[aria-label="Home"]')).toHaveAttribute('href', '/');
+  });
 
-    await expect(page.locator('#MyWork .projRow:not(.projRow--hidden)')).toHaveCount(3);
+  test('an unmatched filter shows the first six tiles', async ({ page }) => {
+    await page.goto('/?filter=vr');
 
-    const homeLink = page.locator('a[data-home-link]').first();
-    await expect(homeLink).toHaveAttribute('href', /\?filter=vr$/);
+    await expect(page.locator('#MyWork .projRow:not(.projRow--hidden)')).toHaveCount(6);
+    await expect(page).not.toHaveURL(/filter=/);
+    await expect(page.locator('#MyWork .projRow:not(.projRow--hidden) h2').first()).toHaveText('Tourguide');
   });
 });

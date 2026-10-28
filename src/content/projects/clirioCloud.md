@@ -3,13 +3,13 @@ slug: "clirioCloud"
 name:
   en: "Clirio Cloud"
   de: "Clirio Cloud"
-projectType:
-  en: "Blazor Web App"
-  de: "Blazor Web App"
-year: "2023"
-company: "Clirio"
+format: web-app
+year: "2021–2024"
+context: employment
+organization: "Clirio"
+organizationUrl: "https://clir.io/"
 inDevelopment: false
-roles: ["blazor", "back-end", "front-end"]
+stack: ["blazor", "csharp", "dotnet", "threejs"]
 description:
   en: "A web-based collection of tools for managing workspaces in Clirio View, plus a lightweight scan-sharing webviewer. Includes dashboard, workspace management, interactive Bing maps, and embeddable 3D scan shares."
   de: "Eine webbasierte Sammlung von Tools zur Verwaltung von Arbeitsbereichen in Clirio View plus ein leichtgewichtiger Webviewer zum Teilen von Scans. Enthält Dashboard, Workspace-Verwaltung, interaktive Bing-Karten und einbettbare 3D-Scan-Freigaben."

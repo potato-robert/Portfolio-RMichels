@@ -1,4 +1,6 @@
-const activeFilters: string[] = [];
+import { stackFilterWithMatches } from '../lib/stack';
+
+let activeFilter: string | null = null;
 
 function sortProjects() {
   const hiddenDiv = document.getElementById('projectTileHidden');
@@ -14,9 +16,31 @@ function sortProjects() {
   itemsArr.forEach((item) => visibleDiv.appendChild(item));
 }
 
-function rowMatchesFilters(roles: string[]): boolean {
-  if (activeFilters.length === 0) return true;
-  return activeFilters.some((slug) => roles.includes(slug));
+function rowMatchesFilter(stack: string[]): boolean {
+  if (!activeFilter) return true;
+  return stack.includes(activeFilter);
+}
+
+function paintButtons() {
+  document.querySelectorAll<HTMLButtonElement>('.filterBtn').forEach((btn) => {
+    btn.classList.toggle('filterBtn--selected', btn.dataset.js === activeFilter);
+  });
+}
+
+function dropFilterParam(): void {
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has('filter')) return;
+  url.searchParams.delete('filter');
+  history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+}
+
+function writeFilterUrl() {
+  const url = new URL(window.location.href);
+  if (activeFilter) url.searchParams.set('filter', activeFilter);
+  else url.searchParams.delete('filter');
+  const next = `${url.pathname}${url.search}${url.hash}`;
+  const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  if (next !== current) history.replaceState(null, '', next);
 }
 
 function applyActiveFilters() {
@@ -30,17 +54,19 @@ function applyActiveFilters() {
   window.locoScroll?.update();
 }
 
+function setActiveFilter(slug: string | null) {
+  activeFilter = slug;
+  paintButtons();
+  writeFilterUrl();
+  applyActiveFilters();
+}
+
 function initFilterButtons() {
   document.querySelectorAll<HTMLButtonElement>('.filterBtn').forEach((item) => {
     const slug = item.dataset.js;
     if (!slug) return;
     item.addEventListener('click', () => {
-      item.classList.toggle('filterBtn--selected');
-      const selected = item.classList.contains('filterBtn--selected');
-      const index = activeFilters.indexOf(slug);
-      if (selected && index === -1) activeFilters.push(slug);
-      else if (!selected && index > -1) activeFilters.splice(index, 1);
-      applyActiveFilters();
+      setActiveFilter(activeFilter === slug ? null : slug);
     });
   });
 }
@@ -52,13 +78,13 @@ function initProjectRows() {
 
   let counter = 0;
   document.querySelectorAll<HTMLElement>('.projRow').forEach((item) => {
-    const roles = (item.dataset.js ?? '').split(',').filter(Boolean);
+    const stack = (item.dataset.stack ?? '').split(/\s+/).filter(Boolean);
     const position = counter;
     item.setAttribute('data-tile', String(position));
     counter++;
 
     window.addEventListener('updateProject', () => {
-      const active = rowMatchesFilters(roles);
+      const active = rowMatchesFilter(stack);
 
       if (active) {
         item.classList.remove('projRow--hidden');
@@ -71,23 +97,18 @@ function initProjectRows() {
   });
 }
 
-import { writeVisitorFilterSession } from '../lib/visitor-filter';
-
 function applyUrlFilter() {
-  const params = new URLSearchParams(window.location.search);
-  const filter = params.get('filter');
-  if (!filter) return;
-
-  writeVisitorFilterSession(filter);
-  const filters = filter.split(',').filter(Boolean);
-  activeFilters.length = 0;
-  activeFilters.push(...filters);
-
-  document.querySelectorAll<HTMLButtonElement>('.filterBtn').forEach((btn) => {
-    const slug = btn.dataset.js;
-    btn.classList.toggle('filterBtn--selected', !!slug && filters.includes(slug));
-  });
-
+  const requested = new URLSearchParams(window.location.search).get('filter');
+  const stacks = [...document.querySelectorAll<HTMLElement>('.projRow')].map((item) =>
+    (item.dataset.stack ?? '').split(/\s+/).filter(Boolean),
+  );
+  const filter = stackFilterWithMatches(requested, stacks);
+  if (!filter) {
+    if (requested) dropFilterParam();
+    return;
+  }
+  activeFilter = filter;
+  paintButtons();
   applyActiveFilters();
 }
 

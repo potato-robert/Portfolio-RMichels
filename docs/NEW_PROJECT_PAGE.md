@@ -15,12 +15,11 @@ slug: yourSlug
 name:
   en: "Project Name"
   de: "Projektname"
-projectType:
-  en: "VR Game"
-  de: "VR-Spiel"
+format: game
 year: "2025"
+context: personal
 inDevelopment: false
-roles: ["vr", "unity", "game-development"]
+stack: ["unity", "csharp"]
 description:
   en: "Short summary for the landing area."
   de: "Kurze Zusammenfassung."
@@ -150,9 +149,13 @@ At build time, `remark-gist-embed` fetches the gist and renders styled `.code-sn
 
 Drop files into `assets/` only; run `npm run rm-assets` or `npm run build` to generate `public/assets/`. Gallery images in markdown use HTML `<figure><img src="/assets/...">` (ProjectLightbox binds click handlers automatically).
 
-## 3. Roles
+## 3. Filters and stack
 
-If the project needs new filter tags, add entries to `src/lib/roles.ts` and assign `roles: [...]` in frontmatter.
+`stack` is both the case-study meta list and the filter vocabulary. Values are slugs from `src/lib/stack.ts`; the meta bar and `/projects` buttons show that file’s labels. A homepage or projects URL filters on one slug, `?filter=unity`. There is no saved filter and no comma-separated list. An unknown value or a slug that matches nothing shows the same projects as an unfiltered page.
+
+`format` is a slug from `src/lib/formats.ts`. Tiles and the Format column use that dictionary.
+
+`context` is `employment`, `personal`, or `coursework`. Employment requires `organization`. Add `organizationUrl` when the name should be a link. Coursework displays as “Student Project” / “Studienprojekt” and links to SIAT. Personal displays as “Personal project” / “Persönliches Projekt”. Set `ongoing: true` with a start `year` when the work is still active; the UI appends “present” / “heute”.
 
 ## 4. Optional flags
 
@@ -166,7 +169,7 @@ If the project needs new filter tags, add entries to `src/lib/roles.ts` and assi
 
 ## 5. German body
 
-Add a translated body in `src/content/projects-de/{slug}.md` with the same frontmatter as the EN file. UI strings on listing pages come from frontmatter `name` / `projectType` via `getLocalized()`.
+Add a translated body in `src/content/projects-de/{slug}.md` with the same frontmatter as the EN file. The project name still comes from frontmatter `name`. Format, stack, and context labels come from `format` / `stack` / `context` (display strings live in `src/lib/formats.ts` and `src/lib/stack.ts`).
 
 ## 6. Verify locally
 
@@ -175,7 +178,7 @@ npm run dev
 ```
 
 - [ ] `/yourSlug` and `/de/yourSlug` render
-- [ ] Tile appears on `/` and `/projects` with correct filter roles
+- [ ] Tile appears on `/` and `/projects`, and `/projects?filter=` matches a stack slug from the project
 - [ ] Image viewer works on gallery images
 - [ ] LQIP swaps to full-res on load
 - [ ] No raw HTML appears as dark code blocks (run `npm run build && npm run test:verify`)

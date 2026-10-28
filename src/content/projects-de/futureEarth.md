@@ -3,13 +3,11 @@ slug: "futureEarth"
 name:
   en: "Future Earth"
   de: "Future Earth"
-projectType:
-  en: "VR Game"
-  de: "VR-Spiel"
+format: xr-game
 year: "2020"
+context: coursework
 inDevelopment: false
-roles: ["vr", "game", "pm", "design"]
-teammembers: ["Robert Michels (PM)", "3 teammates (SFU IAT)"]
+stack: ["xr", "unity", "csharp"]
 description:
   en: "Future Earth is a VR adventure game set in a dystopian future, where the player has to grow trees, fight droids and collect parts. Achieved over 3,000 downloads and 4 stars on SideQuest."
   de: "Future Earth ist ein VR-Abenteuerspiel in einer dystopischen Zukunft, in der der Spieler Bäume pflanzen, Droiden bekämpfen und Teile sammeln muss. Über 3.000 Downloads und 4 Sterne auf SideQuest."

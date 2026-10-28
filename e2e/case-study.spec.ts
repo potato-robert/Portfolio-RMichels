@@ -7,7 +7,10 @@ test.describe('case study', () => {
 
     await expect(page.locator('#projLanding h1')).toHaveText('Future Earth');
     await expect(page.locator('#projMeta')).toBeVisible();
-    await expect(page.locator('#projMeta')).toContainText('Type');
+    await expect(page.locator('#projMeta')).toContainText('Format');
+    await expect(page.locator('#projMeta')).toContainText('XR game');
+    await expect(page.locator('#projMeta')).toContainText('Student Project');
+    await expect(page.locator('#projMeta')).toContainText('XR');
     await expect(page.locator('#projMeta')).toContainText('2020');
     const galleryImages = page.locator('#projContent .sectionMedia figure img');
     await expect(galleryImages).not.toHaveCount(0);
@@ -54,7 +57,20 @@ test.describe('case study', () => {
     await page.goto('/de/futureEarth');
 
     await expect(page.locator('html')).toHaveAttribute('lang', 'de');
-    await expect(page.locator('#projMeta')).toContainText('VR-Spiel');
+    await expect(page.locator('#projMeta')).toContainText('XR-Spiel');
+    await expect(page.locator('#projMeta')).toContainText('Kontext');
+    await expect(page.locator('#projMeta a[href="https://www.sfu.ca/siat.html"]')).toHaveText('Studienprojekt');
+  });
+
+  test('/canfit shows the employer link and an open date range', async ({ page }) => {
+    await page.goto('/canfit');
+
+    const meta = page.locator('#projMeta');
+    await expect(meta).toContainText('O&P CAD desktop app');
+    await expect(meta).toContainText('2025–present');
+    await expect(meta).toContainText('C++');
+    await expect(meta.locator('a[href="https://qwadra.com/"]')).toHaveText('Qwadra');
+    await expect(meta.locator('a[href="https://clir.io/"]')).toHaveCount(0);
   });
 
   test.describe('project TOC', () => {
