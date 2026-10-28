@@ -112,15 +112,56 @@ function extractIframeTag(html: string, startIndex: number): { tag: string; end:
   return null;
 }
 
+const NAMED_HTML_ENTITIES: Record<string, string> = {
+  amp: '&',
+  apos: "'",
+  gt: '>',
+  lt: '<',
+  quot: '"',
+};
+
+/** Attribute text from serialized HTML, before escapeAttr runs again. */
+function decodeHtmlEntities(value: string): string {
+  return value.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (entity, body: string) => {
+    if (body[0] !== '#') {
+      return NAMED_HTML_ENTITIES[body.toLowerCase()] ?? entity;
+    }
+    const codePoint =
+      body[1] === 'x' || body[1] === 'X'
+        ? Number.parseInt(body.slice(2), 16)
+        : Number.parseInt(body.slice(1), 10);
+    if (!Number.isInteger(codePoint) || codePoint < 0 || codePoint > 0x10ffff) return entity;
+    return String.fromCodePoint(codePoint);
+  });
+}
+
 function parseIframeAttributes(tag: string): Record<string, string> {
   const attrs: Record<string, string> = {};
+  const openEnd = tag.indexOf('>');
+  const openTag = openEnd === -1 ? tag : tag.slice(0, openEnd);
   const attrRe = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/g;
-  for (const match of tag.matchAll(attrRe)) {
+  for (const match of openTag.matchAll(attrRe)) {
     const name = match[1].toLowerCase();
     const value = match[3] ?? match[4] ?? match[5] ?? '';
-    attrs[name] = value;
+    attrs[name] = decodeHtmlEntities(value);
+  }
+
+  const withoutQuoted = openTag.replace(/=\s*("[^"]*"|'[^']*')/g, '');
+  const boolRe = /\s([a-zA-Z_:][-a-zA-Z0-9_:.]*)(?=\s|\/|$)/g;
+  for (const match of withoutQuoted.matchAll(boolRe)) {
+    const name = match[1].toLowerCase();
+    if (!(name in attrs)) attrs[name] = '';
   }
   return attrs;
+}
+
+/** Figma's own fullscreen control calls requestFullscreen from inside the frame. */
+function withFullscreenPermission(attrs: Record<string, string>): Record<string, string> {
+  if (!('allowfullscreen' in attrs)) return attrs;
+  const allow = attrs.allow ?? '';
+  if (/(?:^|;)\s*fullscreen\s*(?:;|$)/i.test(allow)) return attrs;
+  const trimmed = allow.trim().replace(/;+\s*$/, '');
+  return { ...attrs, allow: trimmed ? `${trimmed}; fullscreen` : 'fullscreen' };
 }
 
 function providerDisplayName(id: EmbedProviderId): string {
@@ -161,7 +202,7 @@ function buildPlaceholder(
   const choicesHref = getPrivacySettingsPath(locale);
 
   const iframeTitle = attrs.title?.trim() || displayName;
-  const passthrough = { ...attrs, src, title: iframeTitle };
+  const passthrough = withFullscreenPermission({ ...attrs, src, title: iframeTitle });
   const dataAttrs = Object.entries(passthrough)
     .map(([key, value]) => `data-iframe-${key}="${escapeAttr(value)}"`)
     .join(' ');
